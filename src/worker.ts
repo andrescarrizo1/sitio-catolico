@@ -27,7 +27,8 @@ PRINCIPIOS PASTORALES INVIOLABLES:
 
 REGLAS DE FORMATO ESTRICTAS:
 - Responde ÚNICAMENTE con un JSON válido y completo. Sin bloques de markdown (sin \`\`\`json).
-- JAMÁS uses comillas dobles (") dentro de tus textos; usa SIEMPRE comillas latinas (« ») o comillas simples (').
+- OBLIGATORIO: Todas las claves y valores del JSON DEBEN ir delimitados entre comillas dobles estándar de JSON (ejemplo: "versiculo": "«Texto bíblico aquí»", "frase": "«Cita del santo»").
+- Dentro del texto de tus oraciones, usa comillas latinas (« ») para cualquier diálogo o cita, pero NUNCA omitas las comillas dobles que delimitan los valores de las cadenas en el JSON.
 - Asegúrate de que los saltos de línea dentro de las cadenas estén correctamente escapados con \\n.
 
 ESTRUCTURA OBLIGATORIA DEL JSON:
@@ -113,7 +114,7 @@ function extractFieldByKeys(jsonStr: string, keys: string[], nextKeys: string[])
   const nextKeysPattern = nextKeys.length > 0 ? nextKeys.map((k) => `"${k}"`).join('|') : '$';
   for (const key of keys) {
     const regex = new RegExp(
-      `"${key}"\\s*:\\s*"([\\s\\S]*?)"(?=\\s*,\\s*(?:${nextKeysPattern})|\\s*\\n\\s*(?:${nextKeysPattern})|\\s*\\})`,
+      `"${key}"\\s*:\\s*(?:"|«)?([\\s\\S]*?)(?:"|»)?(?=\\s*,\\s*(?:${nextKeysPattern})|\\s*\\n\\s*(?:${nextKeysPattern})|\\s*\\})`,
       'i'
     );
     const m = jsonStr.match(regex);
@@ -133,13 +134,19 @@ function cleanAndRepairJson<T>(raw: string): T | null {
     .replace(/```/g, '')
     .trim();
 
+  // 1. Reemplazar valores envueltos en « » sin comillas dobles exteriores: : «texto» -> : "«texto»"
+  cleaned = cleaned.replace(/:\s*«([\s\S]*?)»(?=\s*,|\s*\n|\s*\})/g, ': "«$1»"');
+
+  // 2. Eliminar comas finales inválidas en JSON antes de } o ]
+  cleaned = cleaned.replace(/,\s*([}\]])/g, '$1');
+
   const firstBrace = cleaned.indexOf('{');
   const lastBrace = cleaned.lastIndexOf('}');
   if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
     cleaned = cleaned.substring(firstBrace, lastBrace + 1);
   }
 
-  // 1. Intento nativo directo
+  // 3. Intento nativo directo
   try {
     return JSON.parse(cleaned) as T;
   } catch {}
@@ -564,7 +571,7 @@ export default {
             const parsed = parseConsueloResponse(rawContent);
 
             if (parsed) {
-              return new Response(JSON.stringify({ ...parsed, _debug_raw: rawContent }), {
+              return new Response(JSON.stringify(parsed), {
                 headers: {
                   ...corsHeaders,
                   'Content-Type': 'application/json',
