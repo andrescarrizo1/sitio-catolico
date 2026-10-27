@@ -1,0 +1,55 @@
+---
+interface Props {
+  variant?: 'compact' | 'full';
+}
+
+const { variant = 'full' } = Astro.props;
+---
+
+<div class={`rounded-2xl border transition-colors ${
+  variant === 'compact'
+    ? 'p-4 bg-amber-500/5 dark:bg-amber-400/5 border-amber-600/20'
+    : 'p-6 sm:p-8 bg-gradient-to-br from-amber-500/10 via-stone-50 to-stone-100 dark:from-amber-500/10 dark:via-slate-900 dark:to-slate-950 border-amber-600/20 shadow-sm'
+}`}>
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+    <div class="space-y-2 max-w-xl">
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-800 dark:text-amber-300">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+        Apostolado Libre de Publicidad
+      </div>
+      
+      <h3 class="font-serif text-lg sm:text-xl font-bold text-slate-950 dark:text-stone-100">
+        ¿Te ha ayudado este contenido en tu fe?
+      </h3>
+      
+      <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-reading">
+        <strong>Razón y Asombro</strong> es un proyecto independiente de evangelización digital. No tenemos anunciantes comerciales ni rastreadores invasivos. Si deseas apoyar el sostenimiento del dominio y la adquisición de peritajes y libros de investigación, puedes colaborar con una ofrenda voluntaria.
+      </p>
+    </div>
+
+    <!-- Botones de Donación -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto flex-shrink-0">
+      <!-- Cafecito (Argentina) -->
+      <a
+        href="https://cafecito.app"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+      >
+        ☕ Invitar un Cafecito
+      </a>
+
+      <!-- PayPal (Internacional) -->
+      <a
+        href="https://paypal.me"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-900 dark:bg-stone-800 hover:bg-slate-800 dark:hover:bg-stone-700 text-white border border-stone-700 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+      >
+        Ofrenda con PayPal
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,119 @@
+﻿---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/global/Breadcrumbs.astro';
+---
+
+<BaseLayout
+  title="Contacto e Intenciones de Oración | Razón y Asombro"
+  description="Envía tus peticiones de oración para el rezo del Santo Rosario, consultas doctrinales o reportes de rigor documental a la dirección editorial de Razón y Asombro."
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs crumbs={[{ label: 'Contacto e Intenciones' }]} />
+
+    <header class="mt-4 mb-8 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Comunión y Diálogo
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Contacto e Intenciones de Oración
+      </h1>
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        Este espacio está abierto a toda persona de buena voluntad. Comparte tus peticiones espirituales para incluirlas en el rezo del Rosario o envíanos tus consultas sobre fuentes documentales.
+      </p>
+    </header>
+
+    <div class="space-y-8">
+      <!-- Tarjeta Informativa de Intenciones -->
+      <div class="p-5 rounded-2xl bg-amber-500/10 border border-amber-600/20 text-stone-800 dark:text-stone-200 space-y-2">
+        <h3 class="font-serif font-bold text-base text-amber-900 dark:text-amber-200 flex items-center gap-2">
+          <span>📿</span> Muro Espiritual del Santo Rosario
+        </h3>
+        <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-reading">
+          Cada intención recibida (enfermedad, conversión de un ser querido, difuntos o agradecimientos) se tiene presente espiritualmente en las decenas del Santo Rosario diario que rezamos en esta comunidad.
+        </p>
+      </div>
+
+      <!-- Formulario de Contacto (Compatible con Formspree / mailto) -->
+      <form
+        action="https://formspree.io/f/placeholder"
+        method="POST"
+        class="p-6 sm:p-8 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-5 shadow-sm"
+      >
+        <div>
+          <label for="nombre" class="block text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-2">
+            Nombre (o puedes dejarlo anónimo)
+          </label>
+          <input
+            type="text"
+            id="nombre"
+            name="nombre"
+            placeholder="Ej: Andrés / Hermano en la fe"
+            class="w-full px-4 py-2.5 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-stone-900 dark:text-stone-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+        </div>
+
+        <div>
+          <label for="email" class="block text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-2">
+            Correo Electrónico (Para recibir respuesta)
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="tu-correo@ejemplo.com"
+            class="w-full px-4 py-2.5 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-stone-900 dark:text-stone-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+        </div>
+
+        <div>
+          <label for="motivo" class="block text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-2">
+            Motivo del Mensaje
+          </label>
+          <select
+            id="motivo"
+            name="motivo"
+            class="w-full px-4 py-2.5 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-stone-900 dark:text-stone-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+          >
+            <option value="oracion">Intención de oración para el Santo Rosario</option>
+            <option value="consulta">Consulta doctrinal o sobre milagros eucarísticos</option>
+            <option value="errata">Sugerencia de rigor o corrección de fuentes</option>
+            <option value="otro">Mensaje fraternal o testimonio</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="mensaje" class="block text-xs font-semibold uppercase tracking-wider text-stone-700 dark:text-stone-300 mb-2">
+            Mensaje o Petición
+          </label>
+          <textarea
+            id="mensaje"
+            name="mensaje"
+            rows="5"
+            required
+            placeholder="Escribe aquí tu petición o mensaje con total tranquilidad..."
+            class="w-full px-4 py-2.5 rounded-xl border border-stone-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-stone-900 dark:text-stone-100 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 font-reading leading-relaxed"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm shadow-sm transition-all hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2"
+        >
+          <span>✉️</span> Enviar Mensaje o Intención
+        </button>
+      </form>
+
+      <!-- Vía Directa por Correo -->
+      <div class="pt-6 border-t border-stone-200 dark:border-slate-800 text-center text-xs text-stone-500 dark:text-stone-400">
+        <p>
+          ¿Prefieres escribir directamente desde tu correo personal?
+        </p>
+        <p class="mt-1">
+          Escríbenos a: <a href="mailto:carrizo226@gmail.com" class="font-semibold text-amber-700 dark:text-amber-400 hover:underline">carrizo226@gmail.com</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+

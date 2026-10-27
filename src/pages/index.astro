@@ -1,7 +1,8 @@
----
+﻿---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/ui/Hero.astro';
 import PillarCard from '../components/ui/PillarCard.astro';
+import SupportCard from '../components/ui/SupportCard.astro';
 
 const pillars = [
   {
@@ -50,7 +51,7 @@ const pillars = [
 ---
 
 <BaseLayout
-  title="Ad Veritatem | Fe Católica, Evangelio y Rigor Documental"
+  title="Razón y Asombro | Fe Católica, Evangelio y Rigor Documental"
   description="Plataforma web católica dedicada a proclamar la verdad salvífica de Jesucristo, sus enseñanzas bíblicas y los signos documentados de la fe con el máximo rigor histórico y científico."
 >
   <!-- Hero Principal -->
@@ -226,5 +227,11 @@ const pillars = [
       </div>
     </section>
 
+    <!-- Módulo de Sostenimiento y Donaciones -->
+    <section class="pt-4">
+      <SupportCard variant="full" />
+    </section>
+
   </div>
 </BaseLayout>
+

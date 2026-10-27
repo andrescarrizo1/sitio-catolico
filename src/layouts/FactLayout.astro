@@ -5,6 +5,8 @@ import FactSheet from '../components/ui/FactSheet.astro';
 import SourceList from '../components/ui/SourceList.astro';
 import NextStep from '../components/ui/NextStep.astro';
 import ArticleImage from '../components/ui/ArticleImage.astro';
+import ShareButtons from '../components/ui/ShareButtons.astro';
+import SupportCard from '../components/ui/SupportCard.astro';
 
 interface Props {
   title: string;
@@ -74,7 +76,7 @@ const articleSchema = {
   },
   publisher: {
     '@type': 'Organization',
-    name: 'Ad Veritatem',
+    name: 'Razón y Asombro',
     url: siteUrl,
   },
 };
@@ -147,8 +149,16 @@ const articleSchema = {
       <slot />
     </div>
 
+    <!-- Compartir en WhatsApp, Telegram y Copiar Enlace -->
+    <ShareButtons title={title} description={resumen} />
+
     <!-- Bloque Tu Siguiente Paso -->
     <NextStep variant={nextStepVariant} />
+
+    <!-- Módulo de Sostenimiento y Donaciones -->
+    <div class="my-8">
+      <SupportCard variant="compact" />
+    </div>
 
     <!-- Fuentes Primarias y Documentales -->
     {fuentes && fuentes.length > 0 && (

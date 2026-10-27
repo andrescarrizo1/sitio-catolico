@@ -4,7 +4,7 @@ import mdx from '@astrojs/mdx';
 import preact from '@astrojs/preact';
 import sitemap from '@astrojs/sitemap';
 
-const siteUrl = process.env.PUBLIC_SITE_URL || 'http://localhost:4321';
+const siteUrl = process.env.PUBLIC_SITE_URL || 'https://razonyasombro.com';
 
 // https://astro.build/config
 export default defineConfig({
