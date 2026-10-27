@@ -80,17 +80,46 @@ ESTRUCTURA OBLIGATORIA DEL JSON:
 }`;
 
 /**
- * Extrae el valor de un campo delimitado por claves en un string tipo JSON.
+ * Limpia comillas dobles, simples o latinas externas redundantes de un texto.
  */
-function extractFieldByKey(jsonStr: string, key: string, nextKeys: string[]): string {
+function cleanQuotes(str: string): string {
+  if (!str) return '';
+  return str.replace(/^[«"'\s]+|[»"'\s]+$/g, '').trim();
+}
+
+/**
+ * Normaliza las claves de un objeto eliminando acentos y espacios para máxima compatibilidad con LLMs en español.
+ */
+function normalizeObjectKeys(obj: any): any {
+  if (!obj || typeof obj !== 'object') return obj;
+  if (Array.isArray(obj)) return obj.map(normalizeObjectKeys);
+
+  const normalized: Record<string, any> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    const cleanKey = k
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim();
+    normalized[cleanKey] = normalizeObjectKeys(v);
+  }
+  return normalized;
+}
+
+/**
+ * Extrae el valor de un campo delimitado por claves en un string tipo JSON, tolerando acentos y alias.
+ */
+function extractFieldByKeys(jsonStr: string, keys: string[], nextKeys: string[]): string {
   const nextKeysPattern = nextKeys.length > 0 ? nextKeys.map((k) => `"${k}"`).join('|') : '$';
-  const regex = new RegExp(
-    `"${key}"\\s*:\\s*"([\\s\\S]*?)"(?=\\s*,\\s*(?:${nextKeysPattern})|\\s*\\n\\s*(?:${nextKeysPattern})|\\s*\\})`,
-    'i'
-  );
-  const m = jsonStr.match(regex);
-  if (m) {
-    return m[1].replace(/\\n/g, '\n').replace(/\\"/g, '"').trim();
+  for (const key of keys) {
+    const regex = new RegExp(
+      `"${key}"\\s*:\\s*"([\\s\\S]*?)"(?=\\s*,\\s*(?:${nextKeysPattern})|\\s*\\n\\s*(?:${nextKeysPattern})|\\s*\\})`,
+      'i'
+    );
+    const m = jsonStr.match(regex);
+    if (m && m[1].trim()) {
+      return m[1].replace(/\\n/g, '\n').replace(/\\"/g, '"').trim();
+    }
   }
   return '';
 }
@@ -197,62 +226,129 @@ function sanitizeEnlace(enlace: string, accionText: string): string {
 }
 
 /**
- * Parsea el texto del LLM de forma resiliente mediante JSON nativo o extracción tolerante por claves.
+ * Parsea el texto del LLM de forma resiliente mediante JSON nativo normalizado o extracción tolerante por claves.
  */
 function parseConsueloResponse(raw: string): ConsueloResponse | null {
-  // 1. Intento con repair JSON
-  const parsed = cleanAndRepairJson<ConsueloResponse>(raw);
-  if (parsed && parsed.versiculo && parsed.reflexion && parsed.santo?.nombre) {
-    if (parsed.accion) {
-      parsed.accion.enlace = sanitizeEnlace(parsed.accion.enlace, `${parsed.accion.titulo} ${parsed.accion.descripcion}`);
-      if (!parsed.accion.textoBoton) {
-        parsed.accion.textoBoton = 'Rezar con la Comunidad';
-      }
+  // 1. Intento con repair JSON y normalización de claves
+  const rawParsed = cleanAndRepairJson<any>(raw);
+  if (rawParsed) {
+    const obj = normalizeObjectKeys(rawParsed);
+    const versiculo = cleanQuotes(
+      obj.versiculo || obj.cita || obj.texto || obj.pasaje || obj.citabiblica || obj.textobiblico || ''
+    );
+    const referencia = obj.referencia || obj.referenciabiblica || obj.pasaje || '';
+    const reflexion = obj.reflexion || obj.consejo || obj.meditacion || obj.balsamo || '';
+    const categoria = obj.categoria || obj.tema || 'Consuelo y Fortaleza';
+    const santoNombre = obj.santo?.nombre || obj.santo?.santo || obj.santo?.autor || '';
+    const santoEpoca = obj.santo?.epoca || obj.santo?.titulo || obj.santo?.siglo || '';
+    const santoFrase = cleanQuotes(
+      obj.santo?.frase || obj.santo?.cita || obj.santo?.consejo || obj.santo?.palabra || obj.santo?.pensamiento || ''
+    );
+    const accionTitulo = obj.accion?.titulo || obj.accion?.paso || 'Paso Espiritual Inmediato';
+    const accionDesc = obj.accion?.descripcion || obj.accion?.detalle || 'Recogimiento y oración en el Sagrario.';
+    const accionEnlace = sanitizeEnlace(obj.accion?.enlace, `${accionTitulo} ${accionDesc}`);
+    const accionBoton = obj.accion?.textoboton || obj.accion?.boton || 'Rezar con la Comunidad';
+
+    if (versiculo && reflexion && santoNombre) {
+      return {
+        categoria,
+        versiculo: `«${versiculo}»`,
+        referencia: referencia || 'Sagrada Escritura',
+        santo: {
+          nombre: santoNombre,
+          epoca: santoEpoca,
+          frase: `«${santoFrase || 'Dios no abandona jamás a quien en Él confía.'}»`,
+        },
+        reflexion,
+        accion: {
+          titulo: accionTitulo,
+          descripcion: accionDesc,
+          enlace: accionEnlace,
+          textoBoton: accionBoton,
+        },
+      };
     }
-    return parsed;
   }
 
-  // 2. Extracción tolerante campo a campo
+  // 2. Extracción tolerante campo a campo con tolerancia a acentos y sinónimos
   try {
     let cleaned = raw
       .replace(/```json/gi, '')
       .replace(/```/g, '')
       .trim();
 
-    const categoria = extractFieldByKey(cleaned, 'categoria', ['versiculo', 'referencia', 'santo', 'reflexion']);
-    const versiculo = extractFieldByKey(cleaned, 'versiculo', ['referencia', 'santo', 'reflexion']);
-    const referencia = extractFieldByKey(cleaned, 'referencia', ['santo', 'reflexion', 'accion']);
-    const santoNombre = extractFieldByKey(cleaned, 'nombre', ['epoca', 'frase', 'reflexion']);
-    const santoEpoca = extractFieldByKey(cleaned, 'epoca', ['frase', 'reflexion']);
-    const santoFrase = extractFieldByKey(cleaned, 'frase', ['reflexion', 'accion']);
-    const reflexion = extractFieldByKey(cleaned, 'reflexion', ['accion']);
-    const accionTitulo = extractFieldByKey(cleaned, 'titulo', ['descripcion', 'enlace', 'textoBoton']);
-    const accionDesc = extractFieldByKey(cleaned, 'descripcion', ['enlace', 'textoBoton']);
-    const accionEnlace = extractFieldByKey(cleaned, 'enlace', ['textoBoton']);
-    const accionBoton = extractFieldByKey(cleaned, 'textoBoton', []);
+    const categoria = extractFieldByKeys(
+      cleaned,
+      ['categoria', 'categoría', 'tema'],
+      ['versiculo', 'versículo', 'referencia', 'santo', 'reflexion', 'reflexión']
+    );
+    const versiculo = cleanQuotes(
+      extractFieldByKeys(
+        cleaned,
+        ['versiculo', 'versículo', 'cita', 'textoBiblico', 'texto', 'pasaje'],
+        ['referencia', 'santo', 'reflexion', 'reflexión']
+      )
+    );
+    const referencia = extractFieldByKeys(
+      cleaned,
+      ['referencia', 'referenciaBiblica', 'pasaje', 'cita'],
+      ['santo', 'reflexion', 'reflexión', 'accion', 'acción']
+    );
+    const santoNombre = extractFieldByKeys(
+      cleaned,
+      ['nombre', 'santo', 'autor'],
+      ['epoca', 'época', 'frase', 'cita', 'reflexion', 'reflexión']
+    );
+    const santoEpoca = extractFieldByKeys(
+      cleaned,
+      ['epoca', 'época', 'titulo', 'título', 'siglo'],
+      ['frase', 'cita', 'reflexion', 'reflexión']
+    );
+    const santoFrase = cleanQuotes(
+      extractFieldByKeys(
+        cleaned,
+        ['frase', 'cita', 'pensamiento', 'consejo', 'palabra'],
+        ['reflexion', 'reflexión', 'accion', 'acción']
+      )
+    );
+    const reflexion = extractFieldByKeys(
+      cleaned,
+      ['reflexion', 'reflexión', 'balsamo', 'consejo'],
+      ['accion', 'acción']
+    );
+    const accionTitulo = extractFieldByKeys(
+      cleaned,
+      ['titulo', 'título', 'paso'],
+      ['descripcion', 'descripción', 'enlace', 'textoBoton', 'boton']
+    );
+    const accionDesc = extractFieldByKeys(
+      cleaned,
+      ['descripcion', 'descripción', 'detalle', 'instruccion'],
+      ['enlace', 'textoBoton', 'boton']
+    );
+    const accionEnlace = extractFieldByKeys(cleaned, ['enlace', 'link', 'url'], ['textoBoton', 'boton']);
+    const accionBoton = extractFieldByKeys(cleaned, ['textoBoton', 'boton'], []);
 
     if (reflexion || versiculo || santoNombre) {
       return {
         categoria: categoria || 'Consuelo y Paz en la Prueba',
-        versiculo:
-          versiculo ||
-          '«Venid a mí todos los que estáis trabajados y cargados, y yo os haré descansar. Llevad mi yugo sobre vosotros y aprended de mí, que soy manso y humilde de corazón; y hallaréis descanso para vuestras almas.»',
-        referencia: referencia || 'San Mateo 11, 28-29',
+        versiculo: versiculo
+          ? `«${versiculo}»`
+          : '«Venid a mí todos los que estáis trabajados y cargados, y yo os haré descansar.»',
+        referencia: referencia || 'Sagrada Escritura',
         santo: {
           nombre: santoNombre || 'San Francisco de Sales',
-          epoca: santoEpoca || 'Doctor de la Iglesia y Maestro Espiritual',
-          frase:
-            santoFrase ||
-            '«No temas lo que te pueda suceder mañana; el mismo Padre celestial que hoy cuida de ti, cuidará de ti mañana y todos los días. O bien te librará del sufrimiento, o bien te dará una fuerza invencible para soportarlo.»',
+          epoca: santoEpoca || 'Doctor de la Iglesia',
+          frase: santoFrase
+            ? `«${santoFrase}»`
+            : '«No temas lo que te pueda suceder mañana; el mismo Padre celestial que hoy cuida de ti, cuidará de ti mañana y todos los días.»',
         },
         reflexion:
           reflexion ||
-          'Hijo mío en Cristo: en los momentos en que la prueba arrecia y el alma parece sumergirse en la confusión o en el abatimiento, recuerda que el Señor no está ausente de tu barca. El silencio de Dios no es abandono, sino una invitación a purificar tu esperanza y a fundar tu paz, no en las circunstancias mudables del mundo, sino en la fidelidad inquebrantable de Su amor divino.\\n\\nUne en este instante tu aflicción al Corazón traspasado de Jesús en el Calvario. Ninguna lágrima ofrecida con fe se pierde jamás; en el plan de la Redención, el dolor abrazado con Cristo se transforma en fuente inagotable de gracia, santificación y vida eterna para ti y para aquellos por quienes intercedes.',
+          'Dios conoce íntimamente la herida que hoy te desgarra. No estás solo en esta prueba.',
         accion: {
-          titulo: accionTitulo || 'Oración de Abandono y Sagrario',
-          descripcion:
-            accionDesc ||
-            'Haz una pausa en silencio y repite lentamente: «Jesús, en Ti confío, me entrego a Ti, haz Tú de mí según Tu santa voluntad». Te invitamos a acompañar tu paz rezando con nosotros el Santo Rosario.',
+          titulo: accionTitulo || 'Oración y Abandono',
+          descripcion: accionDesc || 'Haz una pausa en silencio y ponte en las manos misericordiosas del Señor.',
           enlace: sanitizeEnlace(accionEnlace, `${accionTitulo} ${accionDesc}`),
           textoBoton: accionBoton || 'Rezar con la Comunidad',
         },
@@ -269,9 +365,39 @@ function parseConsueloResponse(raw: string): ConsueloResponse | null {
  * Parsea la respuesta de apologética de forma resiliente.
  */
 function parseApologeticaResponse(raw: string): ApologeticaResponse | null {
-  const parsed = cleanAndRepairJson<ApologeticaResponse>(raw);
-  if (parsed && parsed.tema && parsed.versiculos?.length > 0 && parsed.respuestaRapidaWhatsApp) {
-    return parsed;
+  const rawParsed = cleanAndRepairJson<any>(raw);
+  if (rawParsed) {
+    const obj = normalizeObjectKeys(rawParsed);
+    if (obj.tema && (obj.versiculos?.length > 0 || obj.versiculo) && obj.respuestarapidawhatsapp) {
+      const versiculos = Array.isArray(obj.versiculos)
+        ? obj.versiculos.map((v: any) => ({
+            cita: v.cita || '',
+            texto: cleanQuotes(v.texto || ''),
+            explicacion: v.explicacion || '',
+          }))
+        : [
+            {
+              cita: obj.versiculo?.cita || '1 Pedro 3, 15',
+              texto: cleanQuotes(obj.versiculo?.texto || ''),
+              explicacion: obj.versiculo?.explicacion || '',
+            },
+          ];
+
+      return {
+        tema: obj.tema,
+        objecion: obj.objecion || '',
+        confusion: obj.confusion || '',
+        versiculos,
+        padresDeLaIglesia: {
+          santo: obj.padresdelaiglesia?.santo || obj.padres?.santo || 'San Ignacio de Antioquía',
+          fecha: obj.padresdelaiglesia?.fecha || obj.padres?.fecha || 'Año 110 d.C.',
+          obra: obj.padresdelaiglesia?.obra || obj.padres?.obra || 'Epístolas',
+          cita: cleanQuotes(obj.padresdelaiglesia?.cita || obj.padres?.cita || ''),
+        },
+        respuestaRapidaWhatsApp: obj.respuestarapidawhatsapp,
+        doctrinaMagisterio: obj.doctrinamagisterio || 'Catecismo de la Iglesia Católica',
+      };
+    }
   }
 
   try {
@@ -280,18 +406,18 @@ function parseApologeticaResponse(raw: string): ApologeticaResponse | null {
       .replace(/```/g, '')
       .trim();
 
-    const tema = extractFieldByKey(cleaned, 'tema', ['objecion', 'confusion', 'versiculos']);
-    const objecion = extractFieldByKey(cleaned, 'objecion', ['confusion', 'versiculos']);
-    const confusion = extractFieldByKey(cleaned, 'confusion', ['versiculos', 'padresDeLaIglesia']);
-    const respuestaRapida = extractFieldByKey(cleaned, 'respuestaRapidaWhatsApp', ['doctrinaMagisterio']);
-    const doctrinaMagisterio = extractFieldByKey(cleaned, 'doctrinaMagisterio', []);
-    const citaBiblica = extractFieldByKey(cleaned, 'cita', ['texto', 'explicacion']);
-    const textoBiblico = extractFieldByKey(cleaned, 'texto', ['explicacion']);
-    const explicacionBiblica = extractFieldByKey(cleaned, 'explicacion', ['padresDeLaIglesia']);
-    const santoPadre = extractFieldByKey(cleaned, 'santo', ['fecha', 'obra', 'cita']);
-    const fechaPadre = extractFieldByKey(cleaned, 'fecha', ['obra', 'cita']);
-    const obraPadre = extractFieldByKey(cleaned, 'obra', ['cita']);
-    const citaPadre = extractFieldByKey(cleaned, 'cita', ['respuestaRapidaWhatsApp']);
+    const tema = extractFieldByKeys(cleaned, ['tema', 'titulo'], ['objecion', 'objeción', 'confusion', 'confusión', 'versiculos', 'versículos']);
+    const objecion = extractFieldByKeys(cleaned, ['objecion', 'objeción'], ['confusion', 'confusión', 'versiculos', 'versículos']);
+    const confusion = extractFieldByKeys(cleaned, ['confusion', 'confusión'], ['versiculos', 'versículos', 'padresDeLaIglesia']);
+    const respuestaRapida = extractFieldByKeys(cleaned, ['respuestaRapidaWhatsApp', 'respuestaRapida', 'whatsapp'], ['doctrinaMagisterio', 'magisterio']);
+    const doctrinaMagisterio = extractFieldByKeys(cleaned, ['doctrinaMagisterio', 'magisterio'], []);
+    const citaBiblica = extractFieldByKeys(cleaned, ['cita'], ['texto', 'explicacion', 'explicación']);
+    const textoBiblico = cleanQuotes(extractFieldByKeys(cleaned, ['texto'], ['explicacion', 'explicación']));
+    const explicacionBiblica = extractFieldByKeys(cleaned, ['explicacion', 'explicación'], ['padresDeLaIglesia']);
+    const santoPadre = extractFieldByKeys(cleaned, ['santo', 'padre'], ['fecha', 'obra', 'cita']);
+    const fechaPadre = extractFieldByKeys(cleaned, ['fecha', 'año', 'siglo'], ['obra', 'cita']);
+    const obraPadre = extractFieldByKeys(cleaned, ['obra', 'libro', 'carta'], ['cita']);
+    const citaPadre = cleanQuotes(extractFieldByKeys(cleaned, ['cita'], ['respuestaRapidaWhatsApp']));
 
     if (tema || confusion || respuestaRapida) {
       return {

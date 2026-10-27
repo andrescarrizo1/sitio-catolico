@@ -56,9 +56,15 @@ export default function BuscadorConsuelo() {
     handleBuscar(query, catId);
   };
 
+  const formatQuote = (text: string) => {
+    if (!text) return '';
+    const clean = text.replace(/^[«"'\s]+|[»"'\s]+$/g, '').trim();
+    return `«${clean}»`;
+  };
+
   const handleCopiar = () => {
     if (!result) return;
-    const texto = `🕊️ PALABRA DE DIOS:\n${result.versiculo} (${result.referencia})\n\n✨ VOZ DE LOS SANTOS:\n${result.santo.frase} — ${result.santo.nombre}\n\n🌿 CONSUELO ESPIRITUAL:\n${result.reflexion}\n\n📿 PASO ESPIRITUAL:\n${result.accion.titulo}: ${result.accion.descripcion}\n\nRazón y Asombro | https://razonyasombro.com/consuelo/`;
+    const texto = `🕊️ PALABRA DE DIOS:\n${formatQuote(result.versiculo)} (${result.referencia})\n\n✨ VOZ DE LOS SANTOS:\n${formatQuote(result.santo.frase)} — ${result.santo.nombre}\n\n🌿 CONSUELO ESPIRITUAL:\n${result.reflexion}\n\n📿 PASO ESPIRITUAL:\n${result.accion.titulo}: ${result.accion.descripcion}\n\nRazón y Asombro | https://razonyasombro.com/consuelo/`;
     navigator.clipboard.writeText(texto);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
@@ -66,7 +72,7 @@ export default function BuscadorConsuelo() {
 
   const getWhatsAppUrl = () => {
     if (!result) return '#';
-    const msg = `*Palabra de Dios para el corazón herido:*\n${result.versiculo}\n_(${result.referencia})_\n\n*${result.santo.nombre}:*\n«${result.santo.frase}»\n\nEncuentra paz y consuelo católico en:\nhttps://razonyasombro.com/consuelo/`;
+    const msg = `*Palabra de Dios para el corazón herido:*\n${formatQuote(result.versiculo)}\n_(${result.referencia})_\n\n*${result.santo.nombre}:*\n${formatQuote(result.santo.frase)}\n\nEncuentra paz y consuelo católico en:\nhttps://razonyasombro.com/consuelo/`;
     return `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
   };
 
@@ -221,7 +227,7 @@ export default function BuscadorConsuelo() {
                   </span>
                 </div>
                 <blockquote class="font-serif text-lg sm:text-xl italic text-slate-900 dark:text-amber-100/90 leading-relaxed pt-1">
-                  {result.versiculo}
+                  {formatQuote(result.versiculo)}
                 </blockquote>
               </div>
               <p class="text-xs font-bold text-amber-800 dark:text-amber-300 mt-4 text-right">
@@ -243,7 +249,7 @@ export default function BuscadorConsuelo() {
                   )}
                 </div>
                 <blockquote class="text-sm sm:text-base text-stone-800 dark:text-stone-200 leading-relaxed italic pt-1">
-                  «{result.santo.frase}»
+                  {formatQuote(result.santo.frase)}
                 </blockquote>
               </div>
               <p class="text-xs font-bold text-amber-700 dark:text-amber-400 mt-4 text-right">
