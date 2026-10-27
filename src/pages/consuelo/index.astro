@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import BuscadorConsuelo from '../../components/ai/BuscadorConsuelo';
+import SupportCard from '../../components/ui/SupportCard.astro';
+---
+
+<BaseLayout
+  title="Consuelo Espiritual y Paz para el Alma | Razón y Asombro"
+  description="Refugio espiritual católico ante el dolor, la pérdida de un ser querido, la ansiedad y la culpa. Encuentra luz en la Sagrada Escritura, la voz de los Santos y una guía de oración concreta."
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+    
+    <Breadcrumbs crumbs={[{ label: 'Consuelo Espiritual' }]} />
+
+    <!-- Encabezado Inspirador -->
+    <header class="text-center max-w-3xl mx-auto space-y-4">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-600/20">
+        <span class="w-2 h-2 rounded-full bg-amber-600"></span>
+        Refugio del Corazón en la Gracia
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Consuelo Espiritual y Paz para el Alma
+      </h1>
+      <p class="font-serif italic text-lg sm:text-xl text-amber-800 dark:text-amber-300">
+        «Venid a mí todos los que estáis trabajados y cargados, y yo os aliviaré.»
+        <span class="text-xs font-sans not-italic font-bold tracking-wide uppercase text-stone-500 dark:text-stone-400 block mt-1">
+          — San Mateo 11, 28
+        </span>
+      </p>
+    </header>
+
+    <!-- Componente Interactivo / Isla Preact -->
+    <section>
+      <BuscadorConsuelo client:load />
+    </section>
+
+    <!-- Sección Doctrinal: El Misterio del Sufrimiento a la Luz de la Cruz -->
+    <section class="mt-16 pt-12 border-t border-stone-200 dark:border-slate-800 space-y-10">
+      
+      <div class="max-w-3xl mx-auto text-center space-y-3">
+        <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          Magisterio de la Iglesia
+        </span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          Tres certezas católicas cuando la prueba arrecia
+        </h2>
+        <p class="text-sm text-stone-600 dark:text-stone-400">
+          La fe católica no niega el dolor humano ni lo maquilla con falsas ilusiones. Le da un sentido eterno y redentor:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="p-6 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center text-lg font-bold">
+            ✝️
+          </div>
+          <h3 class="font-serif text-base font-bold text-slate-950 dark:text-stone-100">
+            1. El dolor unido a Cristo salva
+          </h3>
+          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-reading">
+            Como enseñaba San Juan Pablo II en <em>Salvifici Doloris</em>, el sufrimiento terrenal, ofrecido en unión con las llagas de Jesús, se transforma en un misterioso canal de gracia para la propia santificación y la salvación de las almas.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center text-lg font-bold">
+            🕊️
+          </div>
+          <h3 class="font-serif text-base font-bold text-slate-950 dark:text-stone-100">
+            2. La Misericordia es infinita
+          </h3>
+          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-reading">
+            No existe pecado, culpa o herida que supere el perdón de Dios en el Sacramento de la Reconciliación. Como Jesús reveló a Santa Faustina: <em>«Cuanto más grande es la miseria del alma, tanto más derecho tiene a Mi Misericordia»</em>.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-700 dark:text-rose-400 flex items-center justify-center text-lg font-bold">
+            🌿
+          </div>
+          <h3 class="font-serif text-base font-bold text-slate-950 dark:text-stone-100">
+            3. Jamás estás solo
+          </h3>
+          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-reading">
+            En la Comunión de los Santos, la Santísima Virgen María, tu Ángel Custodio y una multitud incontable de intercesores sostienen tu combate espiritual. La oración del Santo Rosario es la cadena viva que nos une a ellos.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Enlaces Relacionados -->
+    <section class="p-6 sm:p-8 rounded-3xl bg-amber-500/5 dark:bg-slate-900 border border-amber-600/20 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="space-y-1 text-center sm:text-left">
+        <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          Oración Continua
+        </span>
+        <h3 class="font-serif text-xl font-bold text-slate-950 dark:text-stone-100">
+          ¿Deseas que recemos por tu dolor o intención?
+        </h3>
+        <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+          Escríbenos tu petición para incorporarla en las decenas del Santo Rosario diario de nuestra comunidad.
+        </p>
+      </div>
+      <a
+        href="/contacto/"
+        class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm bg-amber-600 hover:bg-amber-700 text-white transition-all shadow-sm shrink-0"
+      >
+        <span>Enviar Intención de Oración &rarr;</span>
+      </a>
+    </section>
+
+    <!-- Módulo de Sostenimiento -->
+    <section class="pt-4">
+      <SupportCard variant="compact" />
+    </section>
+
+  </div>
+</BaseLayout>
