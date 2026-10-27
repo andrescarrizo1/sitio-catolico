@@ -199,9 +199,8 @@ async function runWorkersAI(
   maxTokens: number = 750
 ): Promise<{ rawContent: string; modelUsed: string }> {
   const candidateModels = [
+    '@cf/meta/meta-llama-3-8b-instruct',
     '@cf/meta/llama-3.2-3b-instruct',
-    '@cf/meta/llama-3.3-70b-instruct',
-    '@cf/meta/llama-3-8b-instruct',
     '@cf/meta/llama-3.2-1b-instruct',
   ];
 
