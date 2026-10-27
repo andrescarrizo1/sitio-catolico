@@ -20,17 +20,21 @@ Tu misión es brindar consuelo al alma afligida que acude a la plataforma «Raz�
 Prohibido el relativismo moral, la teología modernista, la psicología secular o conceptos de Nueva Era. Habla con la voz cálida, paternal y santa de un confesor sabio (como San Pío de Pietrelcina o San Francisco de Sales).
 Adapta tu respuesta PERSONALIZADAMENTE al dolor o situación exacta que el usuario describe.
 
-Debes responder ÚNICAMENTE con un JSON válido (sin comentarios, sin texto antes ni después, sin bloques markdown) con exactamente esta estructura:
+REGLAS DE FORMATO:
+- Debes responder ÚNICAMENTE con un JSON válido, sin bloques de código markdown, sin comentarios.
+- JAMÁS uses comillas dobles (") dentro del texto; usa siempre comillas latinas (« ») o comillas simples (') para cualquier cita o diálogo, de modo que el JSON nunca se rompa.
+
+Estructura obligatoria:
 {
-  "categoria": "Nombre breve del tema adaptado a su dolor (ej. Duelo por un Padre, Angustia Económica, etc.)",
-  "versiculo": "Cita textual de la Sagrada Escritura en español apropiada para su dolor específico",
+  "categoria": "Nombre breve del tema adaptado a su dolor específico",
+  "versiculo": "Cita textual de la Sagrada Escritura en español apropiada para su dolor específico con comillas latinas (« »)",
   "referencia": "Libro, capítulo y versículo bíblico exacto (ej. Filipenses 4, 6-7)",
   "santo": {
     "nombre": "Nombre de un Santo o Doctor de la Iglesia relevante para este dolor",
     "epoca": "Breve dato histórico o título del Santo",
-    "frase": "Cita viva y consoladora de ese Santo que ilumina este sufrimiento"
+    "frase": "Cita viva y consoladora de ese Santo que ilumina este sufrimiento con comillas latinas (« »)"
   },
-  "reflexion": "Dos párrafos serenos, compasivos y teológicamente certeros (máximo 130 palabras en total) consolando su alma, respondiendo directamente a lo que escribió, mostrando el sentido redentor del dolor en unión con Cristo y reavivando la esperanza.",
+  "reflexion": "Dos párrafos serenos, compasivos y teológicamente certeros (máximo 120 palabras en total) consolando su alma, respondiendo directamente a lo que escribió, mostrando el sentido redentor del dolor en unión con Cristo y reavivando la esperanza.",
   "accion": {
     "titulo": "Título de un paso espiritual concreto",
     "descripcion": "Instrucción espiritual inmediata para su caso (ej. Rezar una decena del Rosario, hacer un acto de confianza, acudir a la confesión).",
@@ -42,7 +46,11 @@ Debes responder ÚNICAMENTE con un JSON válido (sin comentarios, sin texto ante
 const APOLOGETICA_SYSTEM_PROMPT = `Eres un eminente apologeta y teólogo católico, maestro en Sagrada Escritura (Vulgata / Torres Amat), Patrística de los siglos I a IV (San Ignacio de Antioquía, San Ireneo, San Justino, San Agustín) y Magisterio de la Iglesia Católica (Santo Tomás de Aquino, Concilio de Trento, Vaticano II).
 Tu misión es dotar al fiel católico de argumentos bíblicos e históricos inexpugnables para responder con caridad y firmeza a objeciones protestantes, ateas o de sectas en la plataforma «Razón y Asombro» (https://razonyasombro.com).
 
-Debes responder ÚNICAMENTE con un JSON válido (sin comentarios, sin texto antes ni después, sin bloques de código markdown) con exactamente esta estructura:
+REGLAS DE FORMATO:
+- Responde ÚNICAMENTE con un JSON válido, sin bloques markdown.
+- JAMÁS uses comillas dobles (") dentro del texto; usa comillas latinas (« ») o simples (').
+
+Estructura obligatoria:
 {
   "tema": "Título de la defensa doctrinal (ej. La Virgen María y la Mediación de Cristo)",
   "objecion": "La objeción recibida formulada con claridad",
@@ -65,6 +73,42 @@ Debes responder ÚNICAMENTE con un JSON válido (sin comentarios, sin texto ante
 }`;
 
 /**
+ * Parsea JSON generado por un LLM de forma resiliente contra comillas internas o bloques markdown.
+ */
+function parseLLMJson<T>(raw: string): T {
+  let cleaned = raw
+    .replace(/```json/gi, '')
+    .replace(/```/g, '')
+    .trim();
+
+  const firstBrace = cleaned.indexOf('{');
+  const lastBrace = cleaned.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+    cleaned = cleaned.substring(firstBrace, lastBrace + 1);
+  }
+
+  // 1. Intento directo
+  try {
+    return JSON.parse(cleaned) as T;
+  } catch (err) {
+    // 2. Normalizar comillas internas y saltos de línea
+    try {
+      const fixedLines = cleaned.replace(/\r\n/g, '\n').replace(/\n/g, '\\n');
+      return JSON.parse(fixedLines) as T;
+    } catch {}
+
+    // 3. Reemplazar comillas dobles no estructurales
+    try {
+      // Reemplaza comillas dobles no precedidas por : ni seguidas por , o }
+      const softened = cleaned.replace(/([a-zA-Z0-9áéíóúÁÉÍÓÚñÑ])"([a-zA-Z0-9áéíóúÁÉÍÓÚñÑ])/g, '$1\'$2');
+      return JSON.parse(softened) as T;
+    } catch {}
+
+    throw err;
+  }
+}
+
+/**
  * Ejecuta inferencia en Cloudflare Workers AI probando los modelos modernos disponibles.
  */
 async function runWorkersAI(
@@ -73,7 +117,6 @@ async function runWorkersAI(
   userPrompt: string,
   maxTokens: number = 750
 ): Promise<{ rawContent: string; modelUsed: string }> {
-  // Lista de modelos activos en Cloudflare
   const candidateModels = [
     '@cf/meta/llama-3.2-3b-instruct',
     '@cf/meta/llama-3.3-70b-instruct',
@@ -91,7 +134,7 @@ async function runWorkersAI(
           { role: 'user', content: userPrompt },
         ],
         max_tokens: maxTokens,
-        temperature: 0.4,
+        temperature: 0.35,
       });
 
       const raw = res?.response || res?.choices?.[0]?.message?.content || '';
@@ -151,7 +194,7 @@ export default {
         let aiDebug = 'not_attempted';
         if (env.AI && typeof env.AI.run === 'function') {
           try {
-            const promptUser = `El fiel o peregrino expresa la siguiente carga espiritual íntima:\n"${query || categoria}"\n\nPor favor, consuélalo en español respondiendo ÚNICAMENTE con el objeto JSON estricto especificado.`;
+            const promptUser = `El fiel o peregrino expresa la siguiente carga espiritual íntima:\n"${query || categoria}"\n\nPor favor, responde adaptándote exactamente a su dolor personal con el objeto JSON estricto especificado.`;
 
             const { rawContent, modelUsed } = await runWorkersAI(
               env.AI,
@@ -160,12 +203,7 @@ export default {
               750
             );
 
-            const cleaned = rawContent
-              .replace(/```json/gi, '')
-              .replace(/```/g, '')
-              .trim();
-
-            const parsed = JSON.parse(cleaned) as ConsueloResponse;
+            const parsed = parseLLMJson<ConsueloResponse>(rawContent);
 
             if (parsed.versiculo && parsed.santo?.nombre && parsed.reflexion) {
               return new Response(JSON.stringify(parsed), {
@@ -245,12 +283,7 @@ export default {
               850
             );
 
-            const cleaned = rawContent
-              .replace(/```json/gi, '')
-              .replace(/```/g, '')
-              .trim();
-
-            const parsed = JSON.parse(cleaned) as ApologeticaResponse;
+            const parsed = parseLLMJson<ApologeticaResponse>(rawContent);
 
             if (parsed.tema && parsed.versiculos?.length > 0 && parsed.respuestaRapidaWhatsApp) {
               return new Response(JSON.stringify(parsed), {
