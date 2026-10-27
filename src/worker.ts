@@ -564,7 +564,7 @@ export default {
             const parsed = parseConsueloResponse(rawContent);
 
             if (parsed) {
-              return new Response(JSON.stringify(parsed), {
+              return new Response(JSON.stringify({ ...parsed, _debug_raw: rawContent }), {
                 headers: {
                   ...corsHeaders,
                   'Content-Type': 'application/json',
