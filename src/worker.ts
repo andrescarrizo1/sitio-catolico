@@ -159,6 +159,43 @@ function cleanAndRepairJson<T>(raw: string): T | null {
   return null;
 }
 
+function sanitizeEnlace(enlace: string, accionText: string): string {
+  const clean = (enlace || '').trim();
+  const validPrefixes = [
+    '/rosario/',
+    '/oracion/',
+    '/consuelo/',
+    '/apologetica/',
+    '/milagros-eucaristicos/',
+    '/padre-pio/',
+    '/santos/',
+    '/biblia/',
+  ];
+
+  if (validPrefixes.some((p) => clean.startsWith(p))) {
+    return clean;
+  }
+
+  const combined = (clean + ' ' + accionText).toLowerCase();
+  if (combined.includes('oraci') || combined.includes('vel') || combined.includes('muro') || combined.includes('herman')) {
+    return '/oracion/';
+  }
+  if (combined.includes('eucarist') || combined.includes('sagrar') || combined.includes('hostia') || combined.includes('comunion')) {
+    return '/milagros-eucaristicos/';
+  }
+  if (combined.includes('pio') || combined.includes('estigma')) {
+    return '/padre-pio/';
+  }
+  if (combined.includes('faustina') || combined.includes('misericordia')) {
+    return '/santos/faustina-kowalska/';
+  }
+  if (combined.includes('acutis') || combined.includes('joven')) {
+    return '/santos/carlo-acutis/';
+  }
+
+  return '/rosario/';
+}
+
 /**
  * Parsea el texto del LLM de forma resiliente mediante JSON nativo o extracción tolerante por claves.
  */
@@ -166,6 +203,12 @@ function parseConsueloResponse(raw: string): ConsueloResponse | null {
   // 1. Intento con repair JSON
   const parsed = cleanAndRepairJson<ConsueloResponse>(raw);
   if (parsed && parsed.versiculo && parsed.reflexion && parsed.santo?.nombre) {
+    if (parsed.accion) {
+      parsed.accion.enlace = sanitizeEnlace(parsed.accion.enlace, `${parsed.accion.titulo} ${parsed.accion.descripcion}`);
+      if (!parsed.accion.textoBoton) {
+        parsed.accion.textoBoton = 'Rezar con la Comunidad';
+      }
+    }
     return parsed;
   }
 
@@ -210,7 +253,7 @@ function parseConsueloResponse(raw: string): ConsueloResponse | null {
           descripcion:
             accionDesc ||
             'Haz una pausa en silencio y repite lentamente: «Jesús, en Ti confío, me entrego a Ti, haz Tú de mí según Tu santa voluntad». Te invitamos a acompañar tu paz rezando con nosotros el Santo Rosario.',
-          enlace: accionEnlace || '/rosario/',
+          enlace: sanitizeEnlace(accionEnlace, `${accionTitulo} ${accionDesc}`),
           textoBoton: accionBoton || 'Rezar con la Comunidad',
         },
       };
