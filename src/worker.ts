@@ -18,21 +18,22 @@ interface ExecutionContext {
 const CONSUELO_SYSTEM_PROMPT = `Eres un sabio director espiritual y teólogo católico de profunda caridad pastoral y fidelidad estricta al Magisterio de la Iglesia Católica y a la Sagrada Escritura (Biblia Vulgata / Torres Amat).
 Tu misión es brindar consuelo al alma afligida que acude a la plataforma «Razón y Asombro» (https://razonyasombro.com).
 Prohibido el relativismo moral, la teología modernista, la psicología secular o conceptos de Nueva Era. Habla con la voz cálida, paternal y santa de un confesor sabio (como San Pío de Pietrelcina o San Francisco de Sales).
+Adapta tu respuesta PERSONALIZADAMENTE al dolor o situación exacta que el usuario describe.
 
 Debes responder ÚNICAMENTE con un JSON válido (sin comentarios, sin texto antes ni después, sin bloques markdown) con exactamente esta estructura:
 {
-  "categoria": "Nombre breve del tema (ej. Duelo, Ansiedad, Culpa, Duda, Soledad, etc.)",
-  "versiculo": "Cita textual de la Sagrada Escritura en español apropiada para este dolor",
+  "categoria": "Nombre breve del tema adaptado a su dolor (ej. Duelo por un Padre, Angustia Económica, etc.)",
+  "versiculo": "Cita textual de la Sagrada Escritura en español apropiada para su dolor específico",
   "referencia": "Libro, capítulo y versículo bíblico exacto (ej. Filipenses 4, 6-7)",
   "santo": {
-    "nombre": "Nombre de un Santo o Doctor de la Iglesia relevante",
+    "nombre": "Nombre de un Santo o Doctor de la Iglesia relevante para este dolor",
     "epoca": "Breve dato histórico o título del Santo",
     "frase": "Cita viva y consoladora de ese Santo que ilumina este sufrimiento"
   },
-  "reflexion": "Dos párrafos serenos, compasivos y teológicamente certeros (máximo 130 palabras en total) consolando el alma, mostrando el sentido redentor del dolor en unión con Cristo y reavivando la esperanza.",
+  "reflexion": "Dos párrafos serenos, compasivos y teológicamente certeros (máximo 130 palabras en total) consolando su alma, respondiendo directamente a lo que escribió, mostrando el sentido redentor del dolor en unión con Cristo y reavivando la esperanza.",
   "accion": {
     "titulo": "Título de un paso espiritual concreto",
-    "descripcion": "Instrucción espiritual inmediata (ej. Rezar una decena del Rosario, hacer un acto de confianza, acudir a la confesión).",
+    "descripcion": "Instrucción espiritual inmediata para su caso (ej. Rezar una decena del Rosario, hacer un acto de confianza, acudir a la confesión).",
     "enlace": "/rosario/",
     "textoBoton": "Rezar con Nosotros"
   }
@@ -62,6 +63,49 @@ Debes responder ÚNICAMENTE con un JSON válido (sin comentarios, sin texto ante
   "respuestaRapidaWhatsApp": "Respuesta respetuosa, caritativa y contundente en 4 renglones (máximo 70 palabras) lista para enviar por chat de WhatsApp",
   "doctrinaMagisterio": "Breve referencia al Catecismo de la Iglesia Católica o Concilio ecuménico"
 }`;
+
+/**
+ * Ejecuta inferencia en Cloudflare Workers AI probando los modelos modernos disponibles.
+ */
+async function runWorkersAI(
+  ai: any,
+  systemPrompt: string,
+  userPrompt: string,
+  maxTokens: number = 750
+): Promise<{ rawContent: string; modelUsed: string }> {
+  // Lista de modelos activos en Cloudflare
+  const candidateModels = [
+    '@cf/meta/llama-3.2-3b-instruct',
+    '@cf/meta/llama-3.3-70b-instruct',
+    '@cf/meta/llama-3-8b-instruct',
+    '@cf/meta/llama-3.2-1b-instruct',
+  ];
+
+  let lastError: any = null;
+
+  for (const model of candidateModels) {
+    try {
+      const res = await ai.run(model, {
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
+        ],
+        max_tokens: maxTokens,
+        temperature: 0.4,
+      });
+
+      const raw = res?.response || res?.choices?.[0]?.message?.content || '';
+      if (raw && typeof raw === 'string') {
+        return { rawContent: raw, modelUsed: model };
+      }
+    } catch (err: any) {
+      lastError = err;
+      console.warn(`Fallo al ejecutar modelo ${model}:`, err?.message || err);
+    }
+  }
+
+  throw lastError || new Error('No se pudo ejecutar ningún modelo de Workers AI');
+}
 
 export default {
   async fetch(request: Request, env: Env, _ctx: ExecutionContext): Promise<Response> {
@@ -105,28 +149,17 @@ export default {
         }
 
         let aiDebug = 'not_attempted';
-        if (!env.AI) {
-          aiDebug = 'env_ai_undefined';
-        } else if (typeof env.AI.run !== 'function') {
-          aiDebug = 'env_ai_run_not_function';
-        } else {
-          aiDebug = 'env_ai_present';
-        }
-
         if (env.AI && typeof env.AI.run === 'function') {
           try {
-            const promptUser = `El fiel expresa la siguiente carga espiritual:\n"${query || categoria}"\n\nResponde con el JSON estricto.`;
+            const promptUser = `El fiel o peregrino expresa la siguiente carga espiritual íntima:\n"${query || categoria}"\n\nPor favor, consuélalo en español respondiendo ÚNICAMENTE con el objeto JSON estricto especificado.`;
 
-            const aiResult = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
-              messages: [
-                { role: 'system', content: CONSUELO_SYSTEM_PROMPT },
-                { role: 'user', content: promptUser },
-              ],
-              max_tokens: 700,
-              temperature: 0.5,
-            });
+            const { rawContent, modelUsed } = await runWorkersAI(
+              env.AI,
+              CONSUELO_SYSTEM_PROMPT,
+              promptUser,
+              750
+            );
 
-            const rawContent = aiResult?.response || aiResult?.choices?.[0]?.message?.content || '';
             const cleaned = rawContent
               .replace(/```json/gi, '')
               .replace(/```/g, '')
@@ -136,7 +169,12 @@ export default {
 
             if (parsed.versiculo && parsed.santo?.nombre && parsed.reflexion) {
               return new Response(JSON.stringify(parsed), {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json', 'X-AI-Status': 'generated_by_ai' },
+                headers: {
+                  ...corsHeaders,
+                  'Content-Type': 'application/json',
+                  'X-AI-Status': 'generated_by_ai',
+                  'X-AI-Model': modelUsed,
+                },
               });
             } else {
               aiDebug = 'json_validation_failed';
@@ -145,11 +183,19 @@ export default {
             aiDebug = `error: ${aiError instanceof Error ? aiError.message : String(aiError)}`;
             console.error('Error en Workers AI (consuelo):', aiError);
           }
+        } else {
+          aiDebug = 'env_ai_not_available';
         }
 
+        // Fallback al catálogo si la IA no está disponible
         const fallback = findMatchingConsuelo(query, categoria);
         return new Response(JSON.stringify(fallback), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json', 'X-AI-Status': 'fallback', 'X-AI-Debug': aiDebug },
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'X-AI-Status': 'fallback',
+            'X-AI-Debug': aiDebug,
+          },
         });
       } catch (err) {
         console.error('Error procesando consuelo:', err);
@@ -187,21 +233,18 @@ export default {
           );
         }
 
-        // Si Workers AI está disponible
+        let aiDebug = 'not_attempted';
         if (env.AI && typeof env.AI.run === 'function') {
           try {
-            const promptUser = `El usuario plantea la siguiente objeción o duda sobre la fe católica:\n"${query || temaId}"\n\nPor favor, responde con el JSON estricto estructurado en: tema, objecion, confusion, versiculos (con cita, texto y explicacion), padresDeLaIglesia (santo, fecha, obra, cita), respuestaRapidaWhatsApp y doctrinaMagisterio.`;
+            const promptUser = `El usuario plantea la siguiente objeción o duda sobre la fe católica:\n"${query || temaId}"\n\nPor favor, responde con el JSON estricto con Sagrada Escritura en contexto, Patrística (siglos I a IV), confusión de fondo y respuesta para WhatsApp.`;
 
-            const aiResult = await env.AI.run('@cf/meta/llama-3.1-8b-instruct', {
-              messages: [
-                { role: 'system', content: APOLOGETICA_SYSTEM_PROMPT },
-                { role: 'user', content: promptUser },
-              ],
-              max_tokens: 850,
-              temperature: 0.4,
-            });
+            const { rawContent, modelUsed } = await runWorkersAI(
+              env.AI,
+              APOLOGETICA_SYSTEM_PROMPT,
+              promptUser,
+              850
+            );
 
-            const rawContent = aiResult?.response || aiResult?.choices?.[0]?.message?.content || '';
             const cleaned = rawContent
               .replace(/```json/gi, '')
               .replace(/```/g, '')
@@ -211,18 +254,33 @@ export default {
 
             if (parsed.tema && parsed.versiculos?.length > 0 && parsed.respuestaRapidaWhatsApp) {
               return new Response(JSON.stringify(parsed), {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                headers: {
+                  ...corsHeaders,
+                  'Content-Type': 'application/json',
+                  'X-AI-Status': 'generated_by_ai',
+                  'X-AI-Model': modelUsed,
+                },
               });
+            } else {
+              aiDebug = 'json_validation_failed';
             }
           } catch (aiError) {
+            aiDebug = `error: ${aiError instanceof Error ? aiError.message : String(aiError)}`;
             console.error('Error en Workers AI (apologetica):', aiError);
           }
+        } else {
+          aiDebug = 'env_ai_not_available';
         }
 
         // Fallback al catálogo verificado
         const fallback = findMatchingApologetica(query, temaId);
         return new Response(JSON.stringify(fallback), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'application/json',
+            'X-AI-Status': 'fallback',
+            'X-AI-Debug': aiDebug,
+          },
         });
       } catch (err) {
         console.error('Error procesando apologetica:', err);
