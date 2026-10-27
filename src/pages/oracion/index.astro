@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import MuroOracion from '../../components/oracion/MuroOracion';
+import SupportCard from '../../components/ui/SupportCard.astro';
+---
+
+<BaseLayout
+  title="Muro de Oración y Comunión de los Santos | Razón y Asombro"
+  description="Deja tu intención o súplica para el rezo diario del Santo Rosario. Enciende una vela virtual por los enfermos, difuntos y familias, y únete en comunión viva con hermanos en la fe."
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+    
+    <Breadcrumbs crumbs={[{ label: 'Muro de Oración Comunitaria' }]} />
+
+    <!-- Encabezado Inspirador -->
+    <header class="text-center max-w-3xl mx-auto space-y-4">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-600/20">
+        <span class="w-2 h-2 rounded-full bg-amber-600 animate-pulse"></span>
+        Comunión de los Santos en Vivo
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Muro de Oración y Comunión Espiritual
+      </h1>
+      <p class="font-serif italic text-lg sm:text-xl text-amber-800 dark:text-amber-300">
+        «Orad unos por otros para que seáis sanados. La oración eficaz del justo puede mucho.»
+        <span class="text-xs font-sans not-italic font-bold tracking-wide uppercase text-stone-500 dark:text-stone-400 block mt-1">
+          — Santiago 5, 16
+        </span>
+      </p>
+    </header>
+
+    <!-- Componente Interactivo / Muro de Intenciones -->
+    <section>
+      <MuroOracion client:load />
+    </section>
+
+    <!-- Explicación de la Comunión de los Santos -->
+    <section class="mt-16 pt-12 border-t border-stone-200 dark:border-slate-800 space-y-8">
+      <div class="max-w-3xl mx-auto text-center space-y-3">
+        <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          Doctrina Católica
+        </span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          ¿Qué es la Comunión de los Santos?
+        </h2>
+        <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-reading">
+          El Catecismo de la Iglesia Católica (n. 946-953) nos enseña que todos los bautizados formamos un solo Cuerpo en Cristo: la Iglesia peregrina en la tierra, la Iglesia purgante en el Purgatorio y la Iglesia triunfante en el Cielo. En este Cuerpo espiritual, ningún bien queda aislado: la oración de un hermano sostiene las flaquezas de otro, y cada decena del Rosario ofrecida por amor mueve la gracia infinita de Dios.
+        </p>
+      </div>
+    </section>
+
+    <!-- Módulo de Sostenimiento -->
+    <section class="pt-4">
+      <SupportCard variant="compact" />
+    </section>
+
+  </div>
+</BaseLayout>
