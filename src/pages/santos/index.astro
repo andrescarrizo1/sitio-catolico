@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/ui/Hero.astro';
+import PillarCard from '../../components/ui/PillarCard.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const santosList = await getCollection('santos');
+santosList.sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<BaseLayout
+  title="Santos y Místicos de la Iglesia Católica: Fe, Ciencia y Caridad | Ad Veritatem"
+  description="Biografías históricas y testimonios documentados de los grandes santos y místicos: San Carlo Acutis (el apóstol del ciberespacio y la Eucaristía), Santa Faustina Kowalska (la Divina Misericordia) y San Pío de Pietrelcina."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <Breadcrumbs crumbs={[{ label: 'Santos y Místicos' }]} />
+  </div>
+
+  <Hero
+    badge="Santidad &middot; Mística &middot; Milagros Comprobados"
+    title="Santos y Místicos: La Belleza de la Gracia en la Historia"
+    subtitle="Vidas extraordinarias examinadas a través de procesos canónicos rigurosos, testimonios juramentados y peritajes médicos de curaciones milagrosas validadas por la Iglesia."
+  />
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {santosList.map((s) => (
+        <PillarCard
+          title={s.data.titulo}
+          description={s.data.resumen}
+          href={`/santos/${s.id}/`}
+          badge={s.data.eje_tematico}
+          status={s.data.estatus_eclesial}
+          date={s.data.fecha_revision}
+        />
+      ))}
+    </div>
+
+    <!-- Sección destacada: San Pío de Pietrelcina -->
+    <div class="mt-12 p-6 rounded-2xl border border-stone-200 dark:border-slate-800 bg-stone-100/70 dark:bg-slate-900/60 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div>
+        <span class="text-xs font-mono uppercase tracking-wider text-amber-700 dark:text-amber-400 font-bold">
+          Especial Monográfico
+        </span>
+        <h3 class="font-serif text-xl font-bold text-slate-900 dark:text-stone-100 mt-1">
+          San Pío de Pietrelcina y los Estigmas de San Giovanni Rotondo
+        </h3>
+        <p class="text-stone-600 dark:text-stone-400 text-sm mt-1 max-w-2xl">
+          Consulta el archivo monográfico dedicado a los cincuenta años de peritajes médicos sobre las llagas del Santo de Pietrelcina y las investigaciones del Santo Oficio.
+        </p>
+      </div>
+      <a
+        href="/padre-pio/"
+        class="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-amber-700 hover:bg-amber-800 transition-colors shadow-xs"
+      >
+        Ver Monografía de San Pío &rarr;
+      </a>
+    </div>
+  </div>
+</BaseLayout>

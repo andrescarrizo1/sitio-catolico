@@ -1,0 +1,40 @@
+---
+import { getCollection, render } from 'astro:content';
+import FactLayout from '../../layouts/FactLayout.astro';
+import ArticleImage from '../../components/ui/ArticleImage.astro';
+
+export async function getStaticPaths() {
+  const santosEntries = await getCollection('santos');
+  const pioEntries = santosEntries.filter(
+    (e) => e.id === 'estudios-medicos-y-santo-oficio' || e.data.santo_nombre?.includes('Pío')
+  );
+  return pioEntries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<FactLayout
+  title={entry.data.titulo}
+  resumen={entry.data.resumen}
+  badge="San Pío de Pietrelcina &middot; Signos"
+  crumbs={[
+    { label: 'Padre Pío', href: '/padre-pio/' },
+    { label: entry.data.titulo }
+  ]}
+  estatusEclesial={entry.data.estatus_eclesial}
+  investigadores={entry.data.medicos_involucrados}
+  fuentes={entry.data.fuentes}
+  nextStepVariant="santos"
+  fechaPublicacion={entry.data.fecha_publicacion}
+  fechaRevision={entry.data.fecha_revision}
+  autor={entry.data.autor}
+  revisadoPor={entry.data.revisado_por}
+  imagen={entry.data.imagen}
+>
+  <Content components={{ ArticleImage }} />
+</FactLayout>

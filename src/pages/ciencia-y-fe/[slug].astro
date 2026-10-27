@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from 'astro:content';
+import FactLayout from '../../layouts/FactLayout.astro';
+import ArticleImage from '../../components/ui/ArticleImage.astro';
+
+export async function getStaticPaths() {
+  const cienciaEntries = await getCollection('cienciaFe');
+  return cienciaEntries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<FactLayout
+  title={entry.data.titulo}
+  resumen={entry.data.resumen}
+  badge="Ciencia &middot; Análisis Forense"
+  crumbs={[
+    { label: 'Ciencia y Fe', href: '/ciencia-y-fe/' },
+    { label: entry.data.titulo }
+  ]}
+  lugar={entry.data.tipo_signo}
+  fechaEvento={entry.data.fecha_origen}
+  estatusEclesial={entry.data.estatus_eclesial}
+  evidenciaCientifica={entry.data.evidencia_resumen}
+  investigadores={entry.data.cientificos_participantes}
+  laboratorios={entry.data.instituciones_laboratorios}
+  fuentes={entry.data.fuentes}
+  nextStepVariant="milagros"
+  fechaPublicacion={entry.data.fecha_publicacion}
+  fechaRevision={entry.data.fecha_revision}
+  autor={entry.data.autor}
+  revisadoPor={entry.data.revisado_por}
+  imagen={entry.data.imagen}
+>
+  <Content components={{ ArticleImage }} />
+</FactLayout>

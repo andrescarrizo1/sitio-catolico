@@ -1,0 +1,17 @@
+{
+  "name": "Santo Rosario Católico",
+  "short_name": "Rosario",
+  "description": "Santo Rosario interactivo y meditativo con funcionamiento 100% offline.",
+  "start_url": "/rosario/",
+  "scope": "/rosario/",
+  "display": "standalone",
+  "background_color": "#0b132b",
+  "theme_color": "#0b132b",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RosaryApp from '../../components/rosario/RosaryApp.tsx';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const misteriosFaq = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué misterios se rezan los lunes y sábados?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los lunes y sábados se rezan los Misterios Gozosos: La Anunciación, La Visitación, El Nacimiento de Jesús, La Presentación en el Templo y El Niño hallado en el Templo."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué misterios se rezan los martes y viernes?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los martes y viernes se rezan los Misterios Dolorosos: La Oración en el Huerto, La Flagelación, La Coronación de Espinas, La Cruz a Cuestas y La Crucifixión y Muerte de Jesús."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué misterios se rezan los miércoles y domingos?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los miércoles y domingos se rezan los Misterios Gloriosos: La Resurrección, La Ascensión de Jesús, La Venida del Espíritu Santo, La Asunción de la Virgen María y La Coronación de María como Reina de Cielos y Tierra."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué misterios se rezan los jueves?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Los jueves se rezan los Misterios Luminosos: El Bautismo en el Jordán, La Autorrevelación en las Bodas de Caná, El Anuncio del Reino de Dios, La Transfiguración y La Institución de la Eucaristía."
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="¿Qué Misterios tocan Hoy en el Rosario? | Asignación Diaria y Rezo Guiado"
+  description="Consulta qué misterios del Rosario tocan rezar hoy según la hora local de tu dispositivo. Detección automática de Gozosos, Dolorosos, Gloriosos o Luminosos con visor interactivo."
+  image="/images/rosario-manos-devocion.jpg"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(misteriosFaq)} />
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+    
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Santo Rosario', href: '/rosario/' },
+        { label: 'Misterios de Hoy' }
+      ]}
+    />
+    
+    <header class="text-center my-6 space-y-3 max-w-3xl mx-auto">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-600/30">
+        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+        Detección Automática por Día de la Semana
+      </span>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Los Misterios del Rosario para Hoy
+      </h1>
+
+      <p class="text-sm sm:text-base text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        El visor interactivo a continuación detecta de forma inmediata el día de la semana local de tu dispositivo y preconfigura el conjunto de misterios asignado por la Iglesia Católica:
+      </p>
+
+      {/* Tabla de asignación litúrgica */}
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs text-stone-700 dark:text-stone-300 p-4 rounded-2xl bg-stone-100/80 dark:bg-slate-900/80 border border-stone-200 dark:border-slate-800 text-center shadow-sm">
+        <div class="p-2 rounded-xl bg-white/60 dark:bg-slate-800/60">
+          <span class="block font-bold text-amber-700 dark:text-amber-400">Lunes y Sábado</span>
+          <span class="font-serif text-sm">Gozosos</span>
+        </div>
+        <div class="p-2 rounded-xl bg-white/60 dark:bg-slate-800/60">
+          <span class="block font-bold text-red-700 dark:text-red-400">Martes y Viernes</span>
+          <span class="font-serif text-sm">Dolorosos</span>
+        </div>
+        <div class="p-2 rounded-xl bg-white/60 dark:bg-slate-800/60">
+          <span class="block font-bold text-amber-700 dark:text-amber-400">Miércoles y Domingo</span>
+          <span class="font-serif text-sm">Gloriosos</span>
+        </div>
+        <div class="p-2 rounded-xl bg-white/60 dark:bg-slate-800/60">
+          <span class="block font-bold text-blue-700 dark:text-blue-400">Jueves</span>
+          <span class="font-serif text-sm">Luminosos</span>
+        </div>
+      </div>
+    </header>
+
+    {/* Visor interactivo */}
+    <main class="my-8">
+      <RosaryApp client:load />
+    </main>
+
+  </div>
+</BaseLayout>

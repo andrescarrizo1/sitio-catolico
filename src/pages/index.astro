@@ -1,0 +1,230 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/ui/Hero.astro';
+import PillarCard from '../components/ui/PillarCard.astro';
+
+const pillars = [
+  {
+    title: 'Jesús y sus Enseñanzas',
+    description: 'La vida, milagros y parábolas de Nuestro Señor Jesucristo explicadas con fidelidad bíblica e histórica, orientadas a la conversión personal hoy.',
+    href: '/jesus/',
+    badge: 'Evangelio',
+  },
+  {
+    title: 'Milagros Eucarísticos y Ciencia',
+    description: 'Estudios forenses e histopatológicos de Lanciano, Buenos Aires y Sokółka. Miocardio humano en agonía, glóbulos blancos vivos y sangre AB examinados en laboratorio.',
+    href: '/milagros-eucaristicos/',
+    badge: 'Fisiopatología',
+  },
+  {
+    title: 'Ciencia y Fe Forense',
+    description: 'El Santo Sudario de Turín (rayos X WAXS 2024), el ayate de Guadalupe (fenómeno corneal óptico) y los 7 criterios médicos del Bureau de Lourdes.',
+    href: '/ciencia-y-fe/',
+    badge: 'Evidencia Física',
+  },
+  {
+    title: 'Santos y Místicos',
+    description: 'San Carlo Acutis (la Eucaristía como autopista al Cielo), Santa Faustina Kowalska (la Divina Misericordia) y San Pío de Pietrelcina.',
+    href: '/santos/',
+    badge: 'Santidad Comprobada',
+  },
+  {
+    title: 'Virgen de Fátima',
+    description: 'Las apariciones de 1917, el mensaje de oración y penitencia, los tres pastorcitos y la crónica del Milagro del Sol documentada por la prensa laica de la época.',
+    href: '/virgen-de-fatima/',
+    badge: 'Apariciones',
+  },
+  {
+    title: 'Santo Rosario y Coronilla',
+    description: 'Visualizador contemplativo interactivo cuenta por cuenta con seguimiento de cuentas en tiempo real, misterios del día, devociones marianas y modo Coronilla.',
+    href: '/rosario/',
+    badge: 'Oración PWA',
+  },
+  {
+    title: 'Biblia y Conversión',
+    description: 'Pasajes de la Sagrada Escritura en dominio público (Torres Amat 1825) clasificados por temas espirituales: sufrimiento, perdón, duda y esperanza.',
+    href: '/biblia/',
+    badge: 'Escritura',
+  },
+];
+---
+
+<BaseLayout
+  title="Ad Veritatem | Fe Católica, Evangelio y Rigor Documental"
+  description="Plataforma web católica dedicada a proclamar la verdad salvífica de Jesucristo, sus enseñanzas bíblicas y los signos documentados de la fe con el máximo rigor histórico y científico."
+>
+  <!-- Hero Principal -->
+  <Hero
+    badge="Fe Católica &middot; Verdad Revelada"
+    title="La belleza del Evangelio. La certeza de los hechos."
+    subtitle="Una plataforma católica sin concesiones al relativismo ni al sensacionalismo. Enseñanzas de Jesucristo, peritajes científicos de milagros eucarísticos y contemplación del Santo Rosario."
+    primaryAction={{ label: 'Rezar el Rosario de Hoy', href: '/rosario/misterios-de-hoy/' }}
+    secondaryAction={{ label: 'Explorar Enseñanzas de Jesús', href: '/jesus/' }}
+  />
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
+    
+    <!-- Mosaico de los 6 Pilares -->
+    <section>
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+            Arquitectura de la Fe
+          </span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100 mt-1">
+            Los Pilares del Proyecto
+          </h2>
+        </div>
+        <p class="text-sm text-stone-600 dark:text-stone-400 max-w-md">
+          Cada sección articula la doctrina de la Iglesia con fuentes primarias rigurosas y una llamada concreta a la conversión interior.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {pillars.map((p) => (
+          <PillarCard
+            title={p.title}
+            description={p.description}
+            href={p.href}
+            badge={p.badge}
+          />
+        ))}
+      </div>
+    </section>
+
+    <!-- Artículos Verificados Destacados (Fase Piloto) -->
+    <section class="p-8 sm:p-10 rounded-3xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800">
+      <div class="max-w-3xl mb-8 space-y-2">
+        <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          Entregas Piloto Verificadas
+        </span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          Estudios Documentados de la Fase 1
+        </h2>
+        <p class="text-sm text-stone-600 dark:text-stone-400">
+          Textos completos redactados con nuestra voz editorial, citas primarias y esquemas de datos validados:
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <a
+          href="/santos/carlo-acutis/"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 transition-all group"
+        >
+          <span class="text-xs font-semibold text-emerald-700 dark:text-emerald-400 uppercase tracking-wide">Santos &middot; Canonización 2025</span>
+          <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 mt-1">
+            San Carlo Acutis: Apóstol de la Eucaristía &rarr;
+          </h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 line-clamp-2">
+            La vida del ciberapóstol, la exposición mundial de milagros y el dictamen médico de Florencia 2022.
+          </p>
+        </a>
+
+        <a
+          href="/ciencia-y-fe/sabana-santa-de-turin/"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 transition-all group"
+        >
+          <span class="text-xs font-semibold text-indigo-700 dark:text-indigo-400 uppercase tracking-wide">Ciencia Forense</span>
+          <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 mt-1">
+            La Sábana Santa: Rayos X WAXS y STURP &rarr;
+          </h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 line-clamp-2">
+            La datación por rayos X del siglo I, sangre humana AB torturada e imagen tridimensional sin pigmentos.
+          </p>
+        </a>
+
+        <a
+          href="/santos/faustina-kowalska/"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 transition-all group"
+        >
+          <span class="text-xs font-semibold text-rose-700 dark:text-rose-400 uppercase tracking-wide">Mística &middot; Vilna 1934</span>
+          <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 mt-1">
+            Santa Faustina y la Divina Misericordia &rarr;
+          </h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 line-clamp-2">
+            El cuadro original de Kazimirowski, coincidencia biométrica 1:1 con la Síndone y la Coronilla.
+          </p>
+        </a>
+
+        <a
+          href="/ciencia-y-fe/virgen-de-guadalupe-tilma/"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 transition-all group"
+        >
+          <span class="text-xs font-semibold text-amber-700 dark:text-amber-400 uppercase tracking-wide">Aparición &middot; Óptica</span>
+          <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 mt-1">
+            La Tilma de Guadalupe: El Secreto Ocular &rarr;
+          </h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 line-clamp-2">
+            490 años sin descomposición de agave, examen infrarrojo de la NASA y 13 figuras en la córnea.
+          </p>
+        </a>
+
+        <a
+          href="/milagros-eucaristicos/buenos-aires/"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 transition-all group"
+        >
+          <span class="text-xs font-semibold text-rose-700 dark:text-rose-400 uppercase tracking-wide">Milagro Eucarístico</span>
+          <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 mt-1">
+            Buenos Aires 1996: Análisis Forense a Ciegas &rarr;
+          </h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 line-clamp-2">
+            El informe del Dr. Frederic Zugibe (Columbia): miocardio vivo en agonía y glóbulos blancos intactos.
+          </p>
+        </a>
+
+        <a
+          href="/ciencia-y-fe/lourdes-bureau-medical/"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 transition-all group"
+        >
+          <span class="text-xs font-semibold text-blue-700 dark:text-blue-400 uppercase tracking-wide">Comité Científico</span>
+          <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 mt-1">
+            El Bureau Médical de Lourdes y los 7 Criterios &rarr;
+          </h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 line-clamp-2">
+            Regeneración ósea probada (Vittorio Micheli) e incorrupción de Santa Bernardita Soubirous.
+          </p>
+        </a>
+
+        <a
+          href="/milagros-eucaristicos/sokolka/"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 transition-all group"
+        >
+          <span class="text-xs font-semibold text-rose-700 dark:text-rose-400 uppercase tracking-wide">Milagro Eucarístico</span>
+          <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 mt-1">
+            Sokółka 2008: Fusión Molecular de Pan y Corazón &rarr;
+          </h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 line-clamp-2">
+            Microscopía electrónica de la Universidad Médica de Białystok que refuta la bacteria Serratia.
+          </p>
+        </a>
+
+        <a
+          href="/virgen-de-fatima/milagro-del-sol/"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 transition-all group"
+        >
+          <span class="text-xs font-semibold text-blue-700 dark:text-blue-400 uppercase tracking-wide">Fátima 1917</span>
+          <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 mt-1">
+            El Milagro del Sol y la Prensa Laica &rarr;
+          </h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 line-clamp-2">
+            La crónica secular de O Século ante más de 70.000 testigos presenciales.
+          </p>
+        </a>
+
+        <a
+          href="/rosario/"
+          class="p-5 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 transition-all group"
+        >
+          <span class="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wide">PWA &middot; Visualizador SVG</span>
+          <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 mt-1">
+            Santo Rosario y Coronilla de la Misericordia &rarr;
+          </h3>
+          <p class="text-xs text-stone-500 dark:text-stone-400 mt-2 line-clamp-2">
+            Rosario visual interactivo, audio chime armónico, selector de misterios y devociones añadidas.
+          </p>
+        </a>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>

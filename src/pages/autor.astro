@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/global/Breadcrumbs.astro';
+---
+
+<BaseLayout
+  title="Responsable Editorial y Equipo | Ad Veritatem"
+  description="Información sobre la responsabilidad técnica y editorial detrás del proyecto Ad Veritatem."
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs crumbs={[{ label: 'Responsable Editorial' }]} />
+
+    <header class="mt-4 mb-8 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Transparencia y Autoría
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Responsabilidad Técnica y Editorial
+      </h1>
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        Conoce a quienes mantienen la integridad técnica y doctrinal de este proyecto católico independiente.
+      </p>
+    </header>
+
+    <div class="prose-editorial mx-auto space-y-6">
+      <h2>Dirección Técnica y Edición</h2>
+      <p>
+        Este proyecto es desarrollado y mantenido por un desarrollador de software y fiel católico practicante, dedicado a la evangelización digital en español a través del estudio riguroso de fuentes teológicas e históricas.
+      </p>
+
+      <h2>Proceso de Revisión Teológica y Científica</h2>
+      <p>
+        Los textos doctrinales se apoyan directamente en los textos del Magisterio pontificio y conciliar, en la Sagrada Escritura (Torres Amat 1825 y Vulgata Clementina) y en las obras de patólogos e historiadores acreditados (como el Dr. Odoardo Linoli y el cardiólogo Dr. Franco Serafini para los milagros eucarísticos).
+      </p>
+      <p>
+        Para consultas, observaciones de erratas o sugerencias de rigor documental, puedes consultar nuestro archivo público en el repositorio o contactar con la dirección editorial.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

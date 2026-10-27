@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/ui/Hero.astro';
+import PillarCard from '../../components/ui/PillarCard.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const fatimaList = await getCollection('fatima');
+---
+
+<BaseLayout
+  title="Virgen de Fátima: Historia, Mensaje y Milagro del Sol | Ad Veritatem"
+  description="Las apariciones de 1917 a Lucía, Francisco y Jacinta Marto. El mensaje de oración y penitencia, las consagraciones pontificias y el Milagro del Sol atestiguado por la prensa laica."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <Breadcrumbs crumbs={[{ label: 'Virgen de Fátima' }]} />
+  </div>
+
+  <Hero
+    badge="Cova da Iria &middot; 1917 &middot; Criterio Eclesial"
+    title="Nuestra Señora del Rosario de Fátima"
+    subtitle="Una llamada maternal a la conversión del corazón, a la perseverancia en el Santo Rosario y a la reparación. Crónicas históricas y discernimiento magisterial."
+  />
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {fatimaList.map((f) => (
+        <PillarCard
+          title={f.data.titulo}
+          description={f.data.resumen}
+          href={`/virgen-de-fatima/${f.id}/`}
+          badge={f.data.tema_principal}
+          status={f.data.estatus_eclesial}
+          date={f.data.fecha_revision}
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

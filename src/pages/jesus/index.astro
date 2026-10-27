@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/ui/Hero.astro';
+import PillarCard from '../../components/ui/PillarCard.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const jesusList = await getCollection('jesus');
+---
+
+<BaseLayout
+  title="Jesús y sus Enseñanzas: Evangelio y Parábolas | Ad Veritatem"
+  description="Las palabras vivas de Jesucristo en los Santos Evangelios. Parábolas, Sermón de la Montaña y mandatos morales analizados en su contexto del siglo I con aplicación vital hoy."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <Breadcrumbs crumbs={[{ label: 'Jesús y sus Enseñanzas' }]} />
+  </div>
+
+  <Hero
+    badge="El Verbo Encarnado &middot; Camino, Verdad y Vida"
+    title="Las Enseñanzas de Nuestro Señor Jesucristo"
+    subtitle="Exégesis católica fiel a la Tradición y a los Evangelios. Cada parábola y enseñanza anclada en pasajes bíblicos exactos (Torres Amat 1825) con una llamada radical al seguimiento."
+  />
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {jesusList.map((j) => (
+        <PillarCard
+          title={j.data.titulo}
+          description={j.data.resumen}
+          href={`/jesus/${j.id}/`}
+          badge={j.data.categoria}
+          status={j.data.referencia_evangelica_principal}
+          date={j.data.fecha_revision}
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

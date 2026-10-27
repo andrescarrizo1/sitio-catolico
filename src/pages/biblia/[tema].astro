@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import Verse from '../../components/ui/Verse.astro';
+import NextStep from '../../components/ui/NextStep.astro';
+
+export async function getStaticPaths() {
+  const bibliaEntries = await getCollection('biblia');
+  return bibliaEntries.map((entry) => ({
+    params: { tema: entry.data.tema_slug || entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const data = entry.data;
+---
+
+<BaseLayout
+  title={`${data.tema_titulo} | Versículos Bíblicos y Meditación`}
+  description={data.descripcion_pastoral}
+  ogType="article"
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Biblia y Conversión', href: '/biblia/' },
+        { label: data.tema_titulo }
+      ]}
+    />
+
+    <header class="mt-4 mb-10 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Sagrada Escritura &middot; Itinerario de Conversión
+      </span>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+        {data.tema_titulo}
+      </h1>
+
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        {data.descripcion_pastoral}
+      </p>
+
+      <div class="p-4 rounded-xl bg-stone-100/60 dark:bg-slate-900/60 text-xs text-stone-500 dark:text-stone-400 border border-stone-200/60 dark:border-slate-800">
+        <strong>Traducción verificada:</strong> Textos tomados íntegramente de la <em>Biblia traducida al español de la Vulgata latina</em> por el Ilmo. Sr. D. Félix Torres Amat (Madrid: Imprenta de D. Miguel de Burgos, 1825, Dominio Público).
+      </div>
+    </header>
+
+    <!-- Listado de Versículos con Meditación y Acción -->
+    <div class="space-y-8">
+      {data.versiculos.map((v, idx) => (
+        <article class="p-6 sm:p-7 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="font-serif text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
+              Pasaje {idx + 1} de {data.versiculos.length}
+            </span>
+            <span class="text-xs font-mono text-stone-400">
+              {v.referencia}
+            </span>
+          </div>
+
+          <Verse
+            reference={v.referencia}
+            text={v.texto}
+            translation={v.traduccion}
+            reflection={v.reflexion_corta}
+          />
+
+          <div class="p-3.5 rounded-xl bg-amber-500/5 dark:bg-amber-400/5 border border-amber-500/20 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
+            <strong>Examen y acción sugerida:</strong> {v.accion_sugerida}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Siguiente Paso pastoral -->
+    <NextStep
+      variant="biblia"
+      customTitle="Tu siguiente paso espiritual"
+      customAction="La Palabra de Dios no vuelve a Él vacía sin haber cumplido lo que se proponía (Isaías 55, 11). Elige uno de estos ocho versículos, anótalo en tu libreta de oración y medítalo durante tres días seguidos en silencio ante el Sagrario."
+    />
+
+  </div>
+</BaseLayout>

@@ -1,0 +1,87 @@
+---
+interface Props {
+  variant?: 'jesus' | 'milagros' | 'fatima' | 'santos' | 'biblia';
+  customTitle?: string;
+  customAction?: string;
+}
+
+const {
+  variant = 'jesus',
+  customTitle = 'Tu siguiente paso',
+  customAction
+} = Astro.props;
+---
+
+<aside class="my-10 p-6 sm:p-8 rounded-2xl bg-amber-500/5 dark:bg-amber-400/5 border border-amber-600/20 dark:border-amber-400/20 shadow-sm">
+  <div class="flex items-start gap-4">
+    <div class="p-2.5 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 shrink-0 mt-0.5">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+    </div>
+    
+    <div class="space-y-3">
+      <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900 dark:text-stone-100 m-0">
+        {customTitle}
+      </h3>
+      
+      {customAction ? (
+        <div class="text-stone-700 dark:text-stone-300 leading-relaxed text-sm sm:text-base">
+          <p>{customAction}</p>
+        </div>
+      ) : (
+        <div class="text-stone-700 dark:text-stone-300 leading-relaxed text-sm sm:text-base space-y-2">
+          {variant === 'jesus' && (
+            <>
+              <p>El Evangelio no fue proclamado para ser admirado como una hermosa obra literaria, sino para ser vivido hoy:</p>
+              <ul class="list-disc pl-5 space-y-1.5 text-stone-600 dark:text-stone-400 text-sm">
+                <li><strong>Un examen sincero:</strong> Dedica diez minutos esta noche a poner nombre a los rencores o juicios que aún albergas.</li>
+                <li><strong>El sacramento de la paz:</strong> Acércate esta semana a una parroquia y confiesa tus faltas. La misericordia de Cristo siempre te espera.</li>
+              </ul>
+            </>
+          )}
+
+          {variant === 'milagros' && (
+            <>
+              <p>La ciencia comprueba la presencia viva de tejido cardíaco en el relicario, pero solo la fe te permite encontrar a Cristo esperándote en el Sagrario:</p>
+              <ul class="list-disc pl-5 space-y-1.5 text-stone-600 dark:text-stone-400 text-sm">
+                <li><strong>Visita al Sagrario:</strong> Entra hoy cinco minutos en la iglesia más cercana y dile en silencio: <em>"Señor, creo, pero aumenta mi fe"</em>.</li>
+                <li><strong>Misa dominical:</strong> Acércate este domingo al banquete eucarístico en estado de gracia; el mismo milagro de comunión ocurre en cada altar.</li>
+              </ul>
+            </>
+          )}
+
+          {variant === 'fatima' && (
+            <>
+              <p>El mensaje que la Virgen confió en 1917 es una llamada viva a la oración y a la conversión personal:</p>
+              <ul class="list-disc pl-5 space-y-1.5 text-stone-600 dark:text-stone-400 text-sm">
+                <li><strong>Reza los misterios de hoy:</strong> Abre nuestro <a href="/rosario/" class="text-amber-700 dark:text-amber-400 underline font-semibold">Rosario Interactivo</a> y dedica 15 minutos de recogimiento a contemplar la vida de Jesús y María.</li>
+                <li><strong>Primeros Sábados:</strong> Organízate para vivir el próximo primer sábado de mes con Confesión, Comunión reparadora y meditación mariana.</li>
+              </ul>
+            </>
+          )}
+
+          {variant === 'santos' && (
+            <>
+              <p>San Pío de Pietrelcina repetía que la Confesión es el baño del alma y la Eucaristía el alimento del peregrino:</p>
+              <ul class="list-disc pl-5 space-y-1.5 text-stone-600 dark:text-stone-400 text-sm">
+                <li><strong>Reconciliación:</strong> Busca un confesor esta semana y desahoga el peso de tu conciencia con dolor sincero de los pecados.</li>
+                <li><strong>Amor a la Santa Misa:</strong> Participa de la liturgia con el fervor y recogimiento que el santo fraile transmitía en el altar.</li>
+              </ul>
+            </>
+          )}
+
+          {variant === 'biblia' && (
+            <>
+              <p>La Palabra viva de Dios tiene poder para transformar el corazón en medio del desierto o la aflicción:</p>
+              <ul class="list-disc pl-5 space-y-1.5 text-stone-600 dark:text-stone-400 text-sm">
+                <li><strong>Anota el versículo:</strong> Escribe en un papel el pasaje que más te haya confrontado hoy y llévalo contigo durante el día.</li>
+                <li><strong>Oración de entrega:</strong> Pídele al Señor en voz baja la gracia de confiar en sus promesas más allá de las circunstancias adversas.</li>
+              </ul>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</aside>

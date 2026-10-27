@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/ui/Hero.astro';
+import PillarCard from '../../components/ui/PillarCard.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const milagrosList = await getCollection('milagros');
+---
+
+<BaseLayout
+  title="Milagros Eucarísticos y Ciencia | Peritajes Médicos e Históricos"
+  description="Investigación histórica y forense de los milagros eucarísticos aprobados por la Iglesia: Lanciano, Buenos Aires, Tixtla y Sokółka. Análisis histológicos de miocardio y sangre AB."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <Breadcrumbs crumbs={[{ label: 'Milagros Eucarísticos' }]} />
+  </div>
+
+  <Hero
+    badge="Ciencia &middot; Medicina Forense &middot; Fe"
+    title="Milagros Eucarísticos bajo la Lupa de la Ciencia"
+    subtitle="Secciones histológicas de músculo cardíaco humano, presencia de glóbulos blancos vivos y sangre del grupo AB. Documentos de laboratorio examinados sin sensacionalismos."
+  />
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {milagrosList.map((m) => (
+        <PillarCard
+          title={m.data.titulo}
+          description={m.data.resumen}
+          href={`/milagros-eucaristicos/${m.id}/`}
+          badge={m.data.lugar}
+          status={m.data.estatus_eclesial}
+          date={m.data.fecha_revision}
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

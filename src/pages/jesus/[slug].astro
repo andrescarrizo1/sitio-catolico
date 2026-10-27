@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Verse from '../../components/ui/Verse.astro';
+
+export async function getStaticPaths() {
+  const jesusEntries = await getCollection('jesus');
+  return jesusEntries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<ArticleLayout
+  title={entry.data.titulo}
+  resumen={entry.data.resumen}
+  badge={`Jesús y sus Enseñanzas · ${entry.data.categoria}`}
+  crumbs={[
+    { label: 'Jesús y Enseñanzas', href: '/jesus/' },
+    { label: entry.data.titulo }
+  ]}
+  nextStepVariant="jesus"
+  fuentes={entry.data.fuentes}
+  fechaPublicacion={entry.data.fecha_publicacion}
+  fechaRevision={entry.data.fecha_revision}
+  autor={entry.data.autor}
+  revisadoPor={entry.data.revisado_por}
+  imagen={entry.data.imagen}
+>
+  <Content components={{ Verse }} />
+</ArticleLayout>

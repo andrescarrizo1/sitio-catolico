@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/ui/Hero.astro';
+import PillarCard from '../../components/ui/PillarCard.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const santosList = await getCollection('santos');
+const pioList = santosList.filter(
+  (s) => s.id === 'estudios-medicos-y-santo-oficio' || s.data.santo_nombre?.includes('Pío')
+);
+---
+
+<BaseLayout
+  title="San Pío de Pietrelcina: Vida, Estigmas y Espiritualidad | Ad Veritatem"
+  description="Biografía documentada, los peritajes médicos de sus estigmas durante cincuenta años, las investigaciones del Santo Oficio y su fecunda espiritualidad sacerdotal."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <Breadcrumbs crumbs={[{ label: 'Padre Pío' }]} />
+  </div>
+
+  <Hero
+    badge="San Giovanni Rotondo &middot; Mística &middot; Obediencia"
+    title="San Pío de Pietrelcina"
+    subtitle="El fraile capuchino que llevó en su carne las llagas de Cristo durante medio siglo. Rigor histórico sobre las investigaciones eclesiales y su mensaje de perdón en el confesonario."
+  />
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {pioList.map((s) => (
+        <PillarCard
+          title={s.data.titulo}
+          description={s.data.resumen}
+          href={`/padre-pio/${s.id}/`}
+          badge={s.data.eje_tematico}
+          status={s.data.estatus_eclesial}
+          date={s.data.fecha_revision}
+        />
+      ))}
+    </div>
+
+    <!-- Enlace a la sección global de Santos -->
+    <div class="mt-12 p-6 rounded-2xl border border-stone-200 dark:border-slate-800 bg-stone-100/70 dark:bg-slate-900/60 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-stone-700 dark:text-stone-300 text-sm m-0">
+        ¿Deseas conocer más vidas extraordinarias como las de <strong>San Carlo Acutis</strong> y <strong>Santa Faustina Kowalska</strong>?
+      </p>
+      <a
+        href="/santos/"
+        class="shrink-0 text-sm font-semibold text-amber-700 dark:text-amber-400 hover:underline"
+      >
+        Explorar todos los Santos y Místicos &rarr;
+      </a>
+    </div>
+  </div>
+</BaseLayout>

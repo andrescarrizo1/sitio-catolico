@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/global/Breadcrumbs.astro';
+---
+
+<BaseLayout
+  title="Acerca de Ad Veritatem | Misión, Principios y Fidelidad Eclesial"
+  description="Conoce la misión del proyecto Ad Veritatem: evangelización digital católica de alta calidad estética, velocidad y rigor doctrinal a costo $0 USD."
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs crumbs={[{ label: 'Acerca del Proyecto' }]} />
+
+    <header class="mt-4 mb-8 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Nuestra Misión
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Acerca de Ad Veritatem
+      </h1>
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        Evangelizar a través de la belleza y la verdad de la fe católica, con tecnología moderna y sin fines de lucro comercial.
+      </p>
+    </header>
+
+    <div class="prose-editorial mx-auto space-y-6">
+      <h2>¿Por qué nació este sitio?</h2>
+      <p>
+        Durante años, el espacio digital católico en español ha estado dominado por portales con interfaces obsoletas, sobrecargados de anuncios publicitarios molestos, tiempos de carga lentos y textos devocionales que a menudo confunden la piedad con el sensacionalismo no verificado.
+      </p>
+      <p>
+        <strong>Ad Veritatem</strong> nace como una respuesta a este vacío: una plataforma hermosa, sobria, solemne y moderna, diseñada para cargar de inmediato en cualquier teléfono móvil, sin un solo banner publicitario, sin rastreadores invasivos de privacidad y con una fidelidad inquebrantable a las enseñanzas del Evangelio de Jesucristo y al Magisterio de la Iglesia.
+      </p>
+
+      <h2>Principios Fundamentales</h2>
+      <ul>
+        <li><strong>Costo cero de infraestructura ($0 USD):</strong> Desarrollado como un proyecto personal de código abierto y generación estática pura, prescindiendo de servidores costosos o bases de datos pesadas.</li>
+        <li><strong>Fidelidad Doctrinal:</strong> En plena comunión con el Romano Pontífice y la doctrina perenne de la Iglesia Católica expuesta en el Catecismo.</li>
+        <li><strong>Orientación a la Vida Espiritual:</strong> Cada artículo concluye con una invitación práctica a la oración, a la Santa Misa o al Sacramento de la Confesión.</li>
+      </ul>
+    </div>
+  </div>
+</BaseLayout>

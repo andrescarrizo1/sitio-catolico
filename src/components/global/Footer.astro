@@ -1,0 +1,83 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-stone-200 dark:border-slate-800 bg-stone-100/70 dark:bg-slate-950/70 text-stone-600 dark:text-stone-400 text-sm transition-colors duration-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
+      
+      <!-- Columna 1: Misión -->
+      <div class="md:col-span-2 space-y-4">
+        <div class="flex items-center gap-2.5">
+          <div
+            class="w-7 h-7 rounded-md bg-slate-900 dark:bg-amber-500/10 border border-amber-600/30 flex items-center justify-center text-amber-500"
+            style="width: 28px; height: 28px; min-width: 28px; min-height: 28px; max-width: 28px; max-height: 28px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+          >
+            <svg
+              width="16"
+              height="16"
+              style="width: 16px; height: 16px; min-width: 16px; min-height: 16px; max-width: 16px; max-height: 16px; display: block;"
+              class="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 3v18m-7-11h14" />
+            </svg>
+          </div>
+          <span class="font-serif text-lg font-bold text-slate-900 dark:text-stone-100">
+            Ad Veritatem
+          </span>
+        </div>
+        <p class="text-sm leading-relaxed max-w-md text-stone-600 dark:text-stone-400">
+          Plataforma web católica dedicada a proclamar la verdad salvífica de Jesucristo, sus enseñanzas bíblicas y los signos documentados de la fe con el máximo rigor histórico y científico. Creado sin fines de lucro comercial, con costo cero de infraestructura y fidelidad incondicional al Magisterio de la Iglesia.
+        </p>
+        <p class="text-xs text-stone-500 dark:text-stone-500">
+          <em>«Conoceréis la verdad, y la verdad os hará libres»</em> &mdash; Juan 8, 32.
+        </p>
+      </div>
+
+      <!-- Columna 2: Pilares de Contenido -->
+      <div>
+        <h4 class="font-serif text-sm font-semibold uppercase tracking-wider text-slate-900 dark:text-stone-200 mb-4">
+          Contenido
+        </h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="/jesus/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Jesús y sus Enseñanzas</a></li>
+          <li><a href="/milagros-eucaristicos/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Milagros Eucarísticos</a></li>
+          <li><a href="/ciencia-y-fe/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Ciencia y Fe (Turín, Guadalupe)</a></li>
+          <li><a href="/santos/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Santos y Místicos</a></li>
+          <li><a href="/virgen-de-fatima/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Virgen de Fátima</a></li>
+          <li><a href="/rosario/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Santo Rosario Interactivo</a></li>
+          <li><a href="/biblia/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Biblia y Conversión</a></li>
+        </ul>
+      </div>
+
+      <!-- Columna 3: Confianza y Metodología (E-E-A-T) -->
+      <div>
+        <h4 class="font-serif text-sm font-semibold uppercase tracking-wider text-slate-900 dark:text-stone-200 mb-4">
+          Transparencia
+        </h4>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="/metodologia/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Metodología y Verificación</a></li>
+          <li><a href="/acerca/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Acerca del Proyecto</a></li>
+          <li><a href="/autor/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Equipo y Responsable</a></li>
+          <li><a href="/rosario/como-rezar/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Guía: Cómo rezar el Rosario</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Barra inferior -->
+    <div class="mt-12 pt-8 border-t border-stone-200/80 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500 dark:text-stone-500">
+      <p>
+        &copy; {currentYear} Ad Veritatem &middot; Contenido bajo licencia libre para evangelización. Textos bíblicos de dominio público (Torres Amat 1825).
+      </p>
+      <p class="flex items-center gap-4">
+        <span>Sin rastreadores ni cookies de terceros</span>
+        <span>&middot;</span>
+        <span>Agnóstico y Local</span>
+      </p>
+    </div>
+  </div>
+</footer>

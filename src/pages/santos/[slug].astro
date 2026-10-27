@@ -1,0 +1,35 @@
+---
+import { getCollection, render } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import ArticleImage from '../../components/ui/ArticleImage.astro';
+
+export async function getStaticPaths() {
+  const santosEntries = await getCollection('santos');
+  return santosEntries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<ArticleLayout
+  title={entry.data.titulo}
+  resumen={entry.data.resumen}
+  badge={`Santos &middot; ${entry.data.eje_tematico}`}
+  crumbs={[
+    { label: 'Santos y Místicos', href: '/santos/' },
+    { label: entry.data.titulo }
+  ]}
+  nextStepVariant="santos"
+  fuentes={entry.data.fuentes}
+  fechaPublicacion={entry.data.fecha_publicacion}
+  fechaRevision={entry.data.fecha_revision}
+  autor={entry.data.autor}
+  revisadoPor={entry.data.revisado_por}
+  imagen={entry.data.imagen}
+>
+  <Content components={{ ArticleImage }} />
+</ArticleLayout>

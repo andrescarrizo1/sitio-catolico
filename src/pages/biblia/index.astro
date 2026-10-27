@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/ui/Hero.astro';
+import PillarCard from '../../components/ui/PillarCard.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const bibliaList = await getCollection('biblia');
+---
+
+<BaseLayout
+  title="Biblia y Conversión: Versículos por Temas Espirituales | Ad Veritatem"
+  description="Colección de versículos católicos comentados de la Sagrada Escritura (Torres Amat 1825 en dominio público) organizados por temas: sufrimiento, esperanza, perdón y duda."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <Breadcrumbs crumbs={[{ label: 'Biblia y Conversión' }]} />
+  </div>
+
+  <Hero
+    badge="Sagrada Escritura &middot; Tradición &middot; Meditación"
+    title="La Palabra Viva de Dios para la Conversión"
+    subtitle="Pasajes bíblicos íntegros con contexto espiritual, reflexión pastoral profunda y examen de conciencia para transformar la vida cotidiana."
+  />
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {bibliaList.map((b) => (
+        <PillarCard
+          title={b.data.tema_titulo}
+          description={b.data.descripcion_pastoral}
+          href={`/biblia/${b.data.tema_slug || b.id}/`}
+          badge={`${b.data.versiculos.length} pasajes mediatados`}
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

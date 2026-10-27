@@ -1,0 +1,125 @@
+---
+interface Props {
+  lugar?: string;
+  fecha?: string;
+  estatusEclesial: string;
+  evidenciaCientifica?: string;
+  grupoSanguineo?: string;
+  investigadores?: string[];
+  laboratorios?: string[];
+  estadoReliquias?: string;
+}
+
+const {
+  lugar,
+  fecha,
+  estatusEclesial,
+  evidenciaCientifica,
+  grupoSanguineo,
+  investigadores = [],
+  laboratorios = [],
+  estadoReliquias,
+} = Astro.props;
+---
+
+<div class="my-8 rounded-2xl border border-stone-300 dark:border-slate-800 bg-stone-100/60 dark:bg-slate-900/60 overflow-hidden shadow-sm">
+  <div class="px-5 py-3.5 bg-stone-200/60 dark:bg-slate-800/80 border-b border-stone-300 dark:border-slate-800 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-amber-600 dark:bg-amber-400"></span>
+      <h3 class="font-serif text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-stone-200 m-0">
+        Ficha Documental y Estatus Eclesial
+      </h3>
+    </div>
+    <span class="text-[11px] font-mono text-stone-500 dark:text-stone-400">
+      Registro Diocesano &middot; Archivo Histórico
+    </span>
+  </div>
+
+  <div class="p-5 sm:p-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+    
+    <!-- Estatus Eclesial -->
+    <div class="space-y-1">
+      <span class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide font-medium">
+        Estatus Canónico / Eclesial
+      </span>
+      <div class="flex items-center gap-2 pt-0.5">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+          ✓ {estatusEclesial}
+        </span>
+      </div>
+    </div>
+
+    <!-- Lugar y Fecha -->
+    {(lugar || fecha) && (
+      <div class="space-y-1">
+        <span class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide font-medium">
+          Lugar y Datación
+        </span>
+        <p class="font-medium text-slate-900 dark:text-stone-200 m-0">
+          {lugar} {fecha ? `· ${fecha}` : ''}
+        </p>
+      </div>
+    )}
+
+    <!-- Grupo Sanguíneo -->
+    {grupoSanguineo && (
+      <div class="space-y-1">
+        <span class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide font-medium">
+          Grupo Sanguíneo Tipificado
+        </span>
+        <p class="font-semibold text-rose-800 dark:text-rose-400 m-0">
+          Tipo {grupoSanguineo} (Inmunológicamente compatible con la Sábana Santa)
+        </p>
+      </div>
+    )}
+
+    <!-- Evidencia Científica Resumen -->
+    {evidenciaCientifica && (
+      <div class="space-y-1 md:col-span-2">
+        <span class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide font-medium">
+          Hallazgo Histopatológico Principal
+        </span>
+        <p class="text-stone-700 dark:text-stone-300 m-0">
+          {evidenciaCientifica}
+        </p>
+      </div>
+    )}
+
+    <!-- Investigadores Clave -->
+    {investigadores.length > 0 && (
+      <div class="space-y-1 md:col-span-2">
+        <span class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide font-medium">
+          Peritos y Científicos Documentados
+        </span>
+        <p class="text-stone-700 dark:text-stone-300 m-0">
+          {investigadores.join(' · ')}
+        </p>
+      </div>
+    )}
+
+    <!-- Laboratorios -->
+    {laboratorios.length > 0 && (
+      <div class="space-y-1 md:col-span-2">
+        <span class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide font-medium">
+          Laboratorios e Institutos Intervinientes
+        </span>
+        <p class="text-stone-700 dark:text-stone-300 m-0">
+          {laboratorios.join(' · ')}
+        </p>
+      </div>
+    )}
+
+    <!-- Estado Actual de las Reliquias -->
+    {estadoReliquias && (
+      <div class="space-y-1 md:col-span-2">
+        <span class="text-xs text-stone-500 dark:text-stone-400 uppercase tracking-wide font-medium">
+          Conservación y Exposición Pública
+        </span>
+        <p class="text-stone-700 dark:text-stone-300 m-0">
+          {estadoReliquias}
+        </p>
+      </div>
+    )}
+
+  </div>
+</div>

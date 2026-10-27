@@ -1,0 +1,161 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/global/Breadcrumbs.astro';
+import FactSheet from '../components/ui/FactSheet.astro';
+import SourceList from '../components/ui/SourceList.astro';
+import NextStep from '../components/ui/NextStep.astro';
+import ArticleImage from '../components/ui/ArticleImage.astro';
+
+interface Props {
+  title: string;
+  resumen: string;
+  badge?: string;
+  crumbs: { label: string; href?: string }[];
+  lugar?: string;
+  fechaEvento?: string;
+  estatusEclesial: string;
+  evidenciaCientifica?: string;
+  grupoSanguineo?: string;
+  investigadores?: string[];
+  laboratorios?: string[];
+  estadoReliquias?: string;
+  fuentes: any[];
+  nextStepVariant?: 'jesus' | 'milagros' | 'fatima' | 'santos' | 'biblia';
+  fechaPublicacion: Date;
+  fechaRevision: Date;
+  autor?: string;
+  revisadoPor?: string;
+  imagen?: {
+    src: string;
+    alt: string;
+    credito: string;
+    licencia: string;
+    url_fuente: string;
+  };
+}
+
+const {
+  title,
+  resumen,
+  badge,
+  crumbs,
+  lugar,
+  fechaEvento,
+  estatusEclesial,
+  evidenciaCientifica,
+  grupoSanguineo,
+  investigadores = [],
+  laboratorios = [],
+  estadoReliquias,
+  fuentes,
+  nextStepVariant = 'milagros',
+  fechaPublicacion,
+  fechaRevision,
+  autor = 'Equipo Editorial',
+  revisadoPor = 'Revisión Teológica y Científica Interna',
+  imagen,
+} = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'http://localhost:4321');
+const currentURL = new URL(Astro.url.pathname, siteUrl).toString();
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description: resumen,
+  url: currentURL,
+  datePublished: fechaPublicacion.toISOString(),
+  dateModified: fechaRevision.toISOString(),
+  author: {
+    '@type': 'Organization',
+    name: autor,
+    url: siteUrl,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Ad Veritatem',
+    url: siteUrl,
+  },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={resumen}
+  articleDate={fechaPublicacion}
+  articleModified={fechaRevision}
+  ogType="article"
+>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    
+    <!-- Miga de Pan -->
+    <Breadcrumbs crumbs={crumbs} />
+
+    <!-- Cabecera Editorial -->
+    <header class="mt-4 mb-8 space-y-4">
+      {badge && (
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+          {badge}
+        </span>
+      )}
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+        {title}
+      </h1>
+
+      <!-- Respuesta directa en las primeras 2-3 líneas (Direct Answer SEO) -->
+      <div class="p-4 sm:p-5 rounded-xl bg-stone-100 dark:bg-slate-900 border-l-4 border-amber-600 dark:border-amber-400 text-base sm:text-lg text-stone-700 dark:text-stone-300 leading-relaxed font-reading">
+        <strong>Síntesis del hecho:</strong> {resumen}
+      </div>
+
+      <!-- Metadatos de autoría y revisión -->
+      <div class="flex flex-wrap items-center gap-4 text-xs text-stone-500 dark:text-stone-400 pt-2 border-b border-stone-200 dark:border-slate-800 pb-4">
+        <span>Por <strong>{autor}</strong></span>
+        <span>&middot;</span>
+        <span>Revisado por: <strong>{revisadoPor}</strong></span>
+        <span>&middot;</span>
+        <span>Última revisión: <time datetime={fechaRevision.toISOString()}>{fechaRevision.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>
+      </div>
+    </header>
+
+    <!-- Imagen Principal Verificada -->
+    {imagen && (
+      <ArticleImage
+        src={imagen.src}
+        alt={imagen.alt}
+        credito={imagen.credito}
+        licencia={imagen.licencia}
+        url_fuente={imagen.url_fuente}
+      />
+    )}
+
+    <!-- Ficha Técnica Resumen (Archival FactSheet) -->
+    <FactSheet
+      lugar={lugar}
+      fecha={fechaEvento}
+      estatusEclesial={estatusEclesial}
+      evidenciaCientifica={evidenciaCientifica}
+      grupoSanguineo={grupoSanguineo}
+      investigadores={investigadores}
+      laboratorios={laboratorios}
+      estadoReliquias={estadoReliquias}
+    />
+
+    <!-- Cuerpo del artículo -->
+    <div class="prose-editorial mx-auto mt-8">
+      <slot />
+    </div>
+
+    <!-- Bloque Tu Siguiente Paso -->
+    <NextStep variant={nextStepVariant} />
+
+    <!-- Fuentes Primarias y Documentales -->
+    {fuentes && fuentes.length > 0 && (
+      <SourceList fuentes={fuentes} />
+    )}
+
+  </article>
+
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+</BaseLayout>

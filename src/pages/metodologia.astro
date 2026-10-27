@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/global/Breadcrumbs.astro';
+---
+
+<BaseLayout
+  title="Metodología Editorial y Criterios de Verificación | Ad Veritatem"
+  description="Explicación exhaustiva de cómo verificamos fuentes primarias, decretos eclesiásticos y peritajes médicos forenses en Ad Veritatem."
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs crumbs={[{ label: 'Metodología Editorial' }]} />
+
+    <header class="mt-4 mb-8 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Transparencia &middot; Estándares E-E-A-T
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Metodología Editorial y Verificación de Fuentes
+      </h1>
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        La Iglesia Católica nunca ha temido al escrutinio de la razón. Conoce el marco con el que contrastamos cada hecho histórico y científico.
+      </p>
+    </header>
+
+    <div class="prose-editorial mx-auto space-y-6">
+      <h2>1. El Principio de Veracidad Documental</h2>
+      <p>
+        La fe cristiana no necesita recurrir a exageraciones piadosas ni a leyendas apócrifas para proclamar la gloria de Dios. Nuestro portal se sostiene en una norma inquebrantable: <strong>si una afirmación sobre un milagro o hecho histórico no cuenta con una fuente primaria contrastable, no se publica</strong>.
+      </p>
+
+      <h2>2. Distinción Tripartita</h2>
+      <p>
+        En cada estudio dividimos con rigor:
+      </p>
+      <ul>
+        <li><strong>Hecho Histórico:</strong> Datación, lugar, testigos oculares y actas diocesanas o notariales.</li>
+        <li><strong>Estudio Médico o Científico:</strong> Técnicas de laboratorio (inmunohistoquímica, electroforesis, etc.), investigadores acreditados y límites reconocidos de la muestra.</li>
+        <li><strong>Significado de Fe:</strong> El discernimiento teológico según el Magisterio católico y la Sagrada Escritura.</li>
+      </ul>
+
+      <h2>3. Licencias y Respeto a los Derechos de Autor</h2>
+      <p>
+        Todas las traducciones bíblicas íntegras proceden de ediciones históricas en Dominio Público comprobado (como la Biblia Torres Amat de 1825). Todas las imágenes utilizadas son obras de arte sacro de dominio público o fotografías con licencia libre registradas en nuestro inventario público <a href="/LICENCIAS.md" class="underline text-amber-700 dark:text-amber-400 font-medium">LICENCIAS.md</a>. Queda absolutamente prohibida la generación de rostros de Jesucristo, la Virgen o los santos mediante inteligencia artificial.
+      </p>
+
+      <h2>4. Control de Asuntos en Estudio</h2>
+      <p>
+        Aquellas afirmaciones populares que carecen de fuentes de archivo verificables se mantienen en cuarentena en nuestro archivo interno <code>PENDIENTES.md</code> y no forman parte del contenido indexable del sitio.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

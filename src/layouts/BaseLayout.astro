@@ -1,0 +1,38 @@
+---
+import BaseHead from '../components/global/BaseHead.astro';
+import Header from '../components/global/Header.astro';
+import Footer from '../components/global/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  articleDate?: Date;
+  articleModified?: Date;
+  ogType?: 'website' | 'article';
+}
+
+const { title, description, image, articleDate, articleModified, ogType } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      image={image}
+      articleDate={articleDate}
+      articleModified={articleModified}
+      ogType={ogType}
+    />
+  </head>
+  <body class="min-h-screen flex flex-col bg-stone-50 text-slate-900 dark:bg-slate-950 dark:text-stone-100 transition-colors duration-200">
+    <Header />
+    <main class="flex-grow">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

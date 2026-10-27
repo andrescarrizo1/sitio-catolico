@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  src: string;
+  alt: string;
+  credito?: string;
+  licencia?: string;
+  url_fuente?: string;
+  class?: string;
+  caption?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const {
+  src,
+  alt,
+  credito,
+  licencia,
+  url_fuente,
+  caption,
+  class: className = '',
+  loading = 'eager',
+} = Astro.props;
+
+// Vite import.meta.glob con { eager: true } importa sincrónicamente el objeto ImageMetadata
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpeg,jpg,png,gif,webp}', { eager: true });
+const normalizedSrc = src.startsWith('/') ? src : `/${src}`;
+const imageModule = images[normalizedSrc];
+const imageMetadata = imageModule?.default;
+---
+
+{imageMetadata ? (
+  <figure class={`my-8 overflow-hidden rounded-2xl border border-stone-200 dark:border-slate-800 bg-stone-100/60 dark:bg-slate-900/60 shadow-md ${className}`}>
+    <div class="relative overflow-hidden w-full bg-stone-200/40 dark:bg-stone-900/50 flex items-center justify-center">
+      <Image
+        src={imageMetadata}
+        alt={alt}
+        class="w-full h-auto block max-h-[580px] object-contain sm:object-cover"
+        loading={loading}
+        decoding="async"
+      />
+    </div>
+    {(caption || credito || licencia || alt) && (
+      <figcaption class="px-4 py-2.5 bg-stone-100 dark:bg-slate-900 border-t border-stone-200 dark:border-slate-800 text-[11px] sm:text-xs text-stone-600 dark:text-stone-400 flex flex-wrap items-center justify-between gap-2">
+        <span class="font-medium italic text-stone-700 dark:text-stone-300">
+          {caption || alt}
+        </span>
+        <div class="flex items-center gap-2 text-[10px] sm:text-[11px] text-stone-500 dark:text-stone-400">
+          {credito && <span>{credito}</span>}
+          {licencia && (
+            <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-stone-200/80 dark:bg-slate-800 text-[10px] font-semibold text-stone-700 dark:text-stone-300">
+              {licencia}
+            </span>
+          )}
+          {url_fuente && (
+            <a
+              href={url_fuente}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-amber-700 dark:text-amber-400 hover:underline"
+            >
+              Archivo original &rarr;
+            </a>
+          )}
+        </div>
+      </figcaption>
+    )}
+  </figure>
+) : (
+  <figure class={`my-8 overflow-hidden rounded-2xl border border-stone-200 dark:border-slate-800 ${className}`}>
+    <img src={src} alt={alt} class="w-full h-auto block rounded-2xl" loading={loading} />
+  </figure>
+)}

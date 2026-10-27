@@ -1,0 +1,136 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navItems = [
+  { label: 'Jesús', href: '/jesus/' },
+  { label: 'Milagros Eucarísticos', href: '/milagros-eucaristicos/' },
+  { label: 'Ciencia y Fe', href: '/ciencia-y-fe/' },
+  { label: 'Santos y Místicos', href: '/santos/' },
+  { label: 'Fátima', href: '/virgen-de-fatima/' },
+  { label: 'Santo Rosario', href: '/rosario/' },
+  { label: 'Biblia', href: '/biblia/' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 w-full backdrop-blur-md bg-stone-50/90 dark:bg-slate-950/90 border-b border-stone-200/80 dark:border-slate-800 transition-colors duration-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 sm:h-20">
+      
+      <!-- Logo y Nombre del Sitio -->
+      <a href="/" class="flex items-center gap-3 group focus-visible:outline-2 focus-visible:outline-amber-600 rounded-md">
+        <div
+          class="w-9 h-9 rounded-lg bg-slate-900 dark:bg-amber-500/10 border border-amber-600/30 flex items-center justify-center text-amber-500 shadow-sm group-hover:border-amber-500 transition-colors"
+          style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; max-width: 36px; max-height: 36px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
+        >
+          <svg
+            width="20"
+            height="20"
+            style="width: 20px; height: 20px; min-width: 20px; min-height: 20px; max-width: 20px; max-height: 20px; display: block;"
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 3v18m-7-11h14" />
+          </svg>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif text-lg sm:text-xl font-bold tracking-tight text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
+            Ad Veritatem
+          </span>
+          <span class="text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 tracking-wider uppercase font-medium">
+            Fe Católica &middot; Verdad &middot; Tradición
+          </span>
+        </div>
+      </a>
+
+      <!-- Menú Desktop -->
+      <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
+        {navItems.map((item) => {
+          const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+          return (
+            <a
+              href={item.href}
+              class={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                isActive
+                  ? 'text-amber-800 dark:text-amber-400 bg-amber-500/10 font-semibold'
+                  : 'text-stone-700 dark:text-stone-300 hover:text-slate-950 dark:hover:text-white hover:bg-stone-200/50 dark:hover:bg-slate-900'
+              }`}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+      </nav>
+
+      <!-- Acciones (ThemeToggle y Botón Rosario de Hoy) -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <ThemeToggle />
+        
+        <a
+          href="/rosario/misterios-de-hoy/"
+          class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-full bg-amber-600/10 text-amber-800 dark:bg-amber-400/10 dark:text-amber-300 border border-amber-600/30 hover:bg-amber-600/20 dark:hover:bg-amber-400/20 transition-all"
+        >
+          <span class="w-2 h-2 rounded-full bg-amber-600 dark:bg-amber-400 animate-pulse"></span>
+          Rosario de Hoy
+        </a>
+
+        <!-- Botón Móvil Menú Hamburguesa -->
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          class="lg:hidden p-2 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-200/60 dark:hover:bg-slate-800"
+          aria-label="Abrir menú de navegación"
+        >
+          <svg id="hamburger-icon" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="close-icon" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Menú Móvil Desplegable -->
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-stone-200 dark:border-slate-800 bg-stone-50 dark:bg-slate-950 px-4 pt-3 pb-6 space-y-1">
+    {navItems.map((item) => (
+      <a
+        href={item.href}
+        class="block px-3 py-2.5 rounded-lg text-base font-medium text-stone-800 dark:text-stone-200 hover:bg-amber-500/10 hover:text-amber-800 dark:hover:text-amber-400 transition-colors"
+      >
+        {item.label}
+      </a>
+    ))}
+    <div class="pt-3 border-t border-stone-200 dark:border-slate-800">
+      <a
+        href="/rosario/misterios-de-hoy/"
+        class="flex items-center justify-center gap-2 w-full py-2.5 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-sm hover:bg-amber-700 transition-colors"
+      >
+        Rezar el Rosario de Hoy
+      </a>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const hamburgerIcon = document.getElementById('hamburger-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  menuBtn?.addEventListener('click', () => {
+    const isExpanded = mobileMenu?.classList.toggle('hidden');
+    if (isExpanded) {
+      hamburgerIcon?.classList.remove('hidden');
+      closeIcon?.classList.add('hidden');
+    } else {
+      hamburgerIcon?.classList.add('hidden');
+      closeIcon?.classList.remove('hidden');
+    }
+  });
+</script>

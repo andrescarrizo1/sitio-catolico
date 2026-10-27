@@ -1,0 +1,66 @@
+---
+interface Source {
+  titulo: string;
+  autor?: string;
+  tipo: string;
+  url?: string;
+  cita_o_referencia: string;
+  nivel_confianza: string;
+}
+
+interface Props {
+  fuentes: Source[];
+}
+
+const { fuentes } = Astro.props;
+---
+
+<section class="my-12 pt-8 border-t border-stone-200 dark:border-slate-800">
+  <div class="flex items-center gap-2 mb-6">
+    <div class="w-2 h-2 rounded-full bg-amber-600 dark:bg-amber-400"></div>
+    <h3 class="font-serif text-lg sm:text-xl font-bold text-slate-900 dark:text-stone-100 m-0">
+      Fuentes Primarias y Referencias Documentales
+    </h3>
+  </div>
+
+  <p class="text-xs text-stone-500 dark:text-stone-400 mb-6 leading-relaxed">
+    Este sitio separa estrictamente los hechos documentados de la interpretación teológica. Cada afirmación se respalda en registros notariales, decretos canónicos, publicaciones científicas o crónicas de la época:
+  </p>
+
+  <ol class="space-y-4 list-decimal pl-5 text-sm">
+    {fuentes.map((f) => (
+      <li class="pl-1 text-stone-700 dark:text-stone-300">
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5">
+          <div class="font-medium text-slate-900 dark:text-stone-100">
+            {f.url ? (
+              <a
+                href={f.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hover:text-amber-700 dark:hover:text-amber-400 underline decoration-stone-300 dark:decoration-slate-700 underline-offset-2 transition-colors"
+              >
+                {f.titulo}
+              </a>
+            ) : (
+              <span>{f.titulo}</span>
+            )}
+            {f.autor && <span class="text-stone-500 dark:text-stone-400 font-normal"> &mdash; {f.autor}</span>}
+          </div>
+
+          <div class="flex items-center gap-2 shrink-0">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-stone-200/60 dark:bg-slate-800 text-stone-700 dark:text-stone-300">
+              {f.tipo}
+            </span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+              {f.nivel_confianza}
+            </span>
+          </div>
+        </div>
+
+        <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 m-0">
+          <strong>Referencia / Archivo:</strong> {f.cita_o_referencia}
+        </p>
+      </li>
+    ))}
+  </ol>
+</section>

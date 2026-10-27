@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/ui/Hero.astro';
+import PillarCard from '../../components/ui/PillarCard.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const cienciaList = await getCollection('cienciaFe');
+cienciaList.sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<BaseLayout
+  title="Ciencia y Fe Católica: Evidencia Empírica y Forense | Ad Veritatem"
+  description="Examen forense, óptico y médico de los mayores enigmas de la fe: la Sábana Santa de Turín (análisis WAXS y STURP), el ayate de Guadalupe (fenómeno corneal) y el Bureau Médical de Lourdes."
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <Breadcrumbs crumbs={[{ label: 'Ciencia y Fe' }]} />
+  </div>
+
+  <Hero
+    badge="Física Cuántica &middot; Medicina Forense &middot; Magisterio"
+    title="Donde la Ciencia Empírica Encuentra el Misterio de la Fe"
+    subtitle="Estudios de laboratorio publicados por institutos de física, comisiones médicas internacionales y peritajes ópticos de alta resolución. Análisis rigurosos sin mitos ni sensacionalismo."
+  />
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {cienciaList.map((item) => (
+        <PillarCard
+          title={item.data.titulo}
+          description={item.data.resumen}
+          href={`/ciencia-y-fe/${item.id}/`}
+          badge={item.data.tipo_signo}
+          status={item.data.estatus_eclesial}
+          date={item.data.fecha_revision}
+        />
+      ))}
+    </div>
+
+    <!-- Bloque epistemológico de profundización -->
+    <section class="mt-16 p-8 rounded-2xl border border-stone-200 dark:border-slate-800 bg-stone-50 dark:bg-slate-900/60 shadow-xs">
+      <div class="max-w-3xl">
+        <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+          Epistemología Católica: Fides et Ratio
+        </span>
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100 mt-2 mb-4">
+          La Fe y la Razón son las dos alas con las que el espíritu se eleva hacia la verdad
+        </h2>
+        <p class="text-stone-700 dark:text-stone-300 leading-relaxed text-sm sm:text-base">
+          Como enseñó San Juan Pablo II en su encíclica <em>Fides et Ratio</em> (1998), no existe ni puede existir una contradicción real entre la auténtica investigación científica y la fe católica. La Iglesia no teme a la ciencia: fue el propio Papa Benedicto XIV quien en el siglo XVIII redactó los siete criterios de comprobación médica más rigurosos del derecho canónico, y han sido laboratorios con tecnología satelital y microscopios electrónicos los que han corroborado la singularidad física del lienzo de Turín, la tilma del Tepeyac y los tejidos de los milagros eucarísticos.
+        </p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import FactLayout from '../../layouts/FactLayout.astro';
+import ArticleImage from '../../components/ui/ArticleImage.astro';
+
+export async function getStaticPaths() {
+  const fatimaEntries = await getCollection('fatima');
+  return fatimaEntries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<FactLayout
+  title={entry.data.titulo}
+  resumen={entry.data.resumen}
+  badge="Virgen de Fátima &middot; Apariciones 1917"
+  crumbs={[
+    { label: 'Virgen de Fátima', href: '/virgen-de-fatima/' },
+    { label: entry.data.titulo }
+  ]}
+  estatusEclesial={entry.data.estatus_eclesial}
+  fuentes={entry.data.fuentes}
+  nextStepVariant="fatima"
+  fechaPublicacion={entry.data.fecha_publicacion}
+  fechaRevision={entry.data.fecha_revision}
+  autor={entry.data.autor}
+  revisadoPor={entry.data.revisado_por}
+  imagen={entry.data.imagen}
+>
+  <Content components={{ ArticleImage }} />
+</FactLayout>
