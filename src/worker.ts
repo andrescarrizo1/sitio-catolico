@@ -104,6 +104,15 @@ export default {
           );
         }
 
+        let aiDebug = 'not_attempted';
+        if (!env.AI) {
+          aiDebug = 'env_ai_undefined';
+        } else if (typeof env.AI.run !== 'function') {
+          aiDebug = 'env_ai_run_not_function';
+        } else {
+          aiDebug = 'env_ai_present';
+        }
+
         if (env.AI && typeof env.AI.run === 'function') {
           try {
             const promptUser = `El fiel expresa la siguiente carga espiritual:\n"${query || categoria}"\n\nResponde con el JSON estricto.`;
@@ -127,17 +136,20 @@ export default {
 
             if (parsed.versiculo && parsed.santo?.nombre && parsed.reflexion) {
               return new Response(JSON.stringify(parsed), {
-                headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+                headers: { ...corsHeaders, 'Content-Type': 'application/json', 'X-AI-Status': 'generated_by_ai' },
               });
+            } else {
+              aiDebug = 'json_validation_failed';
             }
           } catch (aiError) {
+            aiDebug = `error: ${aiError instanceof Error ? aiError.message : String(aiError)}`;
             console.error('Error en Workers AI (consuelo):', aiError);
           }
         }
 
         const fallback = findMatchingConsuelo(query, categoria);
         return new Response(JSON.stringify(fallback), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          headers: { ...corsHeaders, 'Content-Type': 'application/json', 'X-AI-Status': 'fallback', 'X-AI-Debug': aiDebug },
         });
       } catch (err) {
         console.error('Error procesando consuelo:', err);
