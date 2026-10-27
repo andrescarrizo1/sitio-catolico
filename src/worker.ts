@@ -197,14 +197,14 @@ async function runWorkersAI(
   systemPrompt: string,
   userPrompt: string,
   maxTokens: number = 750
-): Promise<{ rawContent: string; modelUsed: string }> {
+): Promise<{ rawContent: string; modelUsed: string; modelErrors: string }> {
   const candidateModels = [
     '@cf/meta/meta-llama-3-8b-instruct',
     '@cf/meta/llama-3.2-3b-instruct',
     '@cf/meta/llama-3.2-1b-instruct',
   ];
 
-  let lastError: any = null;
+  const errors: string[] = [];
 
   for (const model of candidateModels) {
     try {
@@ -219,15 +219,14 @@ async function runWorkersAI(
 
       const raw = res?.response || res?.choices?.[0]?.message?.content || '';
       if (raw && typeof raw === 'string') {
-        return { rawContent: raw, modelUsed: model };
+        return { rawContent: raw, modelUsed: model, modelErrors: errors.join(' | ') };
       }
     } catch (err: any) {
-      lastError = err;
-      console.warn(`Fallo al ejecutar modelo ${model}:`, err?.message || err);
+      errors.push(`${model}: ${err?.message || err}`);
     }
   }
 
-  throw lastError || new Error('No se pudo ejecutar ningún modelo de Workers AI');
+  throw new Error(`Todos los modelos fallaron: ${errors.join(' | ')}`);
 }
 
 export default {
@@ -276,7 +275,7 @@ export default {
           try {
             const promptUser = `El fiel o peregrino expresa la siguiente carga espiritual íntima y personal:\n"${query || categoria}"\n\nPor favor, responde adaptándote exactamente a su dolor personal con el objeto JSON estricto especificado.`;
 
-            const { rawContent, modelUsed } = await runWorkersAI(
+            const { rawContent, modelUsed, modelErrors } = await runWorkersAI(
               env.AI,
               CONSUELO_SYSTEM_PROMPT,
               promptUser,
@@ -292,6 +291,7 @@ export default {
                   'Content-Type': 'application/json',
                   'X-AI-Status': 'generated_by_ai',
                   'X-AI-Model': modelUsed,
+                  'X-AI-Model-Errors': modelErrors || 'none',
                 },
               });
             } else {
@@ -356,7 +356,7 @@ export default {
           try {
             const promptUser = `El usuario plantea la siguiente objeción o duda sobre la fe católica:\n"${query || temaId}"\n\nPor favor, responde con el JSON estricto con Sagrada Escritura en contexto, Patrística (siglos I a IV), confusión de fondo y respuesta para WhatsApp.`;
 
-            const { rawContent, modelUsed } = await runWorkersAI(
+            const { rawContent, modelUsed, modelErrors } = await runWorkersAI(
               env.AI,
               APOLOGETICA_SYSTEM_PROMPT,
               promptUser,
@@ -372,6 +372,7 @@ export default {
                   'Content-Type': 'application/json',
                   'X-AI-Status': 'generated_by_ai',
                   'X-AI-Model': modelUsed,
+                  'X-AI-Model-Errors': modelErrors || 'none',
                 },
               });
             } else {
