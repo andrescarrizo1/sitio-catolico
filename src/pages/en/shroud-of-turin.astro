@@ -1,0 +1,189 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const currentURL = `${siteUrl}/en/shroud-of-turin/`;
+
+const alternateLinks = [
+  { hreflang: 'es', href: `${siteUrl}/ciencia-y-fe/sabana-santa-de-turin/` },
+  { hreflang: 'en', href: `${siteUrl}/en/shroud-of-turin/` },
+  { hreflang: 'x-default', href: `${siteUrl}/ciencia-y-fe/sabana-santa-de-turin/` },
+];
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': currentURL,
+  },
+  headline: 'The Shroud of Turin: Forensic Evidence & Scientific Dating',
+  description: 'Forensic investigation of the Shroud of Turin: STURP findings, 3D VP-8 encoding, real male AB blood, and 2022 WAXS X-ray dating.',
+  image: [`${siteUrl}/og-default.jpg`],
+  url: currentURL,
+  datePublished: '2026-01-01T00:00:00Z',
+  dateModified: '2026-03-20T00:00:00Z',
+  author: [
+    {
+      '@type': 'Organization',
+      name: 'Reason & Wonder Research Team',
+      url: `${siteUrl}/autor/`,
+    },
+  ],
+  publisher: {
+    '@type': 'Organization',
+    name: 'Reason & Wonder',
+    url: `${siteUrl}/en/`,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/favicon.svg`,
+    },
+  },
+};
+---
+
+<BaseLayout
+  title="The Shroud of Turin: Forensic Evidence & Scientific Dating | Reason & Wonder"
+  description="Forensic investigation of the Shroud of Turin: STURP findings, 3D VP-8 encoding, real male AB blood, and 2022 WAXS X-ray dating."
+  lang="en"
+  ogType="article"
+  alternateLinks={alternateLinks}
+  alternateUrl="/ciencia-y-fe/sabana-santa-de-turin/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Science & Faith' },
+        { label: 'The Shroud of Turin' }
+      ]}
+    />
+
+    <header class="mt-6 mb-10 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Forensic Science &middot; Peer-Reviewed Investigation
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.15]">
+        The Shroud of Turin: Forensic Evidence &amp; Scientific Dating
+      </h1>
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        An exhaustive synthesis of the 1978 STURP examination, anatomical trauma matching the Roman crucifixion of Jesus of Nazareth, blood chemistry (AB male), and the latest 2022 WAXS X-ray dating.
+      </p>
+
+      <div class="pt-2 flex flex-wrap items-center gap-4 text-xs text-stone-500 dark:text-stone-400 border-t border-stone-200 dark:border-slate-800">
+        <span>Research Dossier</span>
+        <span>&middot;</span>
+        <span>Peer-Reviewed Bibliography</span>
+        <span>&middot;</span>
+        <a href="/ciencia-y-fe/sabana-santa-de-turin/" class="text-amber-700 dark:text-amber-400 underline underline-offset-2">
+          Leer versión en Español &rarr;
+        </a>
+      </div>
+    </header>
+
+    <!-- Key Scientific Findings Factsheet -->
+    <div class="mb-12 p-6 sm:p-8 rounded-2xl bg-stone-100/80 dark:bg-slate-900/80 border border-stone-200 dark:border-slate-800 space-y-4">
+      <h2 class="font-serif text-xl font-bold text-slate-950 dark:text-stone-100">
+        Summary of Documented Forensic Findings
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm">
+        <div class="space-y-1">
+          <span class="text-stone-500 dark:text-stone-400 font-medium">Textile Material:</span>
+          <p class="font-semibold text-slate-900 dark:text-stone-100">Flax linen, 3:1 herringbone twill weave (4.4 × 1.1 m)</p>
+        </div>
+        <div class="space-y-1">
+          <span class="text-stone-500 dark:text-stone-400 font-medium">Image Mechanism:</span>
+          <p class="font-semibold text-slate-900 dark:text-stone-100">Superficial oxidation of primary cellulose layer (top 0.2 microns); zero pigments, binders, or capillary soak</p>
+        </div>
+        <div class="space-y-1">
+          <span class="text-stone-500 dark:text-stone-400 font-medium">Blood Analysis:</span>
+          <p class="font-semibold text-slate-900 dark:text-stone-100">Human male blood (XY), AB group, elevated bilirubin and serum halos</p>
+        </div>
+        <div class="space-y-1">
+          <span class="text-stone-500 dark:text-stone-400 font-medium">Newest Structural Dating:</span>
+          <p class="font-semibold text-slate-900 dark:text-stone-100">Wide-Angle X-ray Scattering (WAXS, 2022) dates cellulose to ~2000 years BP (1st century AD)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article Content Body -->
+    <div class="prose prose-stone dark:prose-invert max-w-none space-y-8 font-reading text-slate-800 dark:text-stone-200 leading-relaxed">
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          1. The 1978 STURP Project: Physical and Chemical Analysis
+        </h2>
+        <p>
+          In October 1978, the Shroud of Turin Research Project (STURP)&mdash;a multidisciplinary team of over thirty leading American scientists, including specialists from Los Alamos National Laboratory, NASA's Jet Propulsion Laboratory, and the US Air Force Academy&mdash;was granted 120 continuous hours of direct access to the cloth to perform non-destructive spectroscopic, chemical, radiographic, and microscopic examinations.
+        </p>
+        <p>
+          The official STURP final report, published in 1981 following dozens of peer-reviewed articles in journals such as <em>Applied Optics</em>, <em>Science</em>, and <em>Analytica Chimica Acta</em>, reached several definitive conclusions:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-sm">
+          <li><strong>Absence of Artistic Medium:</strong> No paints, pigments, dyes, stains, or organic binders (such as egg white, animal collagen, or oils) account for the body image.</li>
+          <li><strong>Extreme Superficiality:</strong> The image resides exclusively on the very crowns of the top linen fibrils. It has a depth of approximately 200 nanometers (the thickness of the primary cell wall of a single flax fiber), without penetrating the core of the yarn or bleeding through to the backside of the cloth.</li>
+          <li><strong>True 3D Spatial Information:</strong> Unlike artistic drawings or ordinary photographs, which reflect directional lighting and perspective, the intensity variations on the Shroud are mathematically proportional to the precise physical distance between the cloth and the body surface. When scanned using the VP-8 Image Analyzer, an undistorted three-dimensional relief of a human form emerges.</li>
+        </ul>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          2. Forensic Pathology and Anatomical Wounds
+        </h2>
+        <p>
+          Forensic pathologists examining the Shroud, including Dr. Pierre Barbet (Chief Surgeon at Saint Joseph's Hospital, Paris), Dr. Robert Bucklin (Deputy Medical Examiner of Los Angeles County), and Dr. Pierluigi Baima Bollone (Professor of Forensic Medicine at the University of Turin), discovered clinical anatomical details that were completely unknown to medieval science and art:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-sm">
+          <li><strong>Crucifixion at the Wrists (Destot's Space):</strong> The nail exit wounds are located in the wrist (the Space of Destot) rather than the palms. Biomechanical experiments demonstrated that driving nails through the palms cannot support the weight of an adult human body, causing the metacarpal bones to tear free. Piercing Destot's space damages the median nerve, mechanically compelling the thumb to flex inward into the palm&mdash;precisely as depicted on the Shroud, where both thumbs are invisible.</li>
+          <li><strong>Roman Flagellation:</strong> Over 100 dumbbell-shaped contusions and lacerations cover the back, chest, and legs, perfectly matching the design of the Roman <em>flagrum taxillatum</em>, a whip equipped with paired lead weights or bone pieces. The trajectories indicate two distinct executioners of unequal height scourging the victim from opposite angles.</li>
+          <li><strong>Cranial Wounds:</strong> Rather than a neat decorative circlet often pictured in Western art, the scalp exhibits puncture wounds covering the entire top and back of the head, consistent with a tight-fitting cap of sharp thorns (<em>Paliurus spina-christi</em>).</li>
+          <li><strong>Pleural Puncture and Post-Mortem Flow:</strong> A lance wound in the right thorax matches the shape of a Roman <em>lancea</em>. The fluid outflow shows clear separation of red erythrocyte clots and clear serum fluid, matching the biblical description in John 19:34: <em>«immediately blood and water flowed out»</em>.</li>
+        </ul>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          3. Blood Chemistry: Human, Male, and Traumatized
+        </h2>
+        <p>
+          Biochemists Dr. John Heller and Dr. Alan Adler definitively proved that the blood stains are not pigment:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-sm">
+          <li>Positive identification of hemoglobin derivatives (hemochromogen, methemoglobin, porphyrins, and bile pigments).</li>
+          <li>Immunoassay confirmation of human albumin and immunoglobulin (IgG).</li>
+          <li>Serological typing confirming blood group <strong>AB</strong>, the same rare blood group identified in verified Eucharistic miracles (Lanciano, Buenos Aires).</li>
+          <li>High concentration of bilirubin, consistent with a victim who underwent extreme systemic trauma, severe dehydration, and mechanical shock before death.</li>
+        </ul>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          4. The 1988 Carbon-14 Dating &amp; Modern Structural Re-Assessment
+        </h2>
+        <p>
+          In 1988, radiocarbon dating conducted by Oxford, Zurich, and Tucson laboratories dated a single corner cut from the Shroud to between 1260 and 1390 AD. However, subsequent independent chemical examinations revealed fatal methodological flaws in the sampling:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-sm">
+          <li><strong>Non-Representative Sampling:</strong> All three laboratories received sub-samples sliced from a single corner strip (the "Raes corner"), which was historically the exact area most subjected to handling during public expositions.</li>
+          <li><strong>Cotton &amp; Reweaving:</strong> Microchemical studies led by Dr. Raymond Rogers (former Los Alamos chemist and head of the STURP chemistry group) proved the presence of spliced cotton fibrils (<em>Gossypium herbaceum</em>) and alizarin gum dyes in the 1988 sample, characteristic of 16th-century French "invisible reweaving" used to repair patches damaged in the 1532 Chambéry church fire.</li>
+          <li><strong>WAXS X-ray Dating (2022):</strong> Dr. Liberato De Caro and his research group at the Institute of Crystallography of the Italian National Research Council (CNR) applied Wide-Angle X-ray Scattering (WAXS) to measure the natural sub-microscopic degradation of linen cellulose chains. The results, published in the peer-reviewed journal <em>Heritage</em> (2022), concluded that the structural aging of the Shroud's cellulose aligns with 1st-century AD linen (such as samples from the siege of Masada, dated to 73 AD) and is incompatible with medieval textiles.</li>
+        </ul>
+      </section>
+
+      <!-- Sources & Academic Bibliography -->
+      <section class="pt-8 border-t border-stone-200 dark:border-slate-800 space-y-4">
+        <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100">
+          Selected Peer-Reviewed Bibliography
+        </h3>
+        <ol class="text-xs space-y-2 text-stone-600 dark:text-stone-400 list-decimal list-inside">
+          <li>Heller, J. H., &amp; Adler, A. D. (1981). <em>A Chemical Investigation of the Shroud of Turin</em>. Canadian Society of Forensic Science Journal, 14(3), 81-103.</li>
+          <li>Jumper, E. J., Adler, A. D., Jackson, J. P., Pellicori, S. F., Heller, J. H., &amp; Druzik, J. R. (1984). <em>A Comprehensive Examination of the Various Stain Characteristics on the Shroud of Turin</em>. Archaeological Chemistry III, ACS Advances in Chemistry, 205, 447-476.</li>
+          <li>Rogers, R. N. (2005). <em>Studies on the radiocarbon sample from the Shroud of Turin</em>. Thermochimica Acta, 425(1-2), 189-194.</li>
+          <li>De Caro, L., Sibillano, C., Lassandro, R., Giannini, C., &amp; Fanti, G. (2022). <em>X-ray Dating of a Turin Shroud’s Linen Sample</em>. Heritage, 5(2), 860-870.</li>
+          <li>Bucklin, R. (1982). <em>The Legal and Medical Aspects of the Trial and Death of Christ</em>. Medicine, Science and the Law, 10(1), 14-26.</li>
+        </ol>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

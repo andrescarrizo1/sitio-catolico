@@ -1,4 +1,9 @@
 ---
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
 const currentYear = new Date().getFullYear();
 ---
 
@@ -26,47 +31,70 @@ const currentYear = new Date().getFullYear();
             </svg>
           </div>
           <span class="font-serif text-lg font-bold text-slate-900 dark:text-stone-100">
-            Razón y Asombro
+            {lang === 'en' ? 'Reason & Wonder' : 'Razón y Asombro'}
           </span>
         </div>
-        <p class="text-sm leading-relaxed max-w-md text-stone-600 dark:text-stone-400">
-          Plataforma web católica dedicada a proclamar la verdad salvífica de Jesucristo, sus enseñanzas bíblicas y los signos documentados de la fe con el máximo rigor histórico y científico. Creado sin fines de lucro comercial, con costo cero de infraestructura y fidelidad incondicional al Magisterio de la Iglesia.
-        </p>
-        <p class="text-xs text-stone-500 dark:text-stone-500">
-          <em>«Conoceréis la verdad, y la verdad os hará libres»</em> &mdash; Juan 8, 32.
-        </p>
+        {lang === 'en' ? (
+          <>
+            <p class="text-sm leading-relaxed max-w-md text-stone-600 dark:text-stone-400">
+              Catholic web platform dedicated to proclaiming the saving truth of Jesus Christ, His biblical teachings, and documented signs of faith with the highest historical and scientific rigor. Created non-profit, zero infrastructure cost, in unconditional fidelity to the Magisterium.
+            </p>
+            <p class="text-xs text-stone-500 dark:text-stone-500">
+              <em>«You will know the truth, and the truth will set you free»</em> &mdash; John 8:32.
+            </p>
+          </>
+        ) : (
+          <>
+            <p class="text-sm leading-relaxed max-w-md text-stone-600 dark:text-stone-400">
+              Plataforma web católica dedicada a proclamar la verdad salvífica de Jesucristo, sus enseñanzas bíblicas y los signos documentados de la fe con el máximo rigor histórico y científico. Creado sin fines de lucro comercial, con costo cero de infraestructura y fidelidad incondicional al Magisterio de la Iglesia.
+            </p>
+            <p class="text-xs text-stone-500 dark:text-stone-500">
+              <em>«Conoceréis la verdad, y la verdad os hará libres»</em> &mdash; Juan 8, 32.
+            </p>
+          </>
+        )}
       </div>
 
       <!-- Columna 2: Pilares de Contenido -->
       <div>
         <h4 class="font-serif text-sm font-semibold uppercase tracking-wider text-slate-900 dark:text-stone-200 mb-4">
-          Contenido
+          {lang === 'en' ? 'Content' : 'Contenido'}
         </h4>
-        <ul class="space-y-2.5 text-sm">
-          <li><a href="/jesus/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Jesús y sus Enseñanzas</a></li>
-          <li><a href="/milagros-eucaristicos/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Milagros Eucarísticos</a></li>
-          <li><a href="/ciencia-y-fe/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Ciencia y Fe (Turín, Guadalupe)</a></li>
-          <li><a href="/santos/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Santos y Místicos</a></li>
-          <li><a href="/virgen-de-fatima/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Virgen de Fátima</a></li>
-          <li><a href="/rosario/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Santo Rosario Interactivo</a></li>
-          <li><a href="/consuelo/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">Consuelo Espiritual (Buscador)</a></li>
-          <li><a href="/apologetica/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">Apologética (El Escudo)</a></li>
-          <li><a href="/oracion/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">Muro de Oración (Velas)</a></li>
-          <li><a href="/biblia/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Biblia y Conversión</a></li>
-        </ul>
+        {lang === 'en' ? (
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="/en/interactive-rosary/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">Interactive Holy Rosary</a></li>
+            <li><a href="/en/rosary/how-to-pray/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">How to Pray the Rosary</a></li>
+            <li><a href="/en/shroud-of-turin/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Shroud of Turin Forensics</a></li>
+            <li><a href="/en/divine-mercy-chaplet/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">Chaplet of Divine Mercy</a></li>
+            <li><a href="/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors text-xs text-stone-500">Edición en Español (30+ artículos) &rarr;</a></li>
+          </ul>
+        ) : (
+          <ul class="space-y-2.5 text-sm">
+            <li><a href="/jesus/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Jesús y sus Enseñanzas</a></li>
+            <li><a href="/milagros-eucaristicos/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Milagros Eucarísticos</a></li>
+            <li><a href="/ciencia-y-fe/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Ciencia y Fe (Turín, Guadalupe)</a></li>
+            <li><a href="/santos/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Santos y Místicos</a></li>
+            <li><a href="/virgen-de-fatima/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Virgen de Fátima</a></li>
+            <li><a href="/rosario/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Santo Rosario Interactivo</a></li>
+            <li><a href="/consuelo/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">Consuelo Espiritual (Buscador)</a></li>
+            <li><a href="/apologetica/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">Apologética (El Escudo)</a></li>
+            <li><a href="/oracion/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">Muro de Oración (Velas)</a></li>
+            <li><a href="/biblia/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Biblia y Conversión</a></li>
+          </ul>
+        )}
       </div>
 
       <!-- Columna 3: Confianza y Metodología (E-E-A-T) -->
       <div>
         <h4 class="font-serif text-sm font-semibold uppercase tracking-wider text-slate-900 dark:text-stone-200 mb-4">
-          Transparencia
+          {lang === 'en' ? 'Transparency' : 'Transparencia'}
         </h4>
         <ul class="space-y-2.5 text-sm">
-          <li><a href="/metodologia/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Metodología y Verificación</a></li>
-          <li><a href="/acerca/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Acerca del Proyecto</a></li>
-          <li><a href="/autor/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Equipo y Responsable</a></li>
-          <li><a href="/contacto/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">Contacto e Intenciones</a></li>
-          <li><a href="/rosario/como-rezar/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">Guía: Cómo rezar el Rosario</a></li>
+          <li><a href="/metodologia/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">{lang === 'en' ? 'Methodology & Verification' : 'Metodología y Verificación'}</a></li>
+          <li><a href="/acerca/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">{lang === 'en' ? 'About the Project' : 'Acerca del Proyecto'}</a></li>
+          <li><a href="/autor/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">{lang === 'en' ? 'Editorial Team & Author' : 'Equipo y Responsable'}</a></li>
+          <li><a href="/contacto/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">{lang === 'en' ? 'Contact & Prayer Intentions' : 'Contacto e Intenciones'}</a></li>
+          <li><a href={lang === 'en' ? '/en/rosary/how-to-pray/' : '/rosario/como-rezar/'} class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">{lang === 'en' ? 'Guide: How to Pray the Rosary' : 'Guía: Cómo rezar el Rosario'}</a></li>
         </ul>
       </div>
 
@@ -75,12 +103,12 @@ const currentYear = new Date().getFullYear();
     <!-- Barra inferior -->
     <div class="mt-12 pt-8 border-t border-stone-200/80 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500 dark:text-stone-500">
       <p>
-        &copy; {currentYear} Razón y Asombro &middot; Contenido bajo licencia libre para evangelización. Textos bíblicos de dominio público (Torres Amat 1825).
+        &copy; {currentYear} {lang === 'en' ? 'Reason & Wonder' : 'Razón y Asombro'} &middot; {lang === 'en' ? 'Free license for evangelization. Public domain biblical texts.' : 'Contenido bajo licencia libre para evangelización. Textos bíblicos de dominio público (Torres Amat 1825).'}
       </p>
       <p class="flex items-center gap-4">
-        <span>Sin rastreadores ni cookies de terceros</span>
+        <span>{lang === 'en' ? 'No third-party trackers or cookies' : 'Sin rastreadores ni cookies de terceros'}</span>
         <span>&middot;</span>
-        <span>Fidelidad al Magisterio</span>
+        <span>{lang === 'en' ? 'Fidelity to the Magisterium' : 'Fidelidad al Magisterio'}</span>
       </p>
     </div>
   </div>

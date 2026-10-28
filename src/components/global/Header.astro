@@ -1,7 +1,14 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 
-const navItems = [
+interface Props {
+  lang?: 'es' | 'en';
+  alternateUrl?: string;
+}
+
+const { lang = 'es', alternateUrl } = Astro.props;
+
+const navItemsEs = [
   { label: 'Jesús', href: '/jesus/' },
   { label: 'Milagros Eucarísticos', href: '/milagros-eucaristicos/' },
   { label: 'Ciencia y Fe', href: '/ciencia-y-fe/' },
@@ -13,6 +20,16 @@ const navItems = [
   { label: 'Biblia', href: '/biblia/' },
 ];
 
+const navItemsEn = [
+  { label: 'Home', href: '/en/' },
+  { label: 'Interactive Rosary', href: '/en/interactive-rosary/' },
+  { label: 'How to Pray', href: '/en/rosary/how-to-pray/' },
+  { label: 'Shroud of Turin', href: '/en/shroud-of-turin/' },
+  { label: 'Divine Mercy', href: '/en/divine-mercy-chaplet/' },
+];
+
+const navItems = lang === 'en' ? navItemsEn : navItemsEs;
+const homeHref = lang === 'en' ? '/en/' : '/';
 const currentPath = Astro.url.pathname;
 ---
 
@@ -21,7 +38,7 @@ const currentPath = Astro.url.pathname;
     <div class="flex items-center justify-between h-16 sm:h-20">
       
       <!-- Logo y Nombre del Sitio -->
-      <a href="/" class="flex items-center gap-3 group focus-visible:outline-2 focus-visible:outline-amber-600 rounded-md">
+      <a href={homeHref} class="flex items-center gap-3 group focus-visible:outline-2 focus-visible:outline-amber-600 rounded-md">
         <div
           class="w-9 h-9 rounded-lg bg-slate-900 dark:bg-amber-500/10 border border-amber-600/30 flex items-center justify-center text-amber-500 shadow-sm group-hover:border-amber-500 transition-colors"
           style="width: 36px; height: 36px; min-width: 36px; min-height: 36px; max-width: 36px; max-height: 36px; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-shrink: 0;"
@@ -40,10 +57,10 @@ const currentPath = Astro.url.pathname;
         </div>
         <div class="flex flex-col">
           <span class="font-serif text-lg sm:text-xl font-bold tracking-tight text-slate-950 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400 transition-colors">
-            Razón y Asombro
+            {lang === 'en' ? 'Reason & Wonder' : 'Razón y Asombro'}
           </span>
           <span class="text-[10px] sm:text-xs text-stone-500 dark:text-stone-400 tracking-wider uppercase font-medium">
-            Fe Católica &middot; Rigor &middot; Misterio
+            {lang === 'en' ? 'Catholic Faith · Rigor · Mystery' : 'Fe Católica · Rigor · Misterio'}
           </span>
         </div>
       </a>
@@ -51,7 +68,7 @@ const currentPath = Astro.url.pathname;
       <!-- Menú Desktop -->
       <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
         {navItems.map((item) => {
-          const isActive = currentPath === item.href || (item.href !== '/' && currentPath.startsWith(item.href));
+          const isActive = currentPath === item.href || (item.href !== '/' && item.href !== '/en/' && currentPath.startsWith(item.href));
           return (
             <a
               href={item.href}
@@ -67,24 +84,62 @@ const currentPath = Astro.url.pathname;
         })}
       </nav>
 
-      <!-- Acciones (ThemeToggle y Botón Rosario de Hoy) -->
+      <!-- Acciones (Language Switcher, ThemeToggle y Botón Rosario de Hoy) -->
       <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Language Switcher -->
+        <div class="inline-flex items-center rounded-lg border border-stone-300 dark:border-slate-700 bg-stone-100/90 dark:bg-slate-900/90 p-0.5 text-xs font-semibold">
+          <a
+            href={lang === 'es' ? undefined : (alternateUrl || '/')}
+            aria-current={lang === 'es' ? 'page' : undefined}
+            aria-label="Ver versión en Español"
+            class={`px-2 py-1 rounded transition-colors ${
+              lang === 'es'
+                ? 'bg-amber-600 text-white shadow-xs pointer-events-none'
+                : 'text-stone-600 dark:text-stone-400 hover:text-slate-900 dark:hover:text-stone-100'
+            }`}
+          >
+            ES
+          </a>
+          <a
+            href={lang === 'en' ? undefined : (alternateUrl || '/en/')}
+            aria-current={lang === 'en' ? 'page' : undefined}
+            aria-label="View English version"
+            class={`px-2 py-1 rounded transition-colors ${
+              lang === 'en'
+                ? 'bg-amber-600 text-white shadow-xs pointer-events-none'
+                : 'text-stone-600 dark:text-stone-400 hover:text-slate-900 dark:hover:text-stone-100'
+            }`}
+          >
+            EN
+          </a>
+        </div>
+
         <ThemeToggle />
         
-        <a
-          href="/rosario/misterios-de-hoy/"
-          class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-full bg-amber-600/10 text-amber-800 dark:bg-amber-400/10 dark:text-amber-300 border border-amber-600/30 hover:bg-amber-600/20 dark:hover:bg-amber-400/20 transition-all"
-        >
-          <span class="w-2 h-2 rounded-full bg-amber-600 dark:bg-amber-400 animate-pulse"></span>
-          Rosario de Hoy
-        </a>
+        {lang === 'es' ? (
+          <a
+            href="/rosario/misterios-de-hoy/"
+            class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-full bg-amber-600/10 text-amber-800 dark:bg-amber-400/10 dark:text-amber-300 border border-amber-600/30 hover:bg-amber-600/20 dark:hover:bg-amber-400/20 transition-all"
+          >
+            <span class="w-2 h-2 rounded-full bg-amber-600 dark:bg-amber-400 animate-pulse"></span>
+            Rosario de Hoy
+          </a>
+        ) : (
+          <a
+            href="/en/interactive-rosary/"
+            class="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 text-xs font-semibold rounded-full bg-amber-600/10 text-amber-800 dark:bg-amber-400/10 dark:text-amber-300 border border-amber-600/30 hover:bg-amber-600/20 dark:hover:bg-amber-400/20 transition-all"
+          >
+            <span class="w-2 h-2 rounded-full bg-amber-600 dark:bg-amber-400 animate-pulse"></span>
+            Pray Rosary
+          </a>
+        )}
 
         <!-- Botón Móvil Menú Hamburguesa -->
         <button
           id="mobile-menu-btn"
           type="button"
           class="lg:hidden p-2 rounded-lg text-stone-700 dark:text-stone-300 hover:bg-stone-200/60 dark:hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-amber-600"
-          aria-label="Abrir menú de navegación"
+          aria-label={lang === 'en' ? 'Open navigation menu' : 'Abrir menú de navegación'}
           aria-expanded="false"
           aria-controls="mobile-menu"
         >
@@ -114,12 +169,21 @@ const currentPath = Astro.url.pathname;
       </a>
     ))}
     <div class="pt-3 border-t border-stone-200 dark:border-slate-800">
-      <a
-        href="/rosario/misterios-de-hoy/"
-        class="flex items-center justify-center gap-2 w-full py-2.5 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-sm hover:bg-amber-700 transition-colors"
-      >
-        Rezar el Rosario de Hoy
-      </a>
+      {lang === 'es' ? (
+        <a
+          href="/rosario/misterios-de-hoy/"
+          class="flex items-center justify-center gap-2 w-full py-2.5 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-sm hover:bg-amber-700 transition-colors"
+        >
+          Rezar el Rosario de Hoy
+        </a>
+      ) : (
+        <a
+          href="/en/interactive-rosary/"
+          class="flex items-center justify-center gap-2 w-full py-2.5 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-sm hover:bg-amber-700 transition-colors"
+        >
+          Pray the Interactive Rosary
+        </a>
+      )}
     </div>
   </div>
 </header>

@@ -7,6 +7,8 @@ interface Props {
   articleModified?: Date;
   ogType?: 'website' | 'article';
   noindex?: boolean;
+  lang?: 'es' | 'en';
+  alternateLinks?: { href: string; hreflang: string }[];
 }
 
 const {
@@ -17,10 +19,16 @@ const {
   articleModified,
   ogType = 'website',
   noindex = false,
+  lang = 'es',
+  alternateLinks = [],
 } = Astro.props;
 
-const siteBrand = 'Razón y Asombro';
-const fullTitle = title.includes(siteBrand) ? title : `${title} | ${siteBrand}`;
+const siteBrand = lang === 'en' ? 'Reason & Wonder' : 'Razón y Asombro';
+const normalizedTitle = title.trim();
+const hasBrand = normalizedTitle.includes('Razón y Asombro') || 
+                 normalizedTitle.includes('Reason & Wonder') ||
+                 normalizedTitle.includes('Reason &amp; Wonder');
+const fullTitle = hasBrand ? normalizedTitle : `${normalizedTitle} | ${siteBrand}`;
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
@@ -40,6 +48,11 @@ const metaDescription = description.length > 165
 <!-- Canónica -->
 <link rel="canonical" href={canonicalURL} />
 
+<!-- Etiquetas hreflang recíprocas para internacionalización -->
+{alternateLinks && alternateLinks.map((alt) => (
+  <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+))}
+
 <!-- Título y Descripción -->
 <title>{fullTitle}</title>
 <meta name="title" content={fullTitle} />
@@ -58,7 +71,7 @@ const metaDescription = description.length > 165
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={metaDescription} />
 <meta property="og:image" content={ogImageURL} />
-<meta property="og:locale" content="es_ES" />
+<meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_ES'} />
 <meta property="og:site_name" content={siteBrand} />
 
 {articleDate && (

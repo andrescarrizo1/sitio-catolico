@@ -16,6 +16,15 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const isFaustina = entry.id === 'faustina-kowalska';
+const alternateLinks = isFaustina ? [
+  { hreflang: 'es', href: `${siteUrl}/santos/faustina-kowalska/` },
+  { hreflang: 'en', href: `${siteUrl}/en/divine-mercy-chaplet/` },
+  { hreflang: 'x-default', href: `${siteUrl}/santos/faustina-kowalska/` },
+] : undefined;
+const alternateUrl = isFaustina ? '/en/divine-mercy-chaplet/' : undefined;
 ---
 
 <ArticleLayout
@@ -33,6 +42,8 @@ const { Content } = await render(entry);
   autor={entry.data.autor}
   revisadoPor={entry.data.revisado_por}
   imagen={entry.data.imagen}
+  alternateLinks={alternateLinks}
+  alternateUrl={alternateUrl}
 >
   <Content components={{ ArticleImage }} />
 </ArticleLayout>

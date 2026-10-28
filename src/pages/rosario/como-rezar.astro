@@ -51,12 +51,20 @@ const howToSchema = {
     }
   ]
 };
+
+const alternateLinks = [
+  { hreflang: 'es', href: `${siteUrl}/rosario/como-rezar/` },
+  { hreflang: 'en', href: `${siteUrl}/en/rosary/how-to-pray/` },
+  { hreflang: 'x-default', href: `${siteUrl}/rosario/como-rezar/` },
+];
 ---
 
 <BaseLayout
   title="Cómo Rezar el Santo Rosario Paso a Paso | Guía Completa para Principiantes"
   description="Guía paso a paso para rezar el Santo Rosario católico: orden de las oraciones, Credo, Padre Nuestro, Ave María, misterios y letanías para principiantes."
   image="/images/rosario-manos-devocion.jpg"
+  alternateLinks={alternateLinks}
+  alternateUrl="/en/rosary/how-to-pray/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 

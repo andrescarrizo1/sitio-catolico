@@ -12,13 +12,27 @@ interface Props {
   articleModified?: Date;
   ogType?: 'website' | 'article';
   noindex?: boolean;
+  lang?: 'es' | 'en';
+  alternateLinks?: { href: string; hreflang: string }[];
+  alternateUrl?: string;
 }
 
-const { title, description, image, articleDate, articleModified, ogType, noindex } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  articleDate,
+  articleModified,
+  ogType,
+  noindex,
+  lang = 'es',
+  alternateLinks,
+  alternateUrl
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
   <head>
     <BaseHead
       title={title}
@@ -28,6 +42,8 @@ const { title, description, image, articleDate, articleModified, ogType, noindex
       articleModified={articleModified}
       ogType={ogType}
       noindex={noindex}
+      lang={lang}
+      alternateLinks={alternateLinks}
     />
   </head>
   <body class="min-h-screen flex flex-col bg-stone-50 text-slate-900 dark:bg-slate-950 dark:text-stone-100 transition-colors duration-200">
@@ -36,12 +52,12 @@ const { title, description, image, articleDate, articleModified, ogType, noindex
       href="#main-content"
       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-amber-700 focus:text-white focus:rounded-lg focus:shadow-lg focus:font-semibold focus:outline-none"
     >
-      Saltar al contenido principal
+      {lang === 'en' ? 'Skip to main content' : 'Saltar al contenido principal'}
     </a>
-    <Header />
+    <Header lang={lang} alternateUrl={alternateUrl} />
     <main id="main-content" class="flex-grow">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>

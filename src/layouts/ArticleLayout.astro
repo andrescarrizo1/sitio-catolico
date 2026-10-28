@@ -25,6 +25,9 @@ interface Props {
     licencia: string;
     url_fuente: string;
   };
+  lang?: 'es' | 'en';
+  alternateLinks?: { href: string; hreflang: string }[];
+  alternateUrl?: string;
 }
 
 const {
@@ -39,6 +42,9 @@ const {
   autor = 'Equipo Editorial',
   revisadoPor = 'Revisión Teológica Interna',
   imagen,
+  lang = 'es',
+  alternateLinks,
+  alternateUrl,
 } = Astro.props;
 
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
@@ -84,6 +90,9 @@ const articleSchema = {
   articleDate={fechaPublicacion}
   articleModified={fechaRevision}
   ogType="article"
+  lang={lang}
+  alternateLinks={alternateLinks}
+  alternateUrl={alternateUrl}
 >
   <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
     

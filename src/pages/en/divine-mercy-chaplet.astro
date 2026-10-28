@@ -1,0 +1,249 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const currentURL = `${siteUrl}/en/divine-mercy-chaplet/`;
+
+const alternateLinks = [
+  { hreflang: 'es', href: `${siteUrl}/santos/faustina-kowalska/` },
+  { hreflang: 'en', href: `${siteUrl}/en/divine-mercy-chaplet/` },
+  { hreflang: 'x-default', href: `${siteUrl}/santos/faustina-kowalska/` },
+];
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': currentURL,
+  },
+  headline: 'The Chaplet of Divine Mercy: Prayers, Promises & Theological History',
+  description: 'How to pray the Chaplet of Divine Mercy on standard rosary beads. History of St. Faustina Kowalska, the 3 PM Hour, and the 14 promises of Jesus.',
+  image: [`${siteUrl}/og-default.jpg`],
+  url: currentURL,
+  datePublished: '2026-01-01T00:00:00Z',
+  dateModified: '2026-03-20T00:00:00Z',
+  author: [
+    {
+      '@type': 'Organization',
+      name: 'Reason & Wonder Devotional Team',
+      url: `${siteUrl}/autor/`,
+    },
+  ],
+  publisher: {
+    '@type': 'Organization',
+    name: 'Reason & Wonder',
+    url: `${siteUrl}/en/`,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/favicon.svg`,
+    },
+  },
+};
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to Pray the Chaplet of Divine Mercy on Standard Rosary Beads',
+  description: 'Step-by-step instructions to pray the Chaplet of Divine Mercy revealed to St. Faustina Kowalska.',
+  step: [
+    {
+      '@type': 'HowToStep',
+      position: 1,
+      name: 'Sign of the Cross and Opening Prayer',
+      text: 'Make the Sign of the Cross and recite the opening prayer: «You expired, Jesus, but the source of life gushed forth for souls, and the ocean of mercy opened up for the whole world...»'
+    },
+    {
+      '@type': 'HowToStep',
+      position: 2,
+      name: 'Initial Prayers: Our Father, Hail Mary, and Apostles Creed',
+      text: 'Pray one Our Father, one Hail Mary, and the Apostles’ Creed on the opening pendant beads.'
+    },
+    {
+      '@type': 'HowToStep',
+      position: 3,
+      name: 'On the Large Bead (The Eternal Father)',
+      text: 'Pray: «Eternal Father, I offer you the Body and Blood, Soul and Divinity of Your dearly beloved Son, Our Lord, Jesus Christ, in atonement for our sins and those of the whole world.»'
+    },
+    {
+      '@type': 'HowToStep',
+      position: 4,
+      name: 'On the 10 Small Beads (For the Sake of His Sorrowful Passion)',
+      text: 'On each of the 10 small beads, pray: «For the sake of His sorrowful Passion, have mercy on us and on the whole world.»'
+    },
+    {
+      '@type': 'HowToStep',
+      position: 5,
+      name: 'Repeat for 5 Decades and Closing Holy God (Trisagion)',
+      text: 'Repeat steps 3 and 4 for all five decades. Conclude by chanting or reciting three times: «Holy God, Holy Mighty One, Holy Immortal One, have mercy on us and on the whole world.» Followed by the closing prayer: «Jesus, I trust in You!»'
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="The Chaplet of Divine Mercy: Prayers, Promises & History | Reason & Wonder"
+  description="How to pray the Chaplet of Divine Mercy on standard rosary beads. History of St. Faustina Kowalska, the 3 PM Hour, and the 14 promises of Jesus."
+  lang="en"
+  ogType="article"
+  alternateLinks={alternateLinks}
+  alternateUrl="/santos/faustina-kowalska/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Saints & Mystics' },
+        { label: 'Chaplet of Divine Mercy' }
+      ]}
+    />
+
+    <header class="mt-6 mb-10 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Catholic Devotion &middot; Magisterium &amp; Mysticism
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.15]">
+        The Chaplet of Divine Mercy: Prayers, Promises &amp; History
+      </h1>
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        Dictated by Jesus to Saint Maria Faustina Kowalska in 1935, the Chaplet is a powerful intercessory prayer utilizing ordinary rosary beads to invoke the saving merit of Christ's Passion upon a troubled world.
+      </p>
+
+      <div class="pt-2 flex flex-wrap items-center gap-4 text-xs text-stone-500 dark:text-stone-400 border-t border-stone-200 dark:border-slate-800">
+        <span>Theological Source: Diary of St. Faustina</span>
+        <span>&middot;</span>
+        <span>Canonical Feast: Divine Mercy Sunday</span>
+        <span>&middot;</span>
+        <a href="/santos/faustina-kowalska/" class="text-amber-700 dark:text-amber-400 underline underline-offset-2">
+          Leer semblanza en Español &rarr;
+        </a>
+      </div>
+    </header>
+
+    <!-- Interactive Callout -->
+    <div class="mb-10 p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="space-y-1 text-center sm:text-left">
+        <p class="font-serif font-bold text-amber-900 dark:text-amber-300 text-sm">
+          Want to pray the Chaplet interactively?
+        </p>
+        <p class="text-xs text-amber-800/80 dark:text-amber-400">
+          Our online rosary application includes a dedicated Chaplet of Divine Mercy mode with real-time decade tracking.
+        </p>
+      </div>
+      <a
+        href="/en/interactive-rosary/"
+        class="px-4 py-2 text-xs font-semibold rounded-xl bg-amber-700 hover:bg-amber-600 text-white shadow-sm transition-colors whitespace-nowrap"
+      >
+        Pray the Chaplet Online &rarr;
+      </a>
+    </div>
+
+    <!-- Article Content -->
+    <div class="prose prose-stone dark:prose-invert max-w-none space-y-8 font-reading text-slate-800 dark:text-stone-200 leading-relaxed">
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          1. Historical Origins: Vilnius, September 1935
+        </h2>
+        <p>
+          On September 13, 1935, Sister Faustina Kowalska, an uneducated Polish religious sister living in the convent of the Congregation of the Sisters of Our Lady of Mercy in Vilnius (now Lithuania), experienced a vision of an Angel of Wrath sent by God to chastise the earth.
+        </p>
+        <p>
+          As recorded in entry 474 of her spiritual <em>Diary</em>:
+        </p>
+        <blockquote class="p-4 border-l-4 border-amber-600 bg-stone-100 dark:bg-slate-900 italic text-stone-700 dark:text-stone-300 my-4 text-sm">
+          «I began to plead with God for the world with words heard interiorly in my spirit. As I was praying in this manner, I saw the Angel’s helplessness: he could not carry out the just punishment which was rightly due for sins. Never before had I prayed with such inner power as I did then.»
+        </blockquote>
+        <p>
+          The next morning, upon entering the convent chapel, Christ interiorly taught Faustina the exact structure of the Chaplet, commanding her to pray it unceasingly and to promote it to priests and faithful worldwide.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          2. The Hour of Great Mercy (3:00 PM)
+        </h2>
+        <p>
+          Jesus asked that special reverence be given to the three o'clock hour in the afternoon&mdash;the exact hour of His death on Mount Calvary:
+        </p>
+        <blockquote class="p-4 border-l-4 border-amber-600 bg-stone-100 dark:bg-slate-900 italic text-stone-700 dark:text-stone-300 my-4 text-sm">
+          «At three o’clock, implore My mercy, especially for sinners; and, if only for a brief moment, immerse yourself in My Passion, particularly in My abandonment at the moment of agony. This is the hour of great mercy for the whole world... in this hour, I will refuse nothing to the soul that makes a request about My Passion.» (Diary, 1320)
+        </blockquote>
+      </section>
+
+      <section class="space-y-6">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          3. How to Pray the Chaplet Step by Step
+        </h2>
+        <p class="text-sm">
+          The Chaplet is prayed on ordinary Dominican rosary beads:
+        </p>
+
+        <div class="space-y-4">
+          <div class="p-4 rounded-xl border border-stone-200 dark:border-slate-800 space-y-1 text-sm">
+            <span class="font-bold text-amber-700 dark:text-amber-400">Opening Sign of the Cross &amp; Prayer:</span>
+            <p>
+              In the name of the Father, and of the Son, and of the Holy Spirit. Amen.
+              <br /><br />
+              <em>«You expired, Jesus, but the source of life gushed forth for souls, and the ocean of mercy opened up for the whole world. O Fount of Life, unfathomable Divine Mercy, envelop the whole world and empty Yourself out upon us.»</em>
+              <br /><br />
+              <em>«O Blood and Water, which gushed forth from the Heart of Jesus as a fount of mercy for us, I trust in You!»</em> (Repeat 3 times)
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-stone-200 dark:border-slate-800 space-y-1 text-sm">
+            <span class="font-bold text-amber-700 dark:text-amber-400">Preparatory Beads:</span>
+            <p>
+              Recite one <strong>Our Father</strong>, one <strong>Hail Mary</strong>, and the <strong>Apostles’ Creed</strong>.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-stone-200 dark:border-slate-800 space-y-1 text-sm">
+            <span class="font-bold text-amber-700 dark:text-amber-400">On the 5 Decades:</span>
+            <p>
+              <strong>On each large bead (Our Father bead):</strong>
+              <br />
+              <em>«Eternal Father, I offer you the Body and Blood, Soul and Divinity of Your dearly beloved Son, Our Lord, Jesus Christ, in atonement for our sins and those of the whole world.»</em>
+              <br /><br />
+              <strong>On each of the 10 small beads (Hail Mary beads):</strong>
+              <br />
+              <em>«For the sake of His sorrowful Passion, have mercy on us and on the whole world.»</em>
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl border border-stone-200 dark:border-slate-800 space-y-1 text-sm">
+            <span class="font-bold text-amber-700 dark:text-amber-400">Concluding Doxology (Trisagion):</span>
+            <p>
+              After all five decades, repeat three times:
+              <br />
+              <em>«Holy God, Holy Mighty One, Holy Immortal One, have mercy on us and on the whole world.»</em>
+              <br /><br />
+              <strong>Closing Prayer:</strong>
+              <br />
+              <em>«Eternal God, in whom mercy is endless and the treasury of compassion inexhaustible, look kindly upon us and increase Your mercy in us, that in difficult moments we might not despair nor become despondent, but with great confidence submit ourselves to Your holy will, which is Love and Mercy itself. Amen.»</em>
+              <br /><br />
+              <em>«Jesus, I trust in You!»</em> (3 times)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          4. The Extraordinary Promises of Christ
+        </h2>
+        <p>
+          Throughout Saint Faustina’s Diary, Jesus attached fourteen specific spiritual promises to the devout recitation of the Chaplet:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-sm text-stone-700 dark:text-stone-300">
+          <li><strong>Grace for the Dying:</strong> <em>«When they say this chaplet in the presence of the dying, I will stand between My Father and the dying person, not as the just Judge but as the merciful Savior.»</em> (Diary, 1541)</li>
+          <li><strong>Protection in Life:</strong> <em>«Souls that say this chaplet will be embraced by My mercy during their lifetime and especially at the hour of their death.»</em> (Diary, 754)</li>
+          <li><strong>Salvation for the Hardened:</strong> <em>«Even if there were a sinner most hardened, if he were to recite this chaplet only once, he would receive grace from My infinite mercy.»</em> (Diary, 687)</li>
+          <li><strong>Answer to Prayers:</strong> <em>«It pleases Me to grant everything they ask of Me by saying the chaplet... when it is compatible with My will.»</em> (Diary, 1541, 1731)</li>
+        </ul>
+      </section>
+    </div>
+  </article>
+</BaseLayout>

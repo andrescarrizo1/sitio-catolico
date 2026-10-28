@@ -707,8 +707,9 @@ export default {
     const response = await env.ASSETS.fetch(request);
     if (response.status === 404) {
       const notFoundUrl = new URL('/404.html', request.url);
-      const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl.toString(), request));
-      return new Response(notFoundRes.body, {
+      const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl.toString()));
+      const htmlText = await notFoundRes.text();
+      return new Response(htmlText, {
         status: 404,
         statusText: 'Not Found',
         headers: {

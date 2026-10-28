@@ -1,0 +1,233 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../../components/global/Breadcrumbs.astro';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+
+const alternateLinks = [
+  { hreflang: 'es', href: `${siteUrl}/rosario/como-rezar/` },
+  { hreflang: 'en', href: `${siteUrl}/en/rosary/how-to-pray/` },
+  { hreflang: 'x-default', href: `${siteUrl}/rosario/como-rezar/` },
+];
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "How to Pray the Catholic Rosary: Step-by-Step Complete Guide",
+  "description": "Comprehensive tutorial on praying the Catholic Holy Rosary: prayer sequence, bead layout, mysteries schedule, and sacred prayers.",
+  "image": `${siteUrl}/images/rosario-manos-devocion.jpg`,
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Sign of the Cross & Apostles' Creed",
+      "text": "Hold the crucifix with your right hand. Make the Sign of the Cross saying: 'In the name of the Father, and of the Son, and of the Holy Spirit. Amen.' Then pray the Apostles' Creed."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Initial Beads: Our Father and Three Hail Marys",
+      "text": "On the first large bead above the crucifix, pray one Our Father. On the next three small beads, pray three Hail Marys for an increase in Faith, Hope, and Charity. Conclude with one Glory Be."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "First Mystery and Our Father",
+      "text": "Announce the first mystery according to the day of the week. Meditate briefly on the scriptural scene, then pray one Our Father on the large bead or medal."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Ten Hail Marys of the Decade",
+      "text": "Pray one Hail Mary on each of the ten small decade beads while keeping your mind focused on the saving mystery of Christ."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 5,
+      "name": "Glory Be and Fatima Prayer",
+      "text": "Following the tenth Hail Mary, pray the Glory Be and the Fatima Prayer: 'O My Jesus, forgive us our sins, save us from the fires of hell, lead all souls to Heaven, especially those most in need of Thy mercy.'"
+    },
+    {
+      "@type": "HowToStep",
+      "position": 6,
+      "name": "Remaining Four Decades and Hail Holy Queen",
+      "text": "Repeat steps 3 through 5 for the second, third, fourth, and fifth mysteries. After the fifth decade, conclude with the Hail Holy Queen (Salve Regina) and the Concluding Prayer."
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="How to Pray the Rosary Step by Step: Complete Beginner Guide | Reason & Wonder"
+  description="Step-by-step tutorial on praying the Catholic Holy Rosary. Bead structure, prayers (Apostles' Creed, Our Father, Hail Mary), and daily mysteries schedule."
+  image="/images/rosario-manos-devocion.jpg"
+  lang="en"
+  alternateLinks={alternateLinks}
+  alternateUrl="/rosario/como-rezar/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Interactive Rosary', href: '/en/interactive-rosary/' },
+        { label: 'How to Pray the Rosary' }
+      ]}
+    />
+
+    <article class="mt-8 space-y-10">
+      <header class="space-y-4">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+          Canonical Catholic Guide &middot; Step by Step
+        </span>
+        <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+          How to Pray the Holy Rosary
+        </h1>
+        <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+          The Holy Rosary is one of the most treasured devotions in the Catholic Church. Below is a complete, clear walkthrough of its structure, prayers, and biblical contemplation.
+        </p>
+      </header>
+
+      <!-- Interactive Callout -->
+      <div class="p-5 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="space-y-1 text-center sm:text-left">
+          <p class="font-serif font-bold text-amber-900 dark:text-amber-300 text-sm">
+            Prefer praying with real-time visual assistance?
+          </p>
+          <p class="text-xs text-amber-800/80 dark:text-amber-400">
+            Our interactive bead visualizer automatically selects today’s mysteries and guides you bead by bead.
+          </p>
+        </div>
+        <a
+          href="/en/interactive-rosary/"
+          class="px-4 py-2 text-xs font-semibold rounded-xl bg-amber-700 hover:bg-amber-600 text-white shadow-sm transition-colors whitespace-nowrap"
+        >
+          Open Visualizer &rarr;
+        </a>
+      </div>
+
+      <!-- Rosary Structure Breakdown -->
+      <section class="space-y-6">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          The Anatomy of a Catholic Rosary
+        </h2>
+        <p class="text-sm text-stone-600 dark:text-stone-400 font-reading leading-relaxed">
+          A standard Dominican Rosary consists of 59 beads arranged in a specific sequence:
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">
+              1. The Pendant Section
+            </h3>
+            <p class="text-xs text-stone-600 dark:text-stone-400">
+              Crucifix (Sign of the Cross &amp; Apostles' Creed) &rarr; 1 large bead (Our Father) &rarr; 3 small beads (Hail Marys for Faith, Hope, Charity) &rarr; 1 Glory Be &rarr; Center Medal.
+            </p>
+          </div>
+          <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">
+              2. The 5 Decades Loop
+            </h3>
+            <p class="text-xs text-stone-600 dark:text-stone-400">
+              Each decade consists of 1 large bead (Our Father) followed by 10 small beads (Hail Marys), concluding with 1 Glory Be and the Fatima Prayer.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step-by-Step Instructions -->
+      <section class="space-y-8">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          Step-by-Step Prayer Sequence
+        </h2>
+
+        <div class="space-y-6">
+          <div class="p-5 rounded-xl border border-stone-200 dark:border-slate-800 space-y-2">
+            <span class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Step 1 &middot; At the Crucifix</span>
+            <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100">Sign of the Cross and Apostles' Creed</h3>
+            <p class="text-sm text-stone-600 dark:text-stone-400 font-reading">
+              Holding the crucifix in your right hand, make the Sign of the Cross: <em>«In the name of the Father, and of the Son, and of the Holy Spirit. Amen.»</em> Then recite the <strong>Apostles’ Creed</strong> to affirm the foundational truths of the faith.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl border border-stone-200 dark:border-slate-800 space-y-2">
+            <span class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Step 2 &middot; On the First 4 Beads</span>
+            <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100">One Our Father &amp; Three Hail Marys</h3>
+            <p class="text-sm text-stone-600 dark:text-stone-400 font-reading">
+              On the first large bead, pray the <strong>Lord’s Prayer (Our Father)</strong> for the intentions of the Holy Father. On the next three small beads, pray three <strong>Hail Marys</strong> asking God for an increase in the theological virtues of Faith, Hope, and Charity. Conclude with one <strong>Glory Be</strong>.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl border border-stone-200 dark:border-slate-800 space-y-2">
+            <span class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Step 3 &middot; The 5 Decades</span>
+            <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100">Announcing the Mysteries and Meditating</h3>
+            <p class="text-sm text-stone-600 dark:text-stone-400 font-reading">
+              For each decade:
+            </p>
+            <ul class="text-sm space-y-1 list-disc list-inside text-stone-600 dark:text-stone-400">
+              <li>Announce the mystery (e.g. <em>«The First Joyful Mystery: The Annunciation»</em>).</li>
+              <li>Pause for a moment of silent reflection or read the biblical passage.</li>
+              <li>Pray one <strong>Our Father</strong> on the large bead.</li>
+              <li>Pray ten <strong>Hail Marys</strong> on the ten small beads while meditating on the mystery.</li>
+              <li>Pray one <strong>Glory Be</strong> followed by the <strong>Fatima Prayer</strong>.</li>
+            </ul>
+          </div>
+
+          <div class="p-5 rounded-xl border border-stone-200 dark:border-slate-800 space-y-2">
+            <span class="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider">Step 4 &middot; Concluding Prayers</span>
+            <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100">Hail Holy Queen (Salve Regina)</h3>
+            <p class="text-sm text-stone-600 dark:text-stone-400 font-reading">
+              After finishing all five decades, hold the centerpiece medal and pray the <strong>Hail Holy Queen (Salve Regina)</strong>, followed by the Concluding Prayer and the Sign of the Cross.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Essential Prayers Section -->
+      <section class="space-y-6 pt-6 border-t border-stone-200 dark:border-slate-800">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          The Traditional Prayers of the Rosary
+        </h2>
+
+        <div class="space-y-6">
+          <div class="p-5 rounded-xl bg-stone-50 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-serif font-bold text-slate-950 dark:text-stone-100 text-sm">The Apostles' Creed</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+              I believe in God, the Father Almighty, Creator of heaven and earth, and in Jesus Christ, His only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried; He descended into hell; on the third day He rose again from the dead; He ascended into heaven, and is seated at the right hand of God the Father Almighty; from there He will come to judge the living and the dead. I believe in the Holy Spirit, the holy catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-stone-50 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-serif font-bold text-slate-950 dark:text-stone-100 text-sm">The Our Father (Lord's Prayer)</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+              Our Father, who art in heaven, hallowed be Thy name; Thy kingdom come; Thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-stone-50 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-serif font-bold text-slate-950 dark:text-stone-100 text-sm">The Hail Mary</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+              Hail Mary, full of grace, the Lord is with thee; blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-stone-50 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-serif font-bold text-slate-950 dark:text-stone-100 text-sm">Glory Be &amp; Fatima Prayer</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+              Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen.
+              <br /><br />
+              <em>«O my Jesus, forgive us our sins, save us from the fires of hell, lead all souls to Heaven, especially those most in need of Thy mercy.»</em>
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-stone-50 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-2">
+            <h3 class="font-serif font-bold text-slate-950 dark:text-stone-100 text-sm">Hail Holy Queen (Salve Regina)</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+              Hail, Holy Queen, Mother of Mercy, our life, our sweetness, and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary. Pray for us, O Holy Mother of God, that we may be made worthy of the promises of Christ. Amen.
+            </p>
+          </div>
+        </div>
+      </section>
+    </article>
+  </div>
+</BaseLayout>

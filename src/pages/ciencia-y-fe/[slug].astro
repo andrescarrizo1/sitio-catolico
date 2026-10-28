@@ -13,6 +13,15 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const isShroud = entry.id === 'sabana-santa-de-turin';
+const alternateLinks = isShroud ? [
+  { hreflang: 'es', href: `${siteUrl}/ciencia-y-fe/sabana-santa-de-turin/` },
+  { hreflang: 'en', href: `${siteUrl}/en/shroud-of-turin/` },
+  { hreflang: 'x-default', href: `${siteUrl}/ciencia-y-fe/sabana-santa-de-turin/` },
+] : undefined;
+const alternateUrl = isShroud ? '/en/shroud-of-turin/' : undefined;
 ---
 
 <FactLayout
@@ -36,6 +45,8 @@ const { Content } = await render(entry);
   autor={entry.data.autor}
   revisadoPor={entry.data.revisado_por}
   imagen={entry.data.imagen}
+  alternateLinks={alternateLinks}
+  alternateUrl={alternateUrl}
 >
   <Content components={{ ArticleImage }} />
 </FactLayout>

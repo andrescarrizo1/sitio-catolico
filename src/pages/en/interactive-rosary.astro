@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RosaryApp from '../../components/rosario/RosaryApp.tsx';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import { Image } from 'astro:assets';
+import rosarioHeroImg from '../../assets/rosario/rosario-manos-devocion.jpg';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+
+const alternateLinks = [
+  { hreflang: 'es', href: `${siteUrl}/rosario/` },
+  { hreflang: 'en', href: `${siteUrl}/en/interactive-rosary/` },
+  { hreflang: 'x-default', href: `${siteUrl}/rosario/` },
+];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which mysteries of the Rosary are prayed today?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "According to the official liturgical distribution established by Pope St. John Paul II in the apostolic letter Rosarium Virginis Mariae (2002): Mondays and Saturdays are Joyful Mysteries; Tuesdays and Fridays are Sorrowful Mysteries; Wednesdays and Sundays are Glorious Mysteries; and Thursdays are Luminous Mysteries."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many beads are on a traditional Catholic Rosary?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A traditional five-decade Catholic rosary has 59 beads: a pendant section with a crucifix, one large bead (Our Father), three small beads (Hail Marys for faith, hope, and charity), and a medal connector; followed by 5 decades, each consisting of one large bead for the Our Father and ten small beads for the Hail Marys."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this interactive Rosary work offline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The application uses Progressive Web App (PWA) client-side storage so that all biblical texts, liturgical prayers, and interactive diagram logic run seamlessly in airplane mode or in churches without cell coverage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the spiritual purpose of meditating on the Rosary?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Magisterium of the Catholic Church teaches that the Holy Rosary is a compendium of the entire Gospel. It is not mechanical repetition, but quiet contemplative immersion into the saving mysteries of Christ Jesus through the eyes and Immaculate Heart of Mary."
+      }
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Interactive Catholic Rosary & Bead Visualizer | Reason & Wonder"
+  description="Pray the Holy Rosary with an interactive bead-by-bead visual guide. Automatic daily mystery detection, Latin and English prayers, and offline capability."
+  image="/images/rosario-manos-devocion.jpg"
+  lang="en"
+  alternateLinks={alternateLinks}
+  alternateUrl="/rosario/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
+    <Breadcrumbs crumbs={[{ label: 'Interactive Rosary' }]} />
+
+    <!-- Devotional Hero Header -->
+    <header class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-stone-900 via-slate-950 to-stone-950 text-white p-6 sm:p-10 lg:p-12 shadow-xl border border-stone-800">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+        <div class="lg:col-span-7 space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+            Guided Prayer Mode &middot; Real-Time Bead Visualizer
+          </div>
+
+          <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-tight">
+            The Interactive Holy Rosary
+          </h1>
+
+          <p class="text-sm sm:text-base text-stone-300 max-w-xl font-reading leading-relaxed">
+            Contemplate the mysteries of salvation through the hands of the Blessed Virgin Mary. Follow your progression bead by bead with an interactive visual diagram, gentle sacred chimes, and contemplative biblical texts.
+          </p>
+
+          <div class="pt-2 flex flex-wrap items-center gap-4 text-xs font-medium">
+            <a href="/en/rosary/how-to-pray/" class="text-amber-400 hover:text-amber-300 underline underline-offset-4">
+              Step-by-Step Guide: How to Pray the Rosary &rarr;
+            </a>
+            <span class="text-stone-500">&middot;</span>
+            <a href="/en/divine-mercy-chaplet/" class="text-amber-400 hover:text-amber-300 underline underline-offset-4">
+              Chaplet of Divine Mercy Guide &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex justify-center">
+          <div class="relative w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl border-2 border-amber-500/30 group">
+            <Image
+              src={rosarioHeroImg}
+              alt="Hands holding a wooden Catholic rosary over an open Holy Bible"
+              widths={[320, 480, 640]}
+              sizes="(max-width: 640px) 100vw, 400px"
+              class="w-full h-56 sm:h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="eager"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-4">
+              <span class="text-[11px] text-stone-300 font-serif italic">
+                «Prayer is the key of the morning and the bolt of the evening»
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Interactive App Component -->
+    <main class="my-8">
+      <RosaryApp client:load />
+    </main>
+
+    <!-- Doctrinal & Biblical Reference Section for SEO -->
+    <section class="mt-16 pt-12 border-t border-stone-200 dark:border-slate-800 space-y-12">
+      <div class="max-w-3xl space-y-3">
+        <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          Catechesis &amp; Biblical Foundation
+        </span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          The Twenty Mysteries of the Holy Rosary
+        </h2>
+        <p class="text-sm text-stone-600 dark:text-stone-400 font-reading leading-relaxed">
+          Far from empty repetition, the Rosary is fundamentally Christocentric and biblical. Each mystery opens a window into the saving life, ministry, passion, and resurrection of Our Lord Jesus Christ.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Joyful -->
+        <article class="p-6 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 m-0">
+              The Joyful Mysteries
+            </h3>
+            <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300">
+              Mondays &amp; Saturdays
+            </span>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400">
+            Celebrating the Incarnation and hidden life of Jesus:
+          </p>
+          <ol class="text-xs space-y-2 list-decimal list-inside text-stone-700 dark:text-stone-300">
+            <li><strong>The Annunciation</strong> &mdash; Luke 1:26-38</li>
+            <li><strong>The Visitation</strong> &mdash; Luke 1:39-56</li>
+            <li><strong>The Nativity</strong> &mdash; Luke 2:1-20</li>
+            <li><strong>The Presentation in the Temple</strong> &mdash; Luke 2:21-38</li>
+            <li><strong>The Finding of the Child Jesus in the Temple</strong> &mdash; Luke 2:41-52</li>
+          </ol>
+        </article>
+
+        <!-- Sorrowful -->
+        <article class="p-6 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 m-0">
+              The Sorrowful Mysteries
+            </h3>
+            <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300">
+              Tuesdays &amp; Fridays
+            </span>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400">
+            Contemplating the redemptive Passion and sacrifice of Christ:
+          </p>
+          <ol class="text-xs space-y-2 list-decimal list-inside text-stone-700 dark:text-stone-300">
+            <li><strong>The Agony in the Garden</strong> &mdash; Matthew 26:36-46</li>
+            <li><strong>The Scourging at the Pillar</strong> &mdash; John 19:1-3</li>
+            <li><strong>The Crowning with Thorns</strong> &mdash; Matthew 27:27-31</li>
+            <li><strong>The Carrying of the Cross</strong> &mdash; Luke 23:26-32</li>
+            <li><strong>The Crucifixion and Death of Our Lord</strong> &mdash; John 19:17-30</li>
+          </ol>
+        </article>
+
+        <!-- Glorious -->
+        <article class="p-6 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 m-0">
+              The Glorious Mysteries
+            </h3>
+            <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300">
+              Wednesdays &amp; Sundays
+            </span>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400">
+            Rejoicing in Christ's victory over sin and death:
+          </p>
+          <ol class="text-xs space-y-2 list-decimal list-inside text-stone-700 dark:text-stone-300">
+            <li><strong>The Resurrection of Jesus Christ</strong> &mdash; Mark 16:1-8</li>
+            <li><strong>The Ascension into Heaven</strong> &mdash; Acts 1:6-11</li>
+            <li><strong>The Descent of the Holy Spirit at Pentecost</strong> &mdash; Acts 2:1-13</li>
+            <li><strong>The Assumption of the Blessed Virgin Mary</strong> &mdash; Munificentissimus Deus</li>
+            <li><strong>The Coronation of Mary Queen of Heaven</strong> &mdash; Revelation 12:1</li>
+          </ol>
+        </article>
+
+        <!-- Luminous -->
+        <article class="p-6 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 m-0">
+              The Luminous Mysteries
+            </h3>
+            <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300">
+              Thursdays (St. John Paul II)
+            </span>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400">
+            Reflecting on the public ministry and revelations of the Light:
+          </p>
+          <ol class="text-xs space-y-2 list-decimal list-inside text-stone-700 dark:text-stone-300">
+            <li><strong>The Baptism in the Jordan</strong> &mdash; Matthew 3:13-17</li>
+            <li><strong>The Wedding at Cana</strong> &mdash; John 2:1-11</li>
+            <li><strong>The Proclamation of the Kingdom</strong> &mdash; Mark 1:14-15</li>
+            <li><strong>The Transfiguration</strong> &mdash; Luke 9:28-36</li>
+            <li><strong>The Institution of the Holy Eucharist</strong> &mdash; Matthew 26:26-29</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
