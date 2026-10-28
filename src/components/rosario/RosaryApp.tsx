@@ -1,21 +1,15 @@
 import { useState, useEffect } from 'preact/hooks';
 import RosaryVisualizer, { type VisualBead } from './RosaryVisualizer';
+import {
+  type RosaryLang,
+  type MysterySet,
+  type PrayerItem,
+  MISTERIOS_DATA_EN,
+  CORONILLA_INTENCIONES_EN,
+  ORACIONES_DATA,
+  UI_I18N,
+} from './rosaryI18n';
 
-// Definición de los 4 juegos de Misterios con meditaciones completas
-interface MysteryDetail {
-  numeroRomano: string;
-  titulo: string;
-  pasaje: string;
-  fruto: string;
-  meditacion: string;
-}
-
-interface MysterySet {
-  nombre: string;
-  diasOrdinarios: string;
-  subtitulo: string;
-  misterios: MysteryDetail[];
-}
 
 const MISTERIOS_DATA: Record<string, MysterySet> = {
   gozosos: {
@@ -188,106 +182,19 @@ const MISTERIOS_DATA: Record<string, MysterySet> = {
   },
 };
 
-// Textos de las Oraciones en Español y Latín
-interface PrayerText {
-  nombreEs: string;
-  nombreLa: string;
-  textoEs: string;
-  textoLa: string;
+const ORACIONES = ORACIONES_DATA;
+
+function getPrayerText(item: PrayerItem, l: RosaryLang): string {
+  if (l === 'la') return item.textoLa;
+  if (l === 'en') return item.textoEn;
+  return item.textoEs;
 }
 
-const ORACIONES: Record<string, PrayerText> = {
-  actoContricion: {
-    nombreEs: 'Acto de Contrición',
-    nombreLa: 'Actus Contritionis',
-    textoEs: 'Señor mío Jesucristo, Dios y Hombre verdadero, Creador, Padre y Redentor mío; por ser Vos quien sois, Bondad infinita, y porque os amo sobre todas las cosas, me pesa de todo corazón haberos ofendido. También me pesa porque podéis castigarme con las penas del infierno. Ayudado de vuestra divina gracia, propongo firmemente nunca más pecar, confesarme y cumplir la penitencia impuesta. Amén.',
-    textoLa: 'Deus meus, ex toto corde me pænitet de ómnibus peccátis meis, eaque detéstor, quia peccándo offéndi Te, summe bonum et dignum qui super ómnia diligáris. Fírmiter propóno, adiuvánte grátia tua, de cétero me non peccatúrum, peccandíque occasiónes próximas fugitúrum. Amen.'
-  },
-  credo: {
-    nombreEs: 'Símbolo de los Apóstoles (Credo)',
-    nombreLa: 'Symbolum Apostolorum',
-    textoEs: 'Creo en Dios, Padre Todopoderoso, Creador del cielo y de la tierra. Creo en Jesucristo, su único Hijo, Nuestro Señor, que fue concebido por obra y gracia del Espíritu Santo, nació de Santa María Virgen, padeció bajo el poder de Poncio Pilato, fue crucificado, muerto y sepultado, descendió a los infiernos, al tercer día resucitó de entre los muertos, subió a los cielos y está sentado a la derecha de Dios, Padre Todopoderoso. Desde allí ha de venir a juzgar a vivos y muertos. Creo en el Espíritu Santo, la santa Iglesia católica, la comunión de los santos, el perdón de los pecados, la resurrección de la carne y la vida eterna. Amén.',
-    textoLa: 'Credo in Deum Patrem omnipoténtem, Creatórem cæli et terræ. Et in Iesum Christum, Fílium eius únicum, Dóminum nostrum, qui concéptus est de Spíritu Sancto, natus ex María Vírgine, passus sub Póntio Piláto, crucifíxus, mórtuus, et sepúltus, descéndit ad ínferos, tértia die resurréxit a mórtuis, ascéndit ad cælos, sedet ad déxteram Dei Patris omnipoténtis, inde ventúrus est iudicáre vivos et mórtuos. Credo in Spíritum Sanctum, sanctam Ecclésiam cathólicam, sanctórum communiónem, remissiónem peccatórum, carnis resurrectiónem, vitam ætérnam. Amen.'
-  },
-  padreNuestro: {
-    nombreEs: 'Padre Nuestro',
-    nombreLa: 'Pater Noster',
-    textoEs: 'Padre nuestro, que estás en el cielo, santificado sea tu Nombre; venga a nosotros tu reino; hágase tu voluntad en la tierra como en el cielo. Danos hoy nuestro pan de cada día; perdona nuestras ofensas, como también nosotros perdonamos a los que nos ofenden; no nos dejes caer en la tentación, y líbranos del mal. Amén.',
-    textoLa: 'Pater noster, qui es in cælis, sanctificétur nomen tuum. Advéniat regnum tuum. Fiat volúntas tua, sicut in cælo et in terra. Panem nostrum cotidiánum da nobis hódie, et dimítte nobis débita nostra, sicut et nos dimíttimus debitóribus nostris. Et ne nos indúcas in tentatiónem, sed líbera nos a malo. Amen.'
-  },
-  aveMariaEstandar: {
-    nombreEs: 'Ave María',
-    nombreLa: 'Ave Maria',
-    textoEs: 'Dios te salve, María, llena eres de gracia; el Señor es contigo. Bendita tú eres entre todas las mujeres, y bendito es el fruto de tu vientre, Jesús. Santa María, Madre de Dios, ruega por nosotros, pecadores, ahora y en la hora de nuestra muerte. Amén.',
-    textoLa: 'Ave María, grátia plena, Dóminus tecum. Benedícta tu in muliéribus, et benedíctus fructus ventris tui, Iesus. Sancta María, Mater Dei, ora pro nobis peccatóribus, nunc et in hora mortis nostræ. Amen.'
-  },
-  aveMariaLlamaAmor: {
-    nombreEs: 'Ave María (con la súplica de la Llama de Amor)',
-    nombreLa: 'Ave Maria (cum Flamma Amoris)',
-    textoEs: 'Dios te salve, María, llena eres de gracia; el Señor es contigo. Bendita tú eres entre todas las mujeres, y bendito es el fruto de tu vientre, Jesús. Santa María, Madre de Dios, ruega por nosotros, pecadores, derrama el efecto de gracia de tu Llama de Amor sobre toda la humanidad, ahora y en la hora de nuestra muerte. Amén.',
-    textoLa: 'Ave María, grátia plena, Dóminus tecum. Benedícta tu in muliéribus, et benedíctus fructus ventris tui, Iesus. Sancta María, Mater Dei, ora pro nobis peccatóribus, effúnde efféctum grátiæ Flammæ Amóris tuæ super totum genus humánum, nunc et in hora mortis nostræ. Amen.'
-  },
-  gloria: {
-    nombreEs: 'Gloria al Padre',
-    nombreLa: 'Gloria Patri',
-    textoEs: 'Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.',
-    textoLa: 'Glória Patri, et Fílio, et Spíritui Sancto. Sicut erat in princípio, et nunc et semper, et in sæcula sæculórum. Amen.'
-  },
-  fatima: {
-    nombreEs: 'Gloria y Jaculatoria de Fátima',
-    nombreLa: 'Gloria Patri & Oratio Fatimae',
-    textoEs: 'Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.\n\n«¡Oh Jesús mío, perdónanos nuestros pecados, líbranos del fuego del infierno, lleva al cielo a todas las almas, especialmente a las más necesitadas de tu divina misericordia!»',
-    textoLa: 'Glória Patri, et Fílio, et Spíritui Sancto. Sicut erat in princípio, et nunc et semper, et in sæcula sæculórum. Amen.\n\n«O mi Iesu, dimítte nobis débita nostra, líbera nos ab igne inférni, conduc in cælum omnes ánimas, præsértim illas quæ máxime índigent misericórdia tua.»'
-  },
-  oracionAngelFatima: {
-    nombreEs: 'Oración del Ángel de la Paz de Fátima (1916)',
-    nombreLa: 'Oratio Angeli Fatimae',
-    textoEs: '«¡Dios mío, yo creo, adoro, espero y te amo! Te pido perdón por los que no creen, no adoran, no esperan y no te aman.»\n\n«Santísima Trinidad, Padre, Hijo y Espíritu Santo, te adoro profundamente y te ofrezco el preciosísimo Cuerpo, Sangre, Alma y Divinidad de Jesucristo, presente en todos los sagrarios de la tierra, en reparación de los ultrajes, sacrilegios e indiferencias con que Él mismo es ofendido. Y por los méritos infinitos de su Sacratísimo Corazón y del Inmaculado Corazón de María, te pido la conversión de los pobres pecadores. Amén.»',
-    textoLa: '«Deus meus, ego credo, adóro, spero et amo te. Pétito véniam pro iis qui non credunt, non adórant, non sperant et non amant te.» Amen.'
-  },
-  salve: {
-    nombreEs: 'La Salve Regina',
-    nombreLa: 'Salve Regina',
-    textoEs: 'Dios te salve, Reina y Madre de misericordia, vida, dulzura y esperanza nuestra; Dios te salve. A ti llamamos los desterrados hijos de Eva; a ti suspiramos, gimiendo y llorando, en este valle de lágrimas. Ea, pues, Señora, abogada nuestra, vuelve a nosotros esos tus ojos misericordiosos; y después de este destierro muéstranos a Jesús, fruto bendito de tu vientre. ¡Oh clemente, oh piadosa, oh dulce Virgen María! Ruega por nosotros, Santa Madre de Dios, para que seamos dignos de alcanzar las promesas de Nuestro Señor Jesucristo. Amén.',
-    textoLa: 'Salve, Regína, Mater misericórdiæ, vita, dulcédo et spes nostra, salve. Ad te clamámus éxsules fílii Hevæ, ad te suspirámus geméntes et flentes in hac lacrimárum valle. Eia ergo, advocáta nostra, illos tuos misericórdes óculos ad nos convérte. Et Iesum, benedíctum fructum ventris tui, nobis post hoc exsílium osténde. O clemens, o pia, o dulcis Virgo María. Ora pro nobis, Sancta Dei Génetrix, ut digni efficiámur promissiónibus Christi. Amen.'
-  },
-  sanMiguel: {
-    nombreEs: 'Oración a San Miguel Arcángel (León XIII)',
-    nombreLa: 'Oratio ad Sanctum Michaelem Archangelum',
-    textoEs: 'San Miguel Arcángel, defiéndenos en la lucha. Sé nuestro amparo contra la perversidad y las acechanzas del demonio. Que Dios manifieste sobre él su poder, es nuestra humilde súplica; y tú, Príncipe de la Milicia Celestial, con el poder que Dios te ha conferido, arroja al infierno a Satanás y a los demás espíritus malignos que vagan por el mundo para la perdición de las almas. Amén.',
-    textoLa: 'Sancte Míchael Archángele, defénde nos in prœ́lio; contra nequítiam et insídias diáboli esto præsídium. Ímperet illi Deus, súpplices deprecámur: tuque, Princeps milítiæ cæléstis, Sátanam aliósque spíritus malígnos, qui ad perditiónem animárum pervagántur in mundo, divína virtúte in inférnum detrúde. Amen.'
-  },
-  sanJose: {
-    nombreEs: 'Oración a San José (Custodio del Redentor)',
-    nombreLa: 'Oratio ad Sanctum Ioseph',
-    textoEs: 'A ti, bienaventurado San José, acudimos en nuestra tribulación, y después de implorar el socorro de tu Santísima Esposa, solicitamos también confiadamente tu patrocinio. Concédenos defender a la Iglesia santa de Dios de toda adversidad y amparar a cada una de nuestras familias bajo tu perpetua protección. Amén.',
-    textoLa: 'Ad te, beáte Ioseph, in tribulatióne nostra confúgimus, atque, imploráto Sponsæ tuæ sanctíssimæ auxílio, patrocínium quoque tuum fidenter exposcímus. Defénde, quæsumus, sanctam Dei Ecclésiam, et nos perpetuo patrocínio custódi. Amen.'
-  },
-  padreEterno: {
-    nombreEs: 'Ofrecimiento del Padre Eterno (Cuenta Grande)',
-    nombreLa: 'Pater Ætérne (Coronilla)',
-    textoEs: 'Padre Eterno, te ofrezco el Cuerpo y la Sangre, el Alma y la Divinidad de tu amadísimo Hijo, Nuestro Señor Jesucristo, como propiciación de nuestros pecados y los del mundo entero.',
-    textoLa: 'Pater Ætérne, óffero tibi Corpus et Sánguinem, ánimam et Divinitátem dilectíssimi Fílii tui, Dómini nostri Iesu Christi, in propitiatióne pro peccátis nostris et totíus mundi.'
-  },
-  porSuDolorosaPasion: {
-    nombreEs: 'Súplica de la Pasión (10 Cuentas Pequeñas)',
-    nombreLa: 'Pro dolorósa Eius Passióne',
-    textoEs: 'Por su dolorosa Pasión, ten misericordia de nosotros y del mundo entero.',
-    textoLa: 'Pro dolorósa Eius Passióne, miserére nobis et totíus mundi.'
-  },
-  trisagioMisericordia: {
-    nombreEs: 'Trisagio y Oración Conclusiva de la Divina Misericordia',
-    nombreLa: 'Sanctus Deus & Oratio Conclusiva',
-    textoEs: '«Santo Dios, Santo Fuerte, Santo Inmortal, ten piedad de nosotros y del mundo entero.» (Se reza 3 veces)\n\n«Oh Dios Eterno, en quien la misericordia es infinita y el tesoro de compasión inagotable, vuelve a nosotros tu mirada bondadosa y aumenta tu misericordia en nosotros, para que en los momentos difíciles no desesperemos ni nos desalentemos, sino que con gran confianza nos sometamos a tu santa voluntad, que es el Amor y la Misericordia mismos. Amén.»\n\n«¡Jesús, en Ti confío!» (3 veces)',
-    textoLa: '«Sanctus Deus, Sanctus Fortis, Sanctus Immortális, miserére nobis et totíus mundi.» (ter dicitur)\n\n«Deus Ætérne, in quo misericórdia est infiníta et thesáurus compassiónis inexhaustus, réspice benígnus super nos et multíplica in nobis misericórdiam tuam, ut in moméntis difficílibus non desperémus, sed cum magna confidéntia sanctæ voluntáti tuæ nos submittámus, quæ est ipse Amor et Misericórdia. Amen.»\n\n«Iesu, in Te confído!» (ter)'
-  },
-  senalCruzCoronilla: {
-    nombreEs: 'Señal de la Cruz y Ofrecimiento Inicial',
-    nombreLa: 'Signum Crucis & Oblatio',
-    textoEs: 'Por la señal de la Santa Cruz, de nuestros enemigos líbranos Señor, Dios nuestro. En el nombre del Padre, y del Hijo, y del Espíritu Santo. Amén.\n\n«Espiraste, Jesús, pero la fuente de vida brotó para las almas y el mar de misericordia se abrió para el mundo entero. ¡Oh fuente de vida, insondable Misericordia Divina, abarca al mundo entero y derrámate sobre nosotros!»',
-    textoLa: 'Per signum Sanctæ Crucis de inimícis nostris líbera nos, Deus noster. In nómine Patris, et Fílii, et Spíritus Sancti. Amen.\n\n«Exspirásti, Iesu, sed fons vitæ scaturívit pro animábus et oceanus misericórdiæ pro toto mundo apértus est. O Fons Vitæ, inscrutábilis Divína Misericórdia, cómprehende totum mundum et effúnde te super nos!»'
-  }
-};
+function getPrayerTitle(item: PrayerItem, l: RosaryLang): string {
+  if (l === 'la') return item.nombreLa;
+  if (l === 'en') return item.nombreEn;
+  return item.nombreEs;
+}
 
 const CORONILLA_INTENCIONES = [
   {
@@ -371,8 +278,13 @@ function playSacredChime() {
   }
 }
 
-export default function RosaryApp() {
-  const [prayerType, setPrayerType] = useState<'rosario' | 'coronilla'>('rosario');
+export interface RosaryAppProps {
+  initialLang?: 'es' | 'en';
+  initialPrayerType?: 'rosario' | 'coronilla';
+}
+
+export default function RosaryApp({ initialLang = 'es', initialPrayerType }: RosaryAppProps) {
+  const [prayerType, setPrayerType] = useState<'rosario' | 'coronilla'>(initialPrayerType || 'rosario');
   const [activeKey, setActiveKey] = useState<string>('gloriosos');
   const [isPrayerStarted, setIsPrayerStarted] = useState<boolean>(false);
   const [showConfigModal, setShowConfigModal] = useState<boolean>(false);
@@ -387,7 +299,7 @@ export default function RosaryApp() {
   const [stage, setStage] = useState<'intro' | 'decena' | 'salve'>('intro');
   const [currentDecade, setCurrentDecade] = useState<number>(0); // 0 a 4
   const [currentBead, setCurrentBead] = useState<number>(0);
-  const [language, setLanguage] = useState<'es' | 'la'>('es');
+  const [language, setLanguage] = useState<RosaryLang>(initialLang);
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [vibrateEnabled, setVibrateEnabled] = useState<boolean>(true);
   const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
@@ -436,8 +348,13 @@ export default function RosaryApp() {
     const savedSanJose = localStorage.getItem('rosary_san_jose');
     if (savedSanJose !== null) setIncludeSanJose(savedSanJose === 'true');
 
-    const savedLang = localStorage.getItem('rosary_lang') as 'es' | 'la' | null;
-    if (savedLang) setLanguage(savedLang);
+    const langStorageKey = initialLang === 'en' ? 'rosary_lang_en' : 'rosary_lang';
+    const savedLang = localStorage.getItem(langStorageKey) as RosaryLang | null;
+    if (savedLang && (savedLang === 'es' || savedLang === 'en' || savedLang === 'la')) {
+      setLanguage(savedLang);
+    } else {
+      setLanguage(initialLang);
+    }
 
     const savedSound = localStorage.getItem('rosary_sound');
     if (savedSound !== null) setSoundEnabled(savedSound === 'true');
@@ -702,9 +619,13 @@ export default function RosaryApp() {
     }
   }
 
-  const currentSet = MISTERIOS_DATA[activeKey] || MISTERIOS_DATA.gloriosos;
+  const ui = UI_I18N[language === 'en' ? 'en' : 'es'];
+  const activeMisteriosData = language === 'en' ? MISTERIOS_DATA_EN : MISTERIOS_DATA;
+  const activeCoronillaIntentions = language === 'en' ? CORONILLA_INTENCIONES_EN : CORONILLA_INTENCIONES;
+
+  const currentSet = activeMisteriosData[activeKey] || activeMisteriosData.gloriosos;
   const mystery = currentSet.misterios[currentDecade];
-  const coronillaItem = CORONILLA_INTENCIONES[currentDecade];
+  const coronillaItem = activeCoronillaIntentions[currentDecade];
   const dailyKey = getDailyMysteryKey();
 
   const aveMariaRef = includeFlameOfLove ? ORACIONES.aveMariaLlamaAmor : ORACIONES.aveMariaEstandar;
@@ -717,91 +638,91 @@ export default function RosaryApp() {
   if (prayerType === 'coronilla') {
     if (stage === 'intro') {
       if (currentBead === 0) {
-        prayerBadge = 'Señal de la Cruz & Ofrecimiento';
-        prayerTitle = language === 'la' ? ORACIONES.senalCruzCoronilla.nombreLa : ORACIONES.senalCruzCoronilla.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.senalCruzCoronilla.textoLa : ORACIONES.senalCruzCoronilla.textoEs;
+        prayerBadge = language === 'en' ? 'Sign of the Cross & Opening' : 'Señal de la Cruz & Ofrecimiento';
+        prayerTitle = getPrayerTitle(ORACIONES.senalCruzCoronilla, language);
+        prayerText = getPrayerText(ORACIONES.senalCruzCoronilla, language);
       } else if (currentBead === 1) {
-        prayerBadge = 'Preparación Inicial 1/3 · Padre Nuestro';
-        prayerTitle = language === 'la' ? ORACIONES.padreNuestro.nombreLa : ORACIONES.padreNuestro.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.padreNuestro.textoLa : ORACIONES.padreNuestro.textoEs;
+        prayerBadge = ui.badgeChapletIntro1;
+        prayerTitle = getPrayerTitle(ORACIONES.padreNuestro, language);
+        prayerText = getPrayerText(ORACIONES.padreNuestro, language);
       } else if (currentBead === 2) {
-        prayerBadge = 'Preparación Inicial 2/3 · Ave María';
-        prayerTitle = language === 'la' ? ORACIONES.aveMariaEstandar.nombreLa : ORACIONES.aveMariaEstandar.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.aveMariaEstandar.textoLa : ORACIONES.aveMariaEstandar.textoEs;
+        prayerBadge = ui.badgeChapletIntro2;
+        prayerTitle = getPrayerTitle(ORACIONES.aveMariaEstandar, language);
+        prayerText = getPrayerText(ORACIONES.aveMariaEstandar, language);
       } else {
-        prayerBadge = 'Preparación Inicial 3/3 · Símbolo de los Apóstoles';
-        prayerTitle = language === 'la' ? ORACIONES.credo.nombreLa : ORACIONES.credo.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.credo.textoLa : ORACIONES.credo.textoEs;
+        prayerBadge = ui.badgeChapletIntro3;
+        prayerTitle = getPrayerTitle(ORACIONES.credo, language);
+        prayerText = getPrayerText(ORACIONES.credo, language);
       }
     } else if (stage === 'decena') {
       if (currentBead === 0) {
-        prayerBadge = `Decena ${currentDecade + 1} de 5 · Cuenta Grande`;
-        prayerTitle = language === 'la' ? ORACIONES.padreEterno.nombreLa : ORACIONES.padreEterno.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.padreEterno.textoLa : ORACIONES.padreEterno.textoEs;
+        prayerBadge = language === 'en' ? `Decade ${currentDecade + 1} of 5 · Large Bead` : `Decena ${currentDecade + 1} de 5 · Cuenta Grande`;
+        prayerTitle = getPrayerTitle(ORACIONES.padreEterno, language);
+        prayerText = getPrayerText(ORACIONES.padreEterno, language);
       } else if (currentBead >= 1 && currentBead <= 10) {
-        prayerBadge = `Decena ${currentDecade + 1} · Invocación ${currentBead} de 10`;
-        prayerTitle = language === 'la' ? ORACIONES.porSuDolorosaPasion.nombreLa : ORACIONES.porSuDolorosaPasion.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.porSuDolorosaPasion.textoLa : ORACIONES.porSuDolorosaPasion.textoEs;
+        prayerBadge = language === 'en' ? `Decade ${currentDecade + 1} · Petition ${currentBead} of 10` : `Decena ${currentDecade + 1} · Invocación ${currentBead} de 10`;
+        prayerTitle = getPrayerTitle(ORACIONES.porSuDolorosaPasion, language);
+        prayerText = getPrayerText(ORACIONES.porSuDolorosaPasion, language);
       } else {
-        prayerBadge = `Cierre de la Decena ${currentDecade + 1}`;
-        prayerTitle = language === 'la' ? ORACIONES.gloria.nombreLa : ORACIONES.gloria.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.gloria.textoLa : ORACIONES.gloria.textoEs;
+        prayerBadge = language === 'en' ? `Closing of Decade ${currentDecade + 1}` : `Cierre de la Decena ${currentDecade + 1}`;
+        prayerTitle = getPrayerTitle(ORACIONES.gloria, language);
+        prayerText = getPrayerText(ORACIONES.gloria, language);
       }
     } else if (stage === 'salve') {
-      prayerBadge = 'Conclusión de la Coronilla · Trisagio y Confianza';
-      prayerTitle = language === 'la' ? ORACIONES.trisagioMisericordia.nombreLa : ORACIONES.trisagioMisericordia.nombreEs;
-      prayerText = language === 'la' ? ORACIONES.trisagioMisericordia.textoLa : ORACIONES.trisagioMisericordia.textoEs;
+      prayerBadge = ui.badgeChapletClose;
+      prayerTitle = getPrayerTitle(ORACIONES.trisagioMisericordia, language);
+      prayerText = getPrayerText(ORACIONES.trisagioMisericordia, language);
     }
   } else {
     // Modo Santo Rosario
     if (stage === 'intro') {
       if (includeActOfContrition && currentBead === 0) {
-        prayerBadge = 'Preparación Inicial';
-        prayerTitle = language === 'la' ? ORACIONES.actoContricion.nombreLa : ORACIONES.actoContricion.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.actoContricion.textoLa : ORACIONES.actoContricion.textoEs;
+        prayerBadge = ui.badgePrepIntro;
+        prayerTitle = getPrayerTitle(ORACIONES.actoContricion, language);
+        prayerText = getPrayerText(ORACIONES.actoContricion, language);
       } else if ((includeActOfContrition && currentBead === 1) || (!includeActOfContrition && currentBead === 0)) {
-        prayerBadge = 'Inicio en el Crucifijo';
-        prayerTitle = language === 'la' ? ORACIONES.credo.nombreLa : ORACIONES.credo.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.credo.textoLa : ORACIONES.credo.textoEs;
+        prayerBadge = ui.badgeCrucifix;
+        prayerTitle = getPrayerTitle(ORACIONES.credo, language);
+        prayerText = getPrayerText(ORACIONES.credo, language);
       } else if ((includeActOfContrition && currentBead === 2) || (!includeActOfContrition && currentBead === 1)) {
-        prayerBadge = 'Cordal Inicial';
-        prayerTitle = language === 'la' ? ORACIONES.padreNuestro.nombreLa : ORACIONES.padreNuestro.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.padreNuestro.textoLa : ORACIONES.padreNuestro.textoEs;
+        prayerBadge = ui.badgeCordalPater;
+        prayerTitle = getPrayerTitle(ORACIONES.padreNuestro, language);
+        prayerText = getPrayerText(ORACIONES.padreNuestro, language);
       } else {
         const offset = includeActOfContrition ? 3 : 2;
-        const virtudes = ['la virtud de la Fe', 'la virtud de la Esperanza', 'la virtud de la Caridad'];
-        prayerBadge = `Avemaría Inicial (${virtudes[currentBead - offset]})`;
-        prayerTitle = language === 'la' ? aveMariaRef.nombreLa : aveMariaRef.nombreEs;
-        prayerText = language === 'la' ? aveMariaRef.textoLa : aveMariaRef.textoEs;
+        const virtudes = [ui.virtueFaith, ui.virtueHope, ui.virtueCharity];
+        prayerBadge = `${ui.badgeIntroAve} (${virtudes[currentBead - offset]})`;
+        prayerTitle = getPrayerTitle(aveMariaRef, language);
+        prayerText = getPrayerText(aveMariaRef, language);
       }
     } else if (stage === 'decena') {
       if (currentBead === 0) {
-        prayerBadge = `Decena ${currentDecade + 1} de 5 · Misterio y Padre Nuestro`;
-        prayerTitle = language === 'la' ? ORACIONES.padreNuestro.nombreLa : ORACIONES.padreNuestro.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.padreNuestro.textoLa : ORACIONES.padreNuestro.textoEs;
+        prayerBadge = language === 'en' ? `Decade ${currentDecade + 1} of 5 · ${ui.badgeDecadePater}` : `Decena ${currentDecade + 1} de 5 · Misterio y Padre Nuestro`;
+        prayerTitle = getPrayerTitle(ORACIONES.padreNuestro, language);
+        prayerText = getPrayerText(ORACIONES.padreNuestro, language);
       } else if (currentBead >= 1 && currentBead <= 10) {
-        prayerBadge = `Decena ${currentDecade + 1} · Avemaría ${currentBead} de 10`;
-        prayerTitle = language === 'la' ? aveMariaRef.nombreLa : aveMariaRef.nombreEs;
-        prayerText = language === 'la' ? aveMariaRef.textoLa : aveMariaRef.textoEs;
+        prayerBadge = language === 'en' ? `Decade ${currentDecade + 1} · Hail Mary ${currentBead} of 10` : `Decena ${currentDecade + 1} · Avemaría ${currentBead} de 10`;
+        prayerTitle = getPrayerTitle(aveMariaRef, language);
+        prayerText = getPrayerText(aveMariaRef, language);
       } else {
-        prayerBadge = `Cierre de la Decena ${currentDecade + 1}`;
-        prayerTitle = language === 'la' ? ORACIONES.fatima.nombreLa : ORACIONES.fatima.nombreEs;
-        prayerText = language === 'la' ? ORACIONES.fatima.textoLa : ORACIONES.fatima.textoEs;
+        prayerBadge = language === 'en' ? `Closing of Decade ${currentDecade + 1}` : `Cierre de la Decena ${currentDecade + 1}`;
+        prayerTitle = getPrayerTitle(ORACIONES.fatima, language);
+        prayerText = getPrayerText(ORACIONES.fatima, language);
 
         if (includeAngelPrayer) {
-          prayerText += '\n\n' + (language === 'la' ? ORACIONES.oracionAngelFatima.textoLa : ORACIONES.oracionAngelFatima.textoEs);
+          prayerText += '\n\n' + getPrayerText(ORACIONES.oracionAngelFatima, language);
         }
       }
     } else if (stage === 'salve') {
-      prayerBadge = 'Conclusión del Santo Rosario';
-      prayerTitle = language === 'la' ? ORACIONES.salve.nombreLa : ORACIONES.salve.nombreEs;
-      prayerText = language === 'la' ? ORACIONES.salve.textoLa : ORACIONES.salve.textoEs;
+      prayerBadge = ui.badgeRosaryClose;
+      prayerTitle = getPrayerTitle(ORACIONES.salve, language);
+      prayerText = getPrayerText(ORACIONES.salve, language);
 
       if (includeSanMiguel) {
-        prayerText += '\n\n' + (language === 'la' ? ORACIONES.sanMiguel.nombreLa : ORACIONES.sanMiguel.nombreEs) + ':\n' + (language === 'la' ? ORACIONES.sanMiguel.textoLa : ORACIONES.sanMiguel.textoEs);
+        prayerText += '\n\n' + getPrayerTitle(ORACIONES.sanMiguel, language) + ':\n' + getPrayerText(ORACIONES.sanMiguel, language);
       }
       if (includeSanJose) {
-        prayerText += '\n\n' + (language === 'la' ? ORACIONES.sanJose.nombreLa : ORACIONES.sanJose.nombreEs) + ':\n' + (language === 'la' ? ORACIONES.sanJose.textoLa : ORACIONES.sanJose.textoEs);
+        prayerText += '\n\n' + getPrayerTitle(ORACIONES.sanJose, language) + ':\n' + getPrayerText(ORACIONES.sanJose, language);
       }
     }
   }
@@ -835,7 +756,7 @@ export default function RosaryApp() {
                   : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
               }`}
             >
-              📿 Santo Rosario
+              {ui.switchRosary}
             </button>
             <button
               type="button"
@@ -846,7 +767,7 @@ export default function RosaryApp() {
                   : 'text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200'
               }`}
             >
-              ✝️ Coronilla Misericordia
+              {ui.switchChaplet}
             </button>
           </div>
 
@@ -855,19 +776,19 @@ export default function RosaryApp() {
             <div class="space-y-8">
               <div class="text-center max-w-2xl mx-auto space-y-2">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-600/30">
-                  Santo Rosario &middot; Misterios Marianos
+                  {ui.rosaryBadge}
                 </span>
                 <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
-                  ¿Qué misterios deseas rezar hoy?
+                  {ui.whichMysteries}
                 </h2>
                 <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-reading">
-                  Elige los misterios para tu jornada o selecciona cualquiera libremente. Cada misterio incluye su lectura bíblica explicativa para contemplar cada decena.
+                  {ui.whichMysteriesDesc}
                 </p>
               </div>
 
               {/* Grilla de los 4 Juegos de Misterios */}
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {Object.entries(MISTERIOS_DATA).map(([key, data]) => {
+                {Object.entries(activeMisteriosData).map(([key, data]) => {
                   const isSelected = activeKey === key;
                   const isToday = dailyKey === key;
 
@@ -883,7 +804,7 @@ export default function RosaryApp() {
                     >
                       {isToday && (
                         <span class="absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-600 text-white dark:bg-amber-500 dark:text-slate-950 uppercase tracking-wide">
-                          Misterios de Hoy
+                          {ui.todaysMysteries}
                         </span>
                       )}
 
@@ -910,12 +831,12 @@ export default function RosaryApp() {
                     +
                   </span>
                   <h4 class="font-serif text-base font-bold text-slate-950 dark:text-stone-100 m-0">
-                    Oraciones solicitadas en apariciones y devociones añadidas
+                    {ui.additionalDevotionsTitle}
                   </h4>
                 </div>
                 
                 <p class="text-xs text-stone-600 dark:text-stone-400 font-reading m-0">
-                  Personaliza el rosario sumando súplicas tradicionales transmitidas por la Virgen María y los Santos Pontífices:
+                  {ui.additionalDevotionsDesc}
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
@@ -933,10 +854,10 @@ export default function RosaryApp() {
                     />
                     <div class="text-xs space-y-1">
                       <span class="font-bold text-slate-900 dark:text-stone-100 block">
-                        Jaculatoria de la Llama de Amor
+                        {ui.flameOfLoveTitle}
                       </span>
                       <span class="text-stone-500 dark:text-stone-400 block leading-tight">
-                        Añade a cada Avemaría: <em>«derrama el efecto de gracia de tu Llama de Amor sobre toda la humanidad...»</em>.
+                        {ui.flameOfLoveDesc}
                       </span>
                     </div>
                   </label>
@@ -954,10 +875,10 @@ export default function RosaryApp() {
                     />
                     <div class="text-xs space-y-1">
                       <span class="font-bold text-slate-900 dark:text-stone-100 block">
-                        Oración del Ángel de la Paz (Fátima 1916)
+                        {ui.angelFatimaTitle}
                       </span>
                       <span class="text-stone-500 dark:text-stone-400 block leading-tight">
-                        Suma la súplica de desagravio: <em>«¡Dios mío, yo creo, adoro, espero y te amo!...»</em> al cierre de cada decena.
+                        {ui.angelFatimaDesc}
                       </span>
                     </div>
                   </label>
@@ -975,10 +896,10 @@ export default function RosaryApp() {
                     />
                     <div class="text-xs space-y-1">
                       <span class="font-bold text-slate-900 dark:text-stone-100 block">
-                        Acto de Contrición Inicial
+                        {ui.contritionTitle}
                       </span>
                       <span class="text-stone-500 dark:text-stone-400 block leading-tight">
-                        Inicia el rezo pidiendo perdón a Dios por las culpas cometidas antes de profesar el Credo.
+                        {ui.contritionDesc}
                       </span>
                     </div>
                   </label>
@@ -996,10 +917,10 @@ export default function RosaryApp() {
                     />
                     <div class="text-xs space-y-1">
                       <span class="font-bold text-slate-900 dark:text-stone-100 block">
-                        San Miguel Arcángel (León XIII)
+                        {ui.sanMiguelTitle}
                       </span>
                       <span class="text-stone-500 dark:text-stone-400 block leading-tight">
-                        Oración de protección espiritual tras la Salve Regina.
+                        {ui.sanMiguelDesc}
                       </span>
                     </div>
                   </label>
@@ -1017,10 +938,10 @@ export default function RosaryApp() {
                     />
                     <div class="text-xs space-y-1">
                       <span class="font-bold text-slate-900 dark:text-stone-100 block">
-                        Oración a San José (Patrono de la Iglesia Universal)
+                        {ui.sanJoseTitle}
                       </span>
                       <span class="text-stone-500 dark:text-stone-400 block leading-tight">
-                        Reza la plegaria tradicional para encomendar las familias y la Iglesia al Santo Patriarca.
+                        {ui.sanJoseDesc}
                       </span>
                     </div>
                   </label>
@@ -1035,7 +956,7 @@ export default function RosaryApp() {
                   onClick={startRosary}
                   class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white dark:bg-amber-500 dark:hover:bg-amber-400 dark:text-slate-950 font-bold text-base shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  Comenzar el Santo Rosario ({currentSet.nombre}) &rarr;
+                  {ui.startRosaryPrefix} ({currentSet.nombre}) &rarr;
                 </button>
               </div>
             </div>
@@ -1044,51 +965,51 @@ export default function RosaryApp() {
             <div class="space-y-6">
               <div class="text-center max-w-2xl mx-auto space-y-2">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-rose-500/10 text-rose-800 dark:text-rose-300 border border-rose-600/30">
-                  Vilna 1935 &middot; Santa Faustina Kowalska
+                  {ui.chapletBadge}
                 </span>
                 <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
-                  Coronilla de la Divina Misericordia
+                  {ui.chapletTitle}
                 </h2>
                 <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-reading">
-                  Devoción dictada por Nuestro Señor a Santa Faustina. Se reza utilizando las mismas 5 decenas del rosario tradicional, especialmente a las <strong>3:00 PM (la Hora de la Gran Misericordia)</strong> en memoria de la muerte redentora de Cristo en la Cruz.
+                  {ui.chapletDesc}
                 </p>
               </div>
 
               {/* Promesas de Cristo a Santa Faustina */}
               <div class="p-5 sm:p-6 rounded-2xl bg-stone-100/80 dark:bg-slate-950/80 border border-stone-200 dark:border-slate-800 space-y-4">
                 <h4 class="font-serif text-base font-bold text-slate-950 dark:text-stone-100 m-0">
-                  Grandes Promesas de Nuestro Señor Jesucristo (Diario de Santa Faustina)
+                  {ui.promisesTitle}
                 </h4>
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
                   <div class="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-1">
-                    <span class="font-bold text-rose-700 dark:text-rose-400 block">Amparo a la Hora de la Muerte</span>
+                    <span class="font-bold text-rose-700 dark:text-rose-400 block">{ui.promise1Title}</span>
                     <p class="text-stone-600 dark:text-stone-400 m-0 leading-relaxed italic">
-                      «A quienes recen esta coronilla, mi misericordia los envolverá en la vida y para siempre en la hora de la muerte» (Diario, 754).
+                      {ui.promise1Text}
                     </p>
                   </div>
 
                   <div class="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-1">
-                    <span class="font-bold text-rose-700 dark:text-rose-400 block">Paz para los Pecadores</span>
+                    <span class="font-bold text-rose-700 dark:text-rose-400 block">{ui.promise2Title}</span>
                     <p class="text-stone-600 dark:text-stone-400 m-0 leading-relaxed italic">
-                      «Hasta el pecador más empedernido, si reza esta coronilla una sola vez, recibirá la gracia de mi misericordia infinita» (Diario, 687).
+                      {ui.promise2Text}
                     </p>
                   </div>
 
                   <div class="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-1">
-                    <span class="font-bold text-rose-700 dark:text-rose-400 block">Eficacia de la Oración</span>
+                    <span class="font-bold text-rose-700 dark:text-rose-400 block">{ui.promise3Title}</span>
                     <p class="text-stone-600 dark:text-stone-400 m-0 leading-relaxed italic">
-                      «Por medio de esta coronilla obtendrás todo, si lo que pides está conforme con mi divina voluntad» (Diario, 1731).
+                      {ui.promise3Text}
                     </p>
                   </div>
                 </div>
 
                 <div class="pt-2 flex items-center justify-between">
                   <a
-                    href="/santos/faustina-kowalska/"
+                    href={language === 'en' ? '/en/divine-mercy-chaplet/' : '/santos/faustina-kowalska/'}
                     class="text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline inline-flex items-center gap-1"
                   >
-                    <span>Conocer la biografía de Santa Faustina y el cuadro original de Vilna</span>
+                    <span>{ui.faustinaBioLink}</span>
                     <span>&rarr;</span>
                   </a>
                 </div>
@@ -1101,7 +1022,7 @@ export default function RosaryApp() {
                   onClick={startRosary}
                   class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white dark:bg-amber-500 dark:hover:bg-amber-400 dark:text-slate-950 font-bold text-base shadow-lg transition-all transform hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  Comenzar la Coronilla de la Divina Misericordia &rarr;
+                  {ui.startChapletBtn} &rarr;
                 </button>
               </div>
             </div>
@@ -1119,10 +1040,10 @@ export default function RosaryApp() {
             <div class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
               <span class="font-serif font-bold text-slate-900 dark:text-stone-100">
-                {prayerType === 'coronilla' ? 'Coronilla de la Divina Misericordia' : currentSet.nombre}
+                {prayerType === 'coronilla' ? ui.chapletTitle : currentSet.nombre}
               </span>
               <span class="text-stone-500 dark:text-stone-400 hidden sm:inline">
-                &middot; {prayerType === 'coronilla' ? 'Revelada a Santa Faustina Kowalska' : currentSet.diasOrdinarios}
+                &middot; {prayerType === 'coronilla' ? (language === 'en' ? 'Revealed to St. Faustina Kowalska' : 'Revelada a Santa Faustina Kowalska') : currentSet.diasOrdinarios}
               </span>
             </div>
 
@@ -1132,7 +1053,7 @@ export default function RosaryApp() {
               class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-slate-700 hover:border-amber-500 font-semibold transition-colors flex items-center gap-1.5"
             >
               <span>⚙️</span>
-              <span>Cambiar Rezo u Opciones</span>
+              <span>{ui.changeOptions}</span>
             </button>
           </div>
 
@@ -1147,7 +1068,7 @@ export default function RosaryApp() {
                   : 'bg-stone-100 dark:bg-slate-900 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-slate-800'
               }`}
             >
-              Cruz e Inicio
+              {ui.crossAndIntro}
             </button>
 
             {[0, 1, 2, 3, 4].map((decIdx) => {
@@ -1163,7 +1084,7 @@ export default function RosaryApp() {
                       : 'bg-stone-100 dark:bg-slate-900 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-slate-800'
                   }`}
                 >
-                  Decena {decIdx + 1}
+                  {ui.decadeLabel} {decIdx + 1}
                 </button>
               );
             })}
@@ -1177,7 +1098,7 @@ export default function RosaryApp() {
                   : 'bg-stone-100 dark:bg-slate-900 text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-slate-800'
               }`}
             >
-              {prayerType === 'coronilla' ? 'Trisagio y Cierre' : 'Salve Regina'}
+              {prayerType === 'coronilla' ? ui.trisagionAndClose : ui.salveRegina}
             </button>
           </div>
 
@@ -1198,7 +1119,7 @@ export default function RosaryApp() {
               {/* Barra de Progreso */}
               <div class="p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-sm space-y-2">
                 <div class="flex items-center justify-between text-xs font-medium text-stone-600 dark:text-stone-400">
-                  <span>Progreso de la Oración</span>
+                  <span>{ui.prayerProgress}</span>
                   <span class="font-bold text-amber-700 dark:text-amber-400">{progressPercent}%</span>
                 </div>
                 <div class="w-full h-2.5 bg-stone-100 dark:bg-slate-800 rounded-full overflow-hidden">
@@ -1213,7 +1134,7 @@ export default function RosaryApp() {
               <div class="p-4 sm:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-sm space-y-3">
                 <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-2">
                   <span class="font-serif text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
-                    {prayerType === 'coronilla' ? 'Las 5 Intenciones de la Coronilla' : 'Los 5 Misterios del Día'}
+                    {prayerType === 'coronilla' ? ui.fiveIntentionsList : ui.fiveMysteriesList}
                   </span>
                   <span class="text-[11px] text-stone-500 dark:text-stone-400 font-medium">
                     {prayerType === 'coronilla' ? 'Vilna 1935' : currentSet.nombre}
@@ -1221,7 +1142,7 @@ export default function RosaryApp() {
                 </div>
 
                 <div class="space-y-2">
-                  {(prayerType === 'coronilla' ? CORONILLA_INTENCIONES : currentSet.misterios).map((m, idx) => {
+                  {(prayerType === 'coronilla' ? activeCoronillaIntentions : currentSet.misterios).map((m, idx) => {
                     const isCurrent = stage === 'decena' && currentDecade === idx;
                     const isPast = stage === 'salve' || (stage === 'decena' && currentDecade > idx);
 
@@ -1247,7 +1168,7 @@ export default function RosaryApp() {
 
                           {isCurrent && (
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-600 text-white dark:bg-amber-500 dark:text-slate-950 shrink-0">
-                              Meditando
+                              {ui.meditating}
                             </span>
                           )}
                           {isPast && (
@@ -1267,7 +1188,7 @@ export default function RosaryApp() {
                 </div>
 
                 <p class="text-[11px] text-stone-400 dark:text-stone-500 italic text-center m-0 pt-1">
-                  Haz clic sobre cualquiera de las decenas para saltar a ella.
+                  {ui.jumpHint}
                 </p>
               </div>
 
@@ -1291,13 +1212,18 @@ export default function RosaryApp() {
                     <button
                       type="button"
                       onClick={() => {
-                        const next = language === 'es' ? 'la' : 'es';
+                        let next: RosaryLang;
+                        if (initialLang === 'en') {
+                          next = language === 'en' ? 'la' : (language === 'la' ? 'es' : 'en');
+                        } else {
+                          next = language === 'es' ? 'la' : (language === 'la' ? 'en' : 'es');
+                        }
                         setLanguage(next);
-                        localStorage.setItem('rosary_lang', next);
+                        localStorage.setItem(initialLang === 'en' ? 'rosary_lang_en' : 'rosary_lang', next);
                       }}
                       class="px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 font-semibold transition-colors"
                     >
-                      {language === 'es' ? '🇪🇸 Español' : '🇻🇦 Latín'}
+                      {language === 'es' ? '🇪🇸 Español' : (language === 'en' ? '🇺🇸 English' : '🇻🇦 Latín')}
                     </button>
 
                     <button
@@ -1321,7 +1247,7 @@ export default function RosaryApp() {
                           : 'bg-stone-100 dark:bg-slate-800 text-stone-400'
                       }`}
                     >
-                      🔔 {soundEnabled ? 'Sonido' : 'Mudo'}
+                      🔔 {soundEnabled ? ui.soundOn : ui.soundOff}
                     </button>
                   </div>
                 </div>
@@ -1330,13 +1256,13 @@ export default function RosaryApp() {
                 {stage === 'decena' && (
                   <div class="space-y-4 bg-amber-50/60 dark:bg-amber-950/20 p-5 sm:p-6 rounded-2xl border border-amber-200/70 dark:border-amber-900/40">
                     <div class="flex items-center justify-between text-xs text-amber-900 dark:text-amber-300 font-medium">
-                      <span>{prayerType === 'coronilla' ? 'Coronilla de la Misericordia' : currentSet.nombre} &middot; Decena {currentDecade + 1} de 5</span>
+                      <span>{prayerType === 'coronilla' ? ui.chapletTitle : currentSet.nombre} &middot; {ui.decadeLabel} {currentDecade + 1} {language === 'en' ? 'of 5' : 'de 5'}</span>
                       <span>{prayerType === 'coronilla' ? 'Vilna 1935' : currentSet.diasOrdinarios}</span>
                     </div>
 
                     <div class="space-y-1">
                       <span class="text-xs font-serif font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                        Decena {prayerType === 'coronilla' ? coronillaItem.numeroRomano : mystery.numeroRomano}
+                        {ui.decadeLabel} {prayerType === 'coronilla' ? coronillaItem.numeroRomano : mystery.numeroRomano}
                       </span>
                       <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-950 dark:text-stone-100 leading-snug m-0">
                         {prayerType === 'coronilla' ? coronillaItem.titulo : mystery.titulo}
@@ -1346,7 +1272,7 @@ export default function RosaryApp() {
                     {/* Texto Narrativo Completo de la Meditación */}
                     <div class="p-4 rounded-xl bg-white/80 dark:bg-slate-900/80 border border-amber-200/40 dark:border-amber-900/30 space-y-2">
                       <span class="text-[11px] font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 block">
-                        {prayerType === 'coronilla' ? 'Intención dictada a Santa Faustina' : 'Meditación para la contemplación'}
+                        {prayerType === 'coronilla' ? ui.intentionFaustinaDesc : ui.contemplationDesc}
                       </span>
                       <p class="font-reading text-sm sm:text-base text-stone-800 dark:text-stone-200 leading-relaxed m-0 italic">
                         {prayerType === 'coronilla' ? coronillaItem.meditacion : mystery.meditacion}
@@ -1354,9 +1280,9 @@ export default function RosaryApp() {
                     </div>
 
                     <div class="flex flex-wrap items-center gap-3 text-xs text-stone-600 dark:text-stone-300 pt-1">
-                      <span><strong>Referencia:</strong> {prayerType === 'coronilla' ? coronillaItem.pasaje : mystery.pasaje}</span>
+                      <span><strong>{ui.scriptureRef}</strong> {prayerType === 'coronilla' ? coronillaItem.pasaje : mystery.pasaje}</span>
                       <span>&middot;</span>
-                      <span><strong>Fruto Espiritual:</strong> {prayerType === 'coronilla' ? coronillaItem.fruto : mystery.fruto}</span>
+                      <span><strong>{ui.spiritualFruit}</strong> {prayerType === 'coronilla' ? coronillaItem.fruto : mystery.fruto}</span>
                     </div>
                   </div>
                 )}
@@ -1382,12 +1308,12 @@ export default function RosaryApp() {
                     <div class="flex items-center justify-between text-xs text-stone-500 dark:text-stone-400">
                       <span>
                         {currentBead === 0
-                          ? (prayerType === 'coronilla' ? 'Padre Eterno (Cuenta Grande)' : 'Cuenta del Padre Nuestro')
+                          ? (prayerType === 'coronilla' ? ui.beadPaterEterno : ui.beadPaterRosary)
                           : currentBead <= 10
-                          ? (prayerType === 'coronilla' ? `Por su dolorosa Pasión (${currentBead} de 10)` : `Avemaría ${currentBead} de 10`)
-                          : 'Gloria y Cierre'}
+                          ? (prayerType === 'coronilla' ? `${ui.beadInvocationChaplet} (${currentBead} ${language === 'en' ? 'of 10' : 'de 10'})` : `${ui.beadAveRosary} ${currentBead} ${language === 'en' ? 'of 10' : 'de 10'}`)
+                          : ui.beadGloria}
                       </span>
-                      <span>{prayerType === 'coronilla' ? '1 Padre Eterno → 10 Súplicas de la Pasión' : '1 Padre Nuestro → 10 Avemarías → Gloria'}</span>
+                      <span>{prayerType === 'coronilla' ? ui.decadePatternChaplet : ui.decadePatternRosary}</span>
                     </div>
 
                     <div class="grid grid-cols-12 gap-1.5 sm:gap-2">
@@ -1416,7 +1342,7 @@ export default function RosaryApp() {
                                 ? 'bg-amber-500/60 dark:bg-amber-500/40'
                                 : 'bg-stone-200 dark:bg-slate-800'
                             }`}
-                            title={prayerType === 'coronilla' ? `Invocación ${beadNum}` : `Avemaría ${beadNum}`}
+                            title={prayerType === 'coronilla' ? `${ui.beadInvocationChaplet} ${beadNum}` : `${ui.beadAveRosary} ${beadNum}`}
                           />
                         );
                       })}
@@ -1430,7 +1356,7 @@ export default function RosaryApp() {
                             ? 'bg-amber-500/40'
                             : 'bg-stone-200 dark:bg-slate-800'
                         }`}
-                        title="Gloria y Jaculatoria"
+                        title={ui.beadGloria}
                       />
                     </div>
                   </div>
@@ -1440,26 +1366,39 @@ export default function RosaryApp() {
                 {stage === 'salve' && (
                   <div class="p-4 rounded-2xl bg-amber-500/10 border border-amber-600/30 text-xs text-stone-700 dark:text-stone-300 space-y-3">
                     <div class="flex items-center gap-2 font-bold text-amber-800 dark:text-amber-400">
-                      <span>✨ ¡Has completado las cinco decenas de {prayerType === 'coronilla' ? 'la Coronilla de la Divina Misericordia' : 'el Santo Rosario'}!</span>
+                      <span>{prayerType === 'coronilla' ? ui.completedHeaderChaplet : ui.completedHeaderRosary}</span>
                     </div>
                     <p class="m-0 leading-relaxed">
-                      Que la misericordia de Nuestro Señor Jesucristo y la protección de la Santísima Virgen María te acompañen en todo momento. Puedes concluir persignándote con devoción.
+                      {ui.completedBlessing}
                     </p>
                     {prayerType === 'rosario' && (
                       <details class="cursor-pointer pt-1">
                         <summary class="font-semibold text-amber-700 dark:text-amber-400 hover:underline">
-                          Ver las Letanías Lauretanas (opcional)
+                          {ui.litanyTitle}
                         </summary>
-                        <div class="pt-3 font-reading text-xs text-stone-600 dark:text-stone-400 space-y-1.5 pl-3 border-l-2 border-amber-500/40 mt-2">
-                          <p class="m-0">Señor, ten piedad. Cristo, ten piedad. Señor, ten piedad.</p>
-                          <p class="m-0">Santa María, <em>ruega por nosotros.</em></p>
-                          <p class="m-0">Santa Madre de Dios, <em>ruega por nosotros.</em></p>
-                          <p class="m-0">Madre de la divina gracia, <em>ruega por nosotros.</em></p>
-                          <p class="m-0">Madre purísima, Madre castísima, <em>ruega por nosotros.</em></p>
-                          <p class="m-0">Espejo de justicia, Trono de la sabiduría, Causa de nuestra alegría, <em>ruega por nosotros.</em></p>
-                          <p class="m-0">Rosa mística, Torre de David, Torre de marfil, Casa de oro, Arca de la alianza, <em>ruega por nosotros.</em></p>
-                          <p class="m-0">Reina de los Ángeles, Reina de la paz, <em>ruega por nosotros.</em></p>
-                        </div>
+                        {language === 'en' ? (
+                          <div class="pt-3 font-reading text-xs text-stone-600 dark:text-stone-400 space-y-1.5 pl-3 border-l-2 border-amber-500/40 mt-2">
+                            <p class="m-0">Lord, have mercy. Christ, have mercy. Lord, have mercy.</p>
+                            <p class="m-0">Holy Mary, <em>pray for us.</em></p>
+                            <p class="m-0">Holy Mother of God, <em>pray for us.</em></p>
+                            <p class="m-0">Mother of divine grace, <em>pray for us.</em></p>
+                            <p class="m-0">Mother most pure, Mother most chaste, <em>pray for us.</em></p>
+                            <p class="m-0">Mirror of justice, Seat of wisdom, Cause of our joy, <em>pray for us.</em></p>
+                            <p class="m-0">Mystical rose, Tower of David, Tower of ivory, House of gold, Ark of the covenant, <em>pray for us.</em></p>
+                            <p class="m-0">Queen of Angels, Queen of peace, <em>pray for us.</em></p>
+                          </div>
+                        ) : (
+                          <div class="pt-3 font-reading text-xs text-stone-600 dark:text-stone-400 space-y-1.5 pl-3 border-l-2 border-amber-500/40 mt-2">
+                            <p class="m-0">Señor, ten piedad. Cristo, ten piedad. Señor, ten piedad.</p>
+                            <p class="m-0">Santa María, <em>ruega por nosotros.</em></p>
+                            <p class="m-0">Santa Madre de Dios, <em>ruega por nosotros.</em></p>
+                            <p class="m-0">Madre de la divina gracia, <em>ruega por nosotros.</em></p>
+                            <p class="m-0">Madre purísima, Madre castísima, <em>ruega por nosotros.</em></p>
+                            <p class="m-0">Espejo de justicia, Trono de la sabiduría, Causa de nuestra alegría, <em>ruega por nosotros.</em></p>
+                            <p class="m-0">Rosa mística, Torre de David, Torre de marfil, Casa de oro, Arca de la alianza, <em>ruega por nosotros.</em></p>
+                            <p class="m-0">Reina de los Ángeles, Reina de la paz, <em>ruega por nosotros.</em></p>
+                          </div>
+                        )}
                       </details>
                     )}
                   </div>
@@ -1473,7 +1412,7 @@ export default function RosaryApp() {
                     disabled={stage === 'intro' && currentBead === 0}
                     class="px-4 py-3 rounded-xl bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed font-medium text-sm transition-colors"
                   >
-                    &larr; Anterior
+                    &larr; {ui.previousBead}
                   </button>
 
                   <button
@@ -1481,7 +1420,7 @@ export default function RosaryApp() {
                     onClick={() => resetCounter(true)}
                     class="text-xs text-stone-400 hover:text-stone-600 dark:hover:text-stone-300 underline"
                   >
-                    Reiniciar
+                    {ui.reset}
                   </button>
 
                   <button
@@ -1489,7 +1428,7 @@ export default function RosaryApp() {
                     onClick={nextBead}
                     class="px-6 py-3.5 rounded-xl bg-amber-600 text-white dark:bg-amber-500 dark:text-slate-950 font-bold text-base shadow-md hover:bg-amber-700 dark:hover:bg-amber-400 active:scale-95 transition-all flex items-center gap-2"
                   >
-                    <span>{stage === 'salve' ? 'Finalizar Rezo' : 'Siguiente Cuenta'}</span>
+                    <span>{stage === 'salve' ? ui.finishPrayer : ui.nextBead}</span>
                     <span>&rarr;</span>
                   </button>
                 </div>
@@ -1499,10 +1438,10 @@ export default function RosaryApp() {
               {/* Nota Doctrinal */}
               <div class="p-4 rounded-xl bg-stone-100/50 dark:bg-slate-900/40 text-xs text-stone-500 dark:text-stone-400 leading-relaxed border border-stone-200/50 dark:border-slate-800/50 space-y-1.5">
                 <p class="m-0">
-                  <strong>Magisterio eclesial:</strong> {prayerType === 'coronilla' ? 'Coronilla aprobada canónicamente por la Santa Sede e impulsada por San Juan Pablo II con indulgencias plenarias.' : 'La estructura y misterios siguen las cartas apostólicas Rosarium Virginis Mariae (San Juan Pablo II) y Consueverunt Romani Pontifices (San Pío V).'}
+                  <strong>{ui.magisteriumLabel}</strong> {prayerType === 'coronilla' ? ui.chapletMagisterium : ui.rosaryMagisterium}
                 </p>
                 <p class="m-0">
-                  <strong>Navegación por teclado:</strong> Pulsa la <strong>Barra Espaciadora</strong> o <strong>Flecha Derecha</strong> para avanzar cuenta; <strong>Flecha Izquierda</strong> para retroceder.
+                  {ui.keyboardNav}
                 </p>
               </div>
 
