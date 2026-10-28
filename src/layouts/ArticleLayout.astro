@@ -41,26 +41,38 @@ const {
   imagen,
 } = Astro.props;
 
-const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'http://localhost:4321');
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
 const currentURL = new URL(Astro.url.pathname, siteUrl).toString();
+const imageUrl = imagen ? new URL(imagen.src.replace(/^src\//, '/'), siteUrl).toString() : `${siteUrl}/og-default.jpg`;
 
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': currentURL,
+  },
   headline: title,
   description: resumen,
+  image: [imageUrl],
   url: currentURL,
   datePublished: fechaPublicacion.toISOString(),
   dateModified: fechaRevision.toISOString(),
-  author: {
-    '@type': 'Organization',
-    name: autor,
-    url: siteUrl,
-  },
+  author: [
+    {
+      '@type': 'Organization',
+      name: autor,
+      url: `${siteUrl}/autor/`,
+    },
+  ],
   publisher: {
     '@type': 'Organization',
     name: 'Razón y Asombro',
-    url: siteUrl,
+    url: `${siteUrl}/`,
+    logo: {
+      '@type': 'ImageObject',
+      url: `${siteUrl}/favicon.svg`,
+    },
   },
 };
 ---
@@ -68,6 +80,7 @@ const articleSchema = {
 <BaseLayout
   title={title}
   description={resumen}
+  image={imageUrl}
   articleDate={fechaPublicacion}
   articleModified={fechaRevision}
   ogType="article"

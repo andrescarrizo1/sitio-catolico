@@ -5,7 +5,10 @@ import ArticleImage from '../../components/ui/ArticleImage.astro';
 
 export async function getStaticPaths() {
   const santosEntries = await getCollection('santos');
-  return santosEntries.map((entry) => ({
+  const filtered = santosEntries.filter(
+    (entry) => entry.id !== 'estudios-medicos-y-santo-oficio' && !entry.data.santo_nombre?.includes('Pío')
+  );
+  return filtered.map((entry) => ({
     params: { slug: entry.id },
     props: { entry },
   }));

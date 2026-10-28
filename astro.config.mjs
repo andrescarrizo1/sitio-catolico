@@ -14,6 +14,9 @@ export default defineConfig({
     preact({ compat: true }),
     sitemap()
   ],
+  redirects: {
+    '/santos/estudios-medicos-y-santo-oficio': '/padre-pio/estudios-medicos-y-santo-oficio/',
+  },
   vite: {
     plugins: [tailwindcss()],
   },

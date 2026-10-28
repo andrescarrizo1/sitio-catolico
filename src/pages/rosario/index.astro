@@ -44,61 +44,15 @@ const faqSchema = {
     }
   ]
 };
-
-const howToSchema = {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  "name": "Cómo rezar el Santo Rosario paso a paso",
-  "description": "Guía práctica y canónica para rezar el Santo Rosario con meditación bíblica, jaculatorias y letanías.",
-  "step": [
-    {
-      "@type": "HowToStep",
-      "position": 1,
-      "name": "Señal de la Cruz y Credo Apostólico",
-      "text": "Sostén el crucifijo, haz la señal de la cruz y reza el Credo profesando los dogmas fundamentales de la fe católica."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 2,
-      "name": "Oraciones Iniciales",
-      "text": "En la primera cuenta grande reza un Padre Nuestro; en las siguientes tres cuentas pequeñas reza tres Avemarías pidiendo el aumento de la fe, la esperanza y la caridad; concluye con un Gloria."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 3,
-      "name": "Anuncio y Meditación del Misterio",
-      "text": "Enuncia el primer misterio correspondiente al día, lee el pasaje de la Escritura o fruto espiritual, y reza un Padre Nuestro en la cuenta mayor."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 4,
-      "name": "Las Diez Avemarías de la Decena",
-      "text": "Pasa cuenta por cuenta rezando diez Avemarías mientras mantienes la mente y el corazón centrados en el misterio anunciado."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 5,
-      "name": "Gloria al Padre y Jaculatoria de Fátima",
-      "text": "Al culminar las diez Avemarías, reza el Gloria y añade la jaculatoria revelada a los tres pastorcitos en Cova da Iria: «Oh Jesús mío, perdónanos nuestros pecados...»."
-    },
-    {
-      "@type": "HowToStep",
-      "position": 6,
-      "name": "Conclusión con la Salve Regina",
-      "text": "Tras completar las cinco decenas, culmina rezando la Salve Regina y encomendando las intenciones de la Santa Iglesia y de la propia alma."
-    }
-  ]
-};
 ---
 
 <BaseLayout
   title="Santo Rosario Interactivo con Visor Visual de Cuentas | Razón y Asombro"
-  description="Reza el Santo Rosario con un visor visual e interactivo cuenta por cuenta al lado del texto sagrado. Detección automática del misterio de hoy, audio litúrgico, latín/español y funcionamiento 100% offline."
+  description="Reza el Santo Rosario con visor visual interactivo cuenta por cuenta. Detección automática del misterio del día, latín o español y funcionamiento offline."
   image="/images/rosario-manos-devocion.jpg"
 >
   <!-- Inyección de Datos Estructurados JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
-  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
     

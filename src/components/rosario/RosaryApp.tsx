@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'preact/hooks';
-import RosaryVisualizer, { ROSARY_BEADS, type VisualBead } from './RosaryVisualizer';
+import RosaryVisualizer, { type VisualBead } from './RosaryVisualizer';
 
 // Definición de los 4 juegos de Misterios con meditaciones completas
 interface MysteryDetail {
@@ -442,6 +442,9 @@ export default function RosaryApp() {
     const savedSound = localStorage.getItem('rosary_sound');
     if (savedSound !== null) setSoundEnabled(savedSound === 'true');
 
+    const savedVibrate = localStorage.getItem('rosary_vibrate');
+    if (savedVibrate !== null) setVibrateEnabled(savedVibrate === 'true');
+
     // Manejador de teclado accesible
     const handleKeyDown = (e: KeyboardEvent) => {
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) return;
@@ -460,6 +463,7 @@ export default function RosaryApp() {
 
   const persistState = (newStage: 'intro' | 'decena' | 'salve', newDecade: number, newBead: number) => {
     if (typeof window === 'undefined') return;
+    localStorage.setItem('rosary_stage', newStage);
     localStorage.setItem('rosary_decade', newDecade.toString());
     localStorage.setItem('rosary_bead', newBead.toString());
   };

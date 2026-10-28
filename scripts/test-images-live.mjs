@@ -1,5 +1,3 @@
-import fetch from 'node:http';
-
 const urls = [
   'http://localhost:4321/virgen-de-fatima/milagro-del-sol/',
   'http://localhost:4321/ciencia-y-fe/sabana-santa-de-turin/',

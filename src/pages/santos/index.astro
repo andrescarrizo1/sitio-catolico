@@ -11,7 +11,7 @@ santosList.sort((a, b) => a.data.orden - b.data.orden);
 
 <BaseLayout
   title="Santos y Místicos de la Iglesia Católica: Fe, Ciencia y Caridad | Razón y Asombro"
-  description="Biografías históricas y testimonios documentados de los grandes santos y místicos: San Carlo Acutis (el apóstol del ciberespacio y la Eucaristía), Santa Faustina Kowalska (la Divina Misericordia) y San Pío de Pietrelcina."
+  description="Biografías históricas y peritajes de grandes santos: San Carlo Acutis, Santa Faustina Kowalska y San Pío de Pietrelcina con rigor documental y espiritual."
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <Breadcrumbs crumbs={[{ label: 'Santos y Místicos' }]} />
@@ -29,7 +29,7 @@ santosList.sort((a, b) => a.data.orden - b.data.orden);
         <PillarCard
           title={s.data.titulo}
           description={s.data.resumen}
-          href={`/santos/${s.id}/`}
+          href={s.id === 'estudios-medicos-y-santo-oficio' ? '/padre-pio/estudios-medicos-y-santo-oficio/' : `/santos/${s.id}/`}
           badge={s.data.eje_tematico}
           status={s.data.estatus_eclesial}
           date={s.data.fecha_revision}

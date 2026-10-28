@@ -60,12 +60,45 @@ const pillars = [
     badge: 'Fides et Ratio',
   },
 ];
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      'url': `${siteUrl}/`,
+      'name': 'Razón y Asombro',
+      'description': 'Plataforma web católica dedicada a proclamar la verdad de Jesucristo, sus enseñanzas bíblicas y los signos documentados de la fe con el máximo rigor histórico y científico.',
+      'inLanguage': 'es',
+      'publisher': {
+        '@id': `${siteUrl}/#organization`
+      }
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      'name': 'Razón y Asombro',
+      'url': `${siteUrl}/`,
+      'logo': {
+        '@type': 'ImageObject',
+        'url': `${siteUrl}/favicon.svg`
+      },
+      'description': 'Plataforma web católica de divulgación doctrinal, investigación histórica de milagros y oración contemplativa.'
+    }
+  ]
+};
 ---
 
 <BaseLayout
   title="Razón y Asombro | Fe Católica, Evangelio y Rigor Documental"
-  description="Plataforma web católica dedicada a proclamar la verdad salvífica de Jesucristo, sus enseñanzas bíblicas y los signos documentados de la fe con el máximo rigor histórico y científico."
+  description="Plataforma católica de doctrina, Sagrada Escritura y rigor documental. Investigaciones históricas de milagros, Santo Rosario interactivo y oración."
 >
+  <!-- Schema.org WebSite y Organization -->
+  <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+
   <!-- Hero Principal -->
   <Hero
     badge="Fe Católica &middot; Verdad Revelada"
@@ -77,72 +110,48 @@ const pillars = [
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
     
-    <!-- Destacado: Buscador de Consuelo Espiritual -->
-    <section class="relative overflow-hidden p-6 sm:p-10 rounded-3xl bg-gradient-to-r from-amber-500/10 via-amber-600/5 to-transparent border border-amber-500/30 dark:border-amber-500/20 shadow-sm flex flex-col lg:flex-row items-center justify-between gap-6">
-      <div class="space-y-3 text-center lg:text-left max-w-2xl">
-        <div class="flex items-center justify-center lg:justify-start gap-2">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-600/10 text-amber-800 dark:text-amber-300 border border-amber-600/30">
-            <span class="w-2 h-2 rounded-full bg-amber-600 animate-pulse"></span>
-            Refugio para el Alma Herida
-          </span>
+    <!-- 1. Acceso Destacado: Rezar el Rosario Ahora & Guía Contemplativa -->
+    <section class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-500/15 via-amber-600/10 to-transparent border border-amber-500/30 dark:border-amber-500/20 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="space-y-2 text-center md:text-left">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-600/10 text-amber-800 dark:text-amber-300 border border-amber-600/20">
+          <span class="w-2 h-2 rounded-full bg-amber-600 dark:bg-amber-400 animate-pulse"></span>
+          Oración Contemplativa en Vivo
         </div>
-        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
-          ¿Llevas una pena, angustia o duda en el corazón hoy?
+        <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-950 dark:text-stone-100">
+          Santo Rosario Interactivo: Rezalo ahora cuenta por cuenta
         </h2>
-        <p class="text-sm sm:text-base text-stone-600 dark:text-stone-300 leading-relaxed font-reading">
-          Encuentra alivio y sentido a tu dolor en las promesas de la Sagrada Escritura, los consejos vivos de los Santos y una guía de oración concreta para este instante.
+        <p class="text-sm text-stone-600 dark:text-stone-300 font-reading max-w-2xl">
+          Visualizador de cuentas con audio litúrgico, detección del misterio del día, oraciones en español y latín, y funcionamiento offline para orar en cualquier lugar.
         </p>
       </div>
-      <div class="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0 w-full sm:w-auto">
+      <div class="flex flex-wrap items-center gap-3 shrink-0">
         <a
-          href="/consuelo/"
-          class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-white bg-amber-600 hover:bg-amber-700 transition-all shadow-md shadow-amber-600/20"
+          href="/rosario/misterios-de-hoy/"
+          class="inline-flex items-center gap-2 px-5 py-3 rounded-xl font-semibold text-sm text-white bg-amber-600 hover:bg-amber-700 transition-all shadow-md shadow-amber-600/20"
         >
-          <span>Buscar Consuelo Espiritual</span>
+          <span>Rezar Rosario de Hoy</span>
           <span>&rarr;</span>
+        </a>
+        <a
+          href="/rosario/como-rezar/"
+          class="inline-flex items-center gap-2 px-4 py-3 rounded-xl font-medium text-sm text-stone-700 dark:text-stone-300 bg-stone-200/60 dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors"
+        >
+          Guía paso a paso
         </a>
       </div>
     </section>
 
-    <!-- Mosaico de los Pilares -->
-    <section>
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
-        <div>
-          <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-            Arquitectura de la Fe
-          </span>
-          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100 mt-1">
-            Los Pilares del Proyecto
-          </h2>
-        </div>
-        <p class="text-sm text-stone-600 dark:text-stone-400 max-w-md">
-          Cada sección articula la doctrina de la Iglesia con fuentes primarias rigurosas y una llamada concreta a la conversión interior.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {pillars.map((p) => (
-          <PillarCard
-            title={p.title}
-            description={p.description}
-            href={p.href}
-            badge={p.badge}
-          />
-        ))}
-      </div>
-    </section>
-
-    <!-- Artículos Verificados Destacados (Fase Piloto) -->
+    <!-- 2. Investigaciones y Estudios Documentados Destacados -->
     <section class="p-8 sm:p-10 rounded-3xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800">
       <div class="max-w-3xl mb-8 space-y-2">
         <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-          Entregas Piloto Verificadas
+          Evidencia Rigurosa y Ciencia Forense
         </span>
         <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
           Estudios Documentados de la Fase 1
         </h2>
         <p class="text-sm text-stone-600 dark:text-stone-400">
-          Textos completos redactados con nuestra voz editorial, citas primarias y esquemas de datos validados:
+          Textos redactados con nuestra voz editorial, citas primarias contrastadas y datos validados:
         </p>
       </div>
 
@@ -263,6 +272,84 @@ const pillars = [
             Rosario visual interactivo, audio chime armónico, selector de misterios y devociones añadidas.
           </p>
         </a>
+      </div>
+    </section>
+
+    <!-- 3. Categorías Principales (Los Pilares del Proyecto) -->
+    <section>
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+            Categorías Principales
+          </span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100 mt-1">
+            Los Pilares de Razón y Asombro
+          </h2>
+        </div>
+        <p class="text-sm text-stone-600 dark:text-stone-400 max-w-md">
+          Cada sección articula la doctrina de la Iglesia con fuentes primarias rigurosas y una llamada viva a la conversión interior.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {pillars.map((p) => (
+          <PillarCard
+            title={p.title}
+            description={p.description}
+            href={p.href}
+            badge={p.badge}
+          />
+        ))}
+      </div>
+    </section>
+
+    <!-- 4. Recursos de Oración y Formación -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Buscador de Consuelo Espiritual -->
+      <div class="p-6 sm:p-8 rounded-3xl bg-stone-100/80 dark:bg-slate-900/80 border border-stone-200 dark:border-slate-800 flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-600/10 text-amber-800 dark:text-amber-300 border border-amber-600/20">
+            <span class="w-2 h-2 rounded-full bg-amber-600"></span>
+            Refugio para el Alma Herida
+          </span>
+          <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-950 dark:text-stone-100">
+            ¿Llevas una pena, angustia o duda en el corazón?
+          </h3>
+          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-reading">
+            Encuentra bálsamo en las promesas de la Sagrada Escritura, los consejos vivos de los Santos y una guía de oración concreta para este instante.
+          </p>
+        </div>
+        <div>
+          <a
+            href="/consuelo/"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-white bg-amber-600 hover:bg-amber-700 transition-all shadow-sm"
+          >
+            <span>Buscar Consuelo Espiritual &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Muro de Oración Comunitario -->
+      <div class="p-6 sm:p-8 rounded-3xl bg-stone-100/80 dark:bg-slate-900/80 border border-stone-200 dark:border-slate-800 flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-800 dark:text-indigo-300 border border-indigo-500/20">
+            🕯️ Comunión de los Santos
+          </span>
+          <h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-950 dark:text-stone-100">
+            Muro de Oración e Intenciones
+          </h3>
+          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-reading">
+            Enciende una vela virtual y une tu súplica a las decenas del Santo Rosario ofrecidas diariamente por nuestra comunidad de fieles.
+          </p>
+        </div>
+        <div>
+          <a
+            href="/oracion/"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs sm:text-sm text-stone-800 dark:text-stone-200 bg-stone-200/80 dark:bg-slate-800 hover:bg-stone-300/80 dark:hover:bg-slate-700 transition-colors shadow-xs"
+          >
+            <span>Ir al Muro de Oración &rarr;</span>
+          </a>
+        </div>
       </div>
     </section>
 

@@ -1,4 +1,4 @@
-﻿---
+---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/ui/Hero.astro';
@@ -10,7 +10,7 @@ const milagrosList = await getCollection('milagros');
 
 <BaseLayout
   title="Milagros Eucarísticos y Ciencia | Peritajes Médicos e Históricos"
-  description="Investigación histórica y forense de los milagros eucarísticos aprobados por la Iglesia: Lanciano, Buenos Aires, Tixtla y Sokółka. Análisis histológicos de miocardio y sangre AB."
+  description="Investigación histórica y forense de los milagros eucarísticos: Lanciano, Buenos Aires y Sokółka. Análisis histológicos de miocardio y sangre humana AB."
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <Breadcrumbs crumbs={[{ label: 'Milagros Eucarísticos' }]} />

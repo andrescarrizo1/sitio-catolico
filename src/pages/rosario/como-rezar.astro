@@ -4,12 +4,14 @@ import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
 import { Image } from 'astro:assets';
 import rosarioImg from '../../assets/rosario/rosario-manos-devocion.jpg';
 
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+
 const howToSchema = {
   "@context": "https://schema.org",
   "@type": "HowTo",
   "name": "Cómo Rezar el Santo Rosario Paso a Paso",
   "description": "Instrucciones detalladas y canónicas para rezar el Santo Rosario católico: orden de oraciones, meditación de misterios y jaculatorias.",
-  "image": "https://adveritatem.org/images/rosario-manos-devocion.jpg",
+  "image": `${siteUrl}/assets/rosario/rosario-manos-devocion.jpg`,
   "step": [
     {
       "@type": "HowToStep",
@@ -53,7 +55,7 @@ const howToSchema = {
 
 <BaseLayout
   title="Cómo Rezar el Santo Rosario Paso a Paso | Guía Completa para Principiantes"
-  description="Aprende a rezar el Santo Rosario católico paso a paso. Guía completa con orden de las oraciones: Credo, Padre Nuestro, Ave María, Gloria, Jaculatoria de Fátima y Salve."
+  description="Guía paso a paso para rezar el Santo Rosario católico: orden de las oraciones, Credo, Padre Nuestro, Ave María, misterios y letanías para principiantes."
   image="/images/rosario-manos-devocion.jpg"
 >
   <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />

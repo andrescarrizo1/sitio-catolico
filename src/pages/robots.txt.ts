@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = ({ site }) => {
   const allowIndexing = import.meta.env.PROD || import.meta.env.PUBLIC_ALLOW_INDEXING === 'true';
-  const siteUrl = site ? site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'http://localhost:4321');
+  const siteUrl = site ? site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
 
   if (allowIndexing) {
     return new Response(

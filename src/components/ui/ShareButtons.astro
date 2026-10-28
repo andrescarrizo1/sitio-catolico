@@ -5,7 +5,7 @@ interface Props {
   url?: string;
 }
 
-const { title, description = '', url } = Astro.props;
+const { title, url } = Astro.props;
 
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
 const currentUrl = url || (Astro.url ? new URL(Astro.url.pathname, siteUrl).toString() : siteUrl);
@@ -14,7 +14,6 @@ const shareText = `«${title}» — Razón y Asombro`;
 const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + '\n' + currentUrl)}`;
 const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(shareText)}`;
 const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(currentUrl)}`;
-const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`;
 ---
 
 <div class="my-8 p-5 rounded-2xl bg-stone-100/80 dark:bg-slate-900/80 border border-stone-200 dark:border-slate-800 transition-colors">
@@ -23,7 +22,7 @@ const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURICom
       <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
         Evangelización Digital
       </span>
-      <h4 class="font-serif text-base font-bold text-slate-900 dark:text-stone-100">
+      <h4 class="font-serif text-base font-bold text-slate-950 dark:text-stone-100">
         Comparte este estudio con tu comunidad
       </h4>
       <p class="text-xs text-stone-600 dark:text-stone-400 mt-0.5">
@@ -59,6 +58,20 @@ const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURICom
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
         </svg>
         Telegram
+      </a>
+
+      <!-- X / Twitter -->
+      <a
+        href={twitterUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-stone-900 text-white hover:bg-black dark:bg-stone-800 dark:hover:bg-stone-700 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+        aria-label="Compartir en X (Twitter)"
+      >
+        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+        </svg>
+        X
       </a>
 
       <!-- Copiar Enlace -->

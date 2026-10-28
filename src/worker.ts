@@ -694,8 +694,29 @@ export default {
     }
 
     // ==========================================
-    // 3. ASSETS ESTÁTICOS
+    // 3. REDIRECCIONES PERMANENTES (HTTP 301)
     // ==========================================
-    return env.ASSETS.fetch(request);
+    const cleanPath = url.pathname.replace(/\/+$/, '');
+    if (cleanPath === '/santos/estudios-medicos-y-santo-oficio') {
+      return Response.redirect(`${url.origin}/padre-pio/estudios-medicos-y-santo-oficio/`, 301);
+    }
+
+    // ==========================================
+    // 4. ASSETS ESTÁTICOS Y PLANTILLA 404 PERSONALIZADA
+    // ==========================================
+    const response = await env.ASSETS.fetch(request);
+    if (response.status === 404) {
+      const notFoundUrl = new URL('/404.html', request.url);
+      const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl.toString(), request));
+      return new Response(notFoundRes.body, {
+        status: 404,
+        statusText: 'Not Found',
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'X-Robots-Tag': 'noindex, follow',
+        },
+      });
+    }
+    return response;
   },
 };

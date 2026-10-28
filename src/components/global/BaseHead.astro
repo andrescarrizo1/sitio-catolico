@@ -6,6 +6,7 @@ interface Props {
   articleDate?: Date;
   articleModified?: Date;
   ogType?: 'website' | 'article';
+  noindex?: boolean;
 }
 
 const {
@@ -15,12 +16,18 @@ const {
   articleDate,
   articleModified,
   ogType = 'website',
+  noindex = false,
 } = Astro.props;
 
-const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'http://localhost:4321');
+const siteBrand = 'Razón y Asombro';
+const fullTitle = title.includes(siteBrand) ? title : `${title} | ${siteBrand}`;
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
-const allowIndexing = import.meta.env.PROD || import.meta.env.PUBLIC_ALLOW_INDEXING === 'true';
+const allowIndexing = (import.meta.env.PROD || import.meta.env.PUBLIC_ALLOW_INDEXING === 'true') && !noindex;
+const metaDescription = description.length > 165
+  ? description.slice(0, 155).replace(/\s+\S*$/, '') + '...'
+  : description;
 ---
 
 <!-- Configuración esencial -->
@@ -34,25 +41,25 @@ const allowIndexing = import.meta.env.PROD || import.meta.env.PUBLIC_ALLOW_INDEX
 <link rel="canonical" href={canonicalURL} />
 
 <!-- Título y Descripción -->
-<title>{title} | Fe Católica y Evangelio</title>
-<meta name="title" content={`${title} | Fe Católica y Evangelio`} />
-<meta name="description" content={description} />
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
+<meta name="description" content={metaDescription} />
 
-<!-- Control estricto de indexación en fase local/staging -->
+<!-- Control estricto de indexación -->
 {allowIndexing ? (
   <meta name="robots" content="index, follow" />
 ) : (
-  <meta name="robots" content="noindex, nofollow" />
+  <meta name="robots" content="noindex, follow" />
 )}
 
 <!-- Open Graph / Redes Sociales -->
 <meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonicalURL} />
-<meta property="og:title" content={title} />
-<meta property="og:description" content={description} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={metaDescription} />
 <meta property="og:image" content={ogImageURL} />
 <meta property="og:locale" content="es_ES" />
-<meta property="og:site_name" content="Fe Católica y Evangelio" />
+<meta property="og:site_name" content={siteBrand} />
 
 {articleDate && (
   <meta property="article:published_time" content={articleDate.toISOString()} />
@@ -64,8 +71,8 @@ const allowIndexing = import.meta.env.PROD || import.meta.env.PUBLIC_ALLOW_INDEX
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={canonicalURL} />
-<meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={description} />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImageURL} />
 
 <!-- Tipografía de Google Fonts optimizada con font-display: swap -->

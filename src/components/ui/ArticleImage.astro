@@ -40,6 +40,7 @@ const imageMetadata = imageModule?.default;
         class="w-full h-auto block max-h-[580px] object-contain sm:object-cover"
         loading={loading}
         decoding="async"
+        fetchpriority={loading === 'eager' ? 'high' : 'auto'}
       />
     </div>
     {(caption || credito || licencia || alt) && (

@@ -304,7 +304,13 @@ export default function RosaryVisualizer({
                 <g
                   key={bead.id}
                   onClick={() => onSelectBead(bead)}
-                  class="cursor-pointer group focus:outline-none"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      onSelectBead(bead);
+                    }
+                  }}
+                  class="cursor-pointer group focus:outline-none focus-visible:outline-2 focus-visible:outline-amber-500"
                   role="button"
                   tabIndex={0}
                   aria-label={bead.etiqueta}
@@ -359,7 +365,13 @@ export default function RosaryVisualizer({
                 <g
                   key={bead.id}
                   onClick={() => onSelectBead(bead)}
-                  class="cursor-pointer group focus:outline-none"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      onSelectBead(bead);
+                    }
+                  }}
+                  class="cursor-pointer group focus:outline-none focus-visible:outline-2 focus-visible:outline-amber-500"
                   role="button"
                   tabIndex={0}
                   aria-label={bead.etiqueta}
@@ -405,7 +417,13 @@ export default function RosaryVisualizer({
               <g
                 key={bead.id}
                 onClick={() => onSelectBead(bead)}
-                class="cursor-pointer group focus:outline-none"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    onSelectBead(bead);
+                  }
+                }}
+                class="cursor-pointer group focus:outline-none focus-visible:outline-2 focus-visible:outline-amber-500"
                 role="button"
                 tabIndex={0}
                 aria-label={bead.etiqueta}

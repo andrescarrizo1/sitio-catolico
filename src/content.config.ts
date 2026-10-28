@@ -42,7 +42,7 @@ const baseSchema = z.object({
     })
   ).min(1, "Debe incluirse al menos una fuente primaria o histórica verificada"),
   autor: z.string().default("Equipo Editorial"),
-  revisado_por: z.string().default("Revisión Teológica y Científica Interna"),
+  revisado_por: z.string().default("Revisión Editorial Interna (Basada en Magisterio y Fuentes Primarias)"),
   fecha_publicacion: z.coerce.date(),
   fecha_revision: z.coerce.date(),
 });
