@@ -4,6 +4,10 @@ interface Props {
 }
 
 const { variant = 'full' } = Astro.props;
+
+// TODO: El usuario proporcionará la URL real de PayPal.me. Dejado temporalmente como PLACEHOLDER.
+const paypalUrl = "#TODO_PAYPAL_URL_PLACEHOLDER";
+const showPaypal = Boolean(paypalUrl) && !paypalUrl.includes("TODO_PAYPAL_URL_PLACEHOLDER");
 ---
 
 <div class={`rounded-2xl border transition-colors ${
@@ -42,15 +46,16 @@ const { variant = 'full' } = Astro.props;
       </a>
 
       <!-- PayPal (Internacional) -->
-      <!-- TODO: El usuario proporcionará la URL real de PayPal.me. Dejado temporalmente como PLACEHOLDER. -->
-      <a
-        href="#TODO_PAYPAL_URL_PLACEHOLDER"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-900 dark:bg-stone-800 hover:bg-slate-800 dark:hover:bg-stone-700 text-white border border-stone-700 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
-      >
-        Ofrenda con PayPal
-      </a>
+      {showPaypal && (
+        <a
+          href={paypalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-900 dark:bg-stone-800 hover:bg-slate-800 dark:hover:bg-stone-700 text-white border border-stone-700 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+        >
+          Ofrenda con PayPal
+        </a>
+      )}
     </div>
   </div>
 </div>
