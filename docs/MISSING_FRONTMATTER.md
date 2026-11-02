@@ -22,6 +22,8 @@ Este reporte audita los campos opcionales introducidos en el esquema de contenid
 | `src/content/ciencia-fe/virgen-de-guadalupe-tilma.mdx` | Legacy (`autor`) | Legacy (`revisado_por`) | Legacy (`fecha_revision`) | Legacy (`fuentes`) | **FALTA** | author, reviewedBy, lastReviewed, sources, evidenceLevel |
 | `src/content/fatima/milagro-del-sol.mdx` | Legacy (`autor`) | Legacy (`revisado_por`) | Legacy (`fecha_revision`) | Legacy (`fuentes`) | **FALTA** | author, reviewedBy, lastReviewed, sources, evidenceLevel |
 | `src/content/jesus/el-buen-samaritano.mdx` | Legacy (`autor`) | Legacy (`revisado_por`) | Legacy (`fecha_revision`) | Legacy (`fuentes`) | **FALTA** | author, reviewedBy, lastReviewed, sources, evidenceLevel |
+| `src/content/jesus/parabola-del-hijo-prodigo.mdx` | Legacy (`autor`) | Legacy (`revisado_por`) | Legacy (`fecha_revision`) | Legacy (`fuentes`) | **FALTA** | author, reviewedBy, lastReviewed, sources, evidenceLevel |
+| `src/content/jesus/sermon-de-la-montana-bienaventuranzas.mdx` | Legacy (`autor`) | Legacy (`revisado_por`) | Legacy (`fecha_revision`) | Legacy (`fuentes`) | **FALTA** | author, reviewedBy, lastReviewed, sources, evidenceLevel |
 | `src/content/milagros/buenos-aires.mdx` | Legacy (`autor`) | Legacy (`revisado_por`) | Legacy (`fecha_revision`) | Legacy (`fuentes`) | **FALTA** | author, reviewedBy, lastReviewed, sources, evidenceLevel |
 | `src/content/milagros/lanciano.mdx` | Legacy (`autor`) | Legacy (`revisado_por`) | Legacy (`fecha_revision`) | Legacy (`fuentes`) | **FALTA** | author, reviewedBy, lastReviewed, sources, evidenceLevel |
 | `src/content/milagros/sokolka.mdx` | Legacy (`autor`) | Legacy (`revisado_por`) | Legacy (`fecha_revision`) | Legacy (`fuentes`) | **FALTA** | author, reviewedBy, lastReviewed, sources, evidenceLevel |
@@ -35,7 +37,7 @@ Este reporte audita los campos opcionales introducidos en el esquema de contenid
 
 ## Resumen Ejecutivo
 
-- **Total de artículos auditados:** 13
+- **Total de artículos auditados:** 15
 - **`evidenceLevel`:** Falta en todos los artículos (campo nuevo opcional de Fase 2 listo para ser completado por los editores).
 - **Campos de autoría y revisión:** Todos los artículos en español cuentan actualmente con los equivalentes funcionales (`autor`, `revisado_por`, `fecha_revision`, `fuentes`), soportados de forma retrocompatible y con fallback hacia fecha de commit de Git en JSON-LD.
 - **Acción requerida para editores:** Rellenar gradualmente `evidenceLevel` y normalizar a `author`, `reviewedBy`, `lastReviewed`, `sources` en las frontmatters sin riesgo de rotura de build, ya que todos los campos son opcionales en `src/content.config.ts`.

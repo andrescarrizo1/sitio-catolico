@@ -25,7 +25,10 @@ let brokenLinks = [];
 const hrefRegex = /href=["']([^"']+)["']/g;
 
 for (const file of htmlFiles) {
-  const content = fs.readFileSync(file, 'utf8');
+  let content = fs.readFileSync(file, 'utf8');
+  // Ignorar contenido dentro de scripts y estilos para evitar falsos positivos con templates de JS
+  content = content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+  content = content.replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, '');
   let match;
   while ((match = hrefRegex.exec(content)) !== null) {
     const href = match[1];
