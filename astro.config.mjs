@@ -12,7 +12,9 @@ export default defineConfig({
   integrations: [
     mdx(),
     preact({ compat: true }),
-    sitemap()
+    sitemap({
+      filter: (page) => !page.includes('/404'),
+    })
   ],
   redirects: {
     '/santos/estudios-medicos-y-santo-oficio': '/padre-pio/estudios-medicos-y-santo-oficio/',

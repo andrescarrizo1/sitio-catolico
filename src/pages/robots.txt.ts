@@ -14,7 +14,7 @@ export const GET: APIRoute = ({ site }) => {
   }
 
   return new Response(
-    `User-agent: *\nDisallow: /\n`,
+    `User-agent: *\nDisallow: /\n\nSitemap: ${siteUrl}/sitemap-index.xml\n`,
     {
       headers: { 'Content-Type': 'text/plain; charset=utf-8' },
     }
