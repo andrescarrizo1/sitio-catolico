@@ -161,31 +161,26 @@ if (metaDescription.length > 155) {
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImageURL} />
 
-<!-- Tipografía de Google Fonts optimizada con font-display: swap (asíncrona) -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Tipografía auto-hospedada (WOFF2 subset latin) con preload de fuente principal -->
+<link rel="preload" href="/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link
-  rel="preload"
-  as="style"
-  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-/>
-<link
-  id="google-fonts-stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+  id="local-fonts-stylesheet"
+  href="/fonts/fonts.css"
   rel="stylesheet"
   media="print"
 />
 <script is:inline>
-  const fontSheet = document.getElementById('google-fonts-stylesheet');
+  const fontSheet = document.getElementById('local-fonts-stylesheet');
   if (fontSheet) {
-    fontSheet.addEventListener('load', function() { this.media = 'all'; });
+    if (fontSheet.sheet) {
+      fontSheet.media = 'all';
+    } else {
+      fontSheet.addEventListener('load', function() { this.media = 'all'; });
+    }
   }
 </script>
 <noscript>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+  <link rel="stylesheet" href="/fonts/fonts.css" />
 </noscript>
 
 <!-- Google Analytics 4 (GA4) -->

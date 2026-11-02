@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RosaryApp from '../../components/rosario/RosaryApp.tsx';
 import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import rosarioHeroImg from '../../assets/rosario/rosario-manos-devocion.jpg';
 
 // Schema.org FAQPage y HowTo para optimización máxima de SEO
@@ -51,6 +51,8 @@ const alternateLinks = [
   { hreflang: 'en', href: `${siteUrl}/en/interactive-rosary/` },
   { hreflang: 'x-default', href: `${siteUrl}/rosario/` },
 ];
+
+const optimizedHero = await getImage({ src: rosarioHeroImg, width: 320, format: 'webp' });
 ---
 
 <BaseLayout
@@ -59,6 +61,7 @@ const alternateLinks = [
   image="/images/rosario-manos-devocion.jpg"
   alternateLinks={alternateLinks}
   alternateUrl="/en/interactive-rosary/"
+  preloadImage={optimizedHero.src}
 >
   <!-- Inyección de Datos Estructurados JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
