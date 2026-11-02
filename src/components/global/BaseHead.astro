@@ -144,7 +144,8 @@ if (metaDescription.length > 155) {
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={metaDescription} />
 <meta property="og:image" content={ogImageURL} />
-<meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es'} />
+<meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_LA'} />
+<meta property="og:locale:alternate" content={lang === 'en' ? 'es_LA' : 'en_US'} />
 <meta property="og:site_name" content={siteBrand} />
 
 {articleDate && (
