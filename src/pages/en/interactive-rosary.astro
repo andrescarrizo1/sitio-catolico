@@ -51,6 +51,23 @@ const faqSchema = {
     }
   ]
 };
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Interactive Catholic Rosary',
+  url: `${siteUrl}/en/interactive-rosary/`,
+  applicationCategory: 'LifestyleApplication',
+  operatingSystem: 'All',
+  browserRequirements: 'Requires JavaScript. Requires HTML5.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  description: 'Interactive Catholic web application for praying the Holy Rosary with bead visualizer, daily mystery detection, and offline capability.',
+  inLanguage: 'en',
+};
 ---
 
 <BaseLayout
@@ -62,6 +79,7 @@ const faqSchema = {
   alternateUrl="/rosario/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
     <Breadcrumbs crumbs={[{ label: 'Interactive Rosary' }]} />

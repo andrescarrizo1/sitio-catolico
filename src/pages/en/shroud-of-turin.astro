@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import { getGitCommitDate } from '../../utils/getGitDate';
 
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
 const currentURL = `${siteUrl}/en/shroud-of-turin/`;
@@ -23,18 +24,18 @@ const articleSchema = {
   image: [`${siteUrl}/og-default.jpg`],
   url: currentURL,
   datePublished: '2026-01-01T00:00:00Z',
-  dateModified: '2026-10-28T00:00:00Z',
+  dateModified: getGitCommitDate('src/pages/en/shroud-of-turin.astro'),
   author: [
     {
       '@type': 'Organization',
-      name: 'Reason & Wonder Research Team',
+      name: 'Razón y Asombro',
       url: `${siteUrl}/autor/`,
     },
   ],
   publisher: {
     '@type': 'Organization',
-    name: 'Reason & Wonder',
-    url: `${siteUrl}/en/`,
+    name: 'Razón y Asombro',
+    url: `${siteUrl}/`,
     logo: {
       '@type': 'ImageObject',
       url: `${siteUrl}/favicon.svg`,

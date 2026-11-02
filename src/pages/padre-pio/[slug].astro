@@ -35,6 +35,7 @@ const { Content } = await render(entry);
   autor={entry.data.autor}
   revisadoPor={entry.data.revisado_por}
   imagen={entry.data.imagen}
+  contentFilePath={entry.filePath}
 >
   <Content components={{ ArticleImage }} />
 </FactLayout>

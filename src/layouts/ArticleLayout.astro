@@ -7,6 +7,7 @@ import SourceList from '../components/ui/SourceList.astro';
 import ArticleImage from '../components/ui/ArticleImage.astro';
 import ShareButtons from '../components/ui/ShareButtons.astro';
 import SupportCard from '../components/ui/SupportCard.astro';
+import { getGitCommitDate } from '../utils/getGitDate';
 
 interface Props {
   title: string;
@@ -15,16 +16,23 @@ interface Props {
   crumbs: { label: string; href?: string }[];
   nextStepVariant?: 'jesus' | 'milagros' | 'fatima' | 'santos' | 'biblia';
   fuentes?: any[];
-  fechaPublicacion?: Date;
-  fechaRevision?: Date;
+  sources?: { title: string; url?: string; type: 'primaria' | 'secundaria' }[];
+  fechaPublicacion?: Date | string;
+  datePublished?: Date | string;
+  fechaRevision?: Date | string;
+  lastReviewed?: Date | string;
   autor?: string;
+  author?: string;
   revisadoPor?: string;
+  reviewedBy?: string;
+  evidenceLevel?: string;
+  contentFilePath?: string;
   imagen?: {
     src: string;
     alt: string;
-    credito: string;
-    licencia: string;
-    url_fuente: string;
+    credito?: string;
+    licencia?: string;
+    url_fuente?: string;
   };
   lang?: 'es' | 'en';
   alternateLinks?: { href: string; hreflang: string }[];
@@ -38,10 +46,17 @@ const {
   crumbs,
   nextStepVariant = 'jesus',
   fuentes = [],
-  fechaPublicacion = new Date('2026-01-01'),
-  fechaRevision = new Date('2026-01-01'),
-  autor = 'Equipo Editorial',
-  revisadoPor = 'Revisión Teológica Interna',
+  sources = [],
+  fechaPublicacion,
+  datePublished,
+  fechaRevision,
+  lastReviewed,
+  autor,
+  author,
+  revisadoPor,
+  reviewedBy,
+  evidenceLevel,
+  contentFilePath,
   imagen,
   lang = 'es',
   alternateLinks,
@@ -65,6 +80,33 @@ if (imagen?.src) {
 }
 const imageUrl = new URL(resolvedImageSrc, siteUrl).toString();
 
+const effectiveAuthor = (author || autor || '').trim();
+const effectiveReviewedBy = (reviewedBy || revisadoPor || '').trim();
+const authorSchema = [
+  {
+    '@type': effectiveAuthor === 'Andrés Carrizo' ? 'Person' : 'Organization',
+    name: effectiveAuthor || 'Razón y Asombro',
+    url: `${siteUrl}/autor/`,
+  },
+];
+
+const rawPubDate = datePublished || fechaPublicacion;
+const datePublishedIso = rawPubDate ? new Date(rawPubDate).toISOString() : '2026-01-01T00:00:00Z';
+
+const rawRevDate = lastReviewed || fechaRevision;
+let formattedRevDate: Date | null = null;
+if (rawRevDate) {
+  const d = new Date(rawRevDate);
+  if (!isNaN(d.getTime())) {
+    formattedRevDate = d;
+  }
+}
+const dateModifiedIso = formattedRevDate
+  ? formattedRevDate.toISOString()
+  : (contentFilePath ? getGitCommitDate(contentFilePath) : '2026-01-01T00:00:00Z');
+
+const allSources = (sources && sources.length > 0) ? sources : (fuentes && fuentes.length > 0 ? fuentes : []);
+
 const articleSchema = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -76,15 +118,9 @@ const articleSchema = {
   description: resumen,
   image: [imageUrl],
   url: currentURL,
-  datePublished: fechaPublicacion.toISOString(),
-  dateModified: fechaRevision.toISOString(),
-  author: [
-    {
-      '@type': 'Organization',
-      name: autor,
-      url: `${siteUrl}/autor/`,
-    },
-  ],
+  datePublished: datePublishedIso,
+  dateModified: dateModifiedIso,
+  author: authorSchema,
   publisher: {
     '@type': 'Organization',
     name: 'Razón y Asombro',
@@ -101,14 +137,15 @@ const articleSchema = {
   title={title}
   description={resumen}
   image={imageUrl}
-  articleDate={fechaPublicacion}
-  articleModified={fechaRevision}
+  articleDate={rawPubDate ? new Date(rawPubDate) : undefined}
+  articleModified={rawRevDate ? new Date(rawRevDate) : new Date(dateModifiedIso)}
   ogType="article"
   lang={lang}
   alternateLinks={alternateLinks}
   alternateUrl={alternateUrl}
 >
   <article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
     
     <Breadcrumbs crumbs={crumbs} />
 
@@ -127,13 +164,23 @@ const articleSchema = {
         {resumen}
       </p>
 
-      <div class="flex flex-wrap items-center gap-4 text-xs text-stone-500 dark:text-stone-400 pt-2 border-b border-stone-200 dark:border-slate-800 pb-4">
-        <span>Por <strong>{autor}</strong></span>
-        <span>&middot;</span>
-        <span>Revisado por: <strong>{revisadoPor}</strong></span>
-        <span>&middot;</span>
-        <span>Última revisión: <time datetime={fechaRevision.toISOString()}>{fechaRevision.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>
-      </div>
+      {(effectiveAuthor || effectiveReviewedBy || formattedRevDate) && (
+        <div class="flex flex-wrap items-center gap-4 text-xs text-stone-500 dark:text-stone-400 pt-2 border-b border-stone-200 dark:border-slate-800 pb-4">
+          {effectiveAuthor && <span>Por <strong>{effectiveAuthor}</strong></span>}
+          {effectiveReviewedBy && (
+            <>
+              {effectiveAuthor && <span>&middot;</span>}
+              <span>Revisado por: <strong>{effectiveReviewedBy}</strong></span>
+            </>
+          )}
+          {formattedRevDate && (
+            <>
+              {(effectiveAuthor || effectiveReviewedBy) && <span>&middot;</span>}
+              <span>Revisado el: <time datetime={formattedRevDate.toISOString()}>{formattedRevDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>
+            </>
+          )}
+        </div>
+      )}
     </header>
 
     <!-- Imagen Principal Verificada -->
@@ -164,11 +211,9 @@ const articleSchema = {
       <SupportCard variant="compact" />
     </div>
 
-    {fuentes && fuentes.length > 0 && (
-      <SourceList fuentes={fuentes} />
+    {allSources && allSources.length > 0 && (
+      <SourceList fuentes={allSources} />
     )}
 
   </article>
-
-  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 </BaseLayout>

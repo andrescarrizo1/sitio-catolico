@@ -53,6 +53,22 @@ const alternateLinks = [
 ];
 
 const optimizedHero = await getImage({ src: rosarioHeroImg, width: 320, format: 'webp' });
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Santo Rosario Interactivo',
+  url: `${siteUrl}/rosario/`,
+  applicationCategory: 'LifestyleApplication',
+  operatingSystem: 'All',
+  browserRequirements: 'Requires JavaScript. Requires HTML5.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  description: 'Aplicación web católica interactiva para rezar el Santo Rosario con visor visual de cuentas, misterios del día y funcionamiento offline.',
+  inLanguage: 'es',
+};
 ---
 
 <BaseLayout
@@ -65,6 +81,7 @@ const optimizedHero = await getImage({ src: rosarioHeroImg, width: 320, format: 
 >
   <!-- Inyección de Datos Estructurados JSON-LD -->
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
     
