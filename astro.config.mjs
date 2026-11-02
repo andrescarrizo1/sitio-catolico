@@ -13,7 +13,16 @@ export default defineConfig({
     mdx(),
     preact({ compat: true }),
     sitemap({
-      filter: (page) => !page.includes('/404'),
+      filter: (page) => {
+        try {
+          const urlObj = new URL(page);
+          if (urlObj.pathname.includes('/404')) return false;
+          if (urlObj.pathname === '/jesus/' || urlObj.pathname === '/jesus') return false;
+          return true;
+        } catch {
+          return !page.includes('/404') && !page.endsWith('/jesus/') && !page.endsWith('/jesus');
+        }
+      },
     })
   ],
   redirects: {
