@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+import SearchModal from './SearchModal.astro';
 
 interface Props {
   lang?: 'es' | 'en';
@@ -10,14 +11,14 @@ const { lang = 'es', alternateUrl } = Astro.props;
 
 const navItemsEs = [
   { label: 'Jesús', href: '/jesus/' },
-  { label: 'Milagros Eucarísticos', href: '/milagros-eucaristicos/' },
+  { label: 'Milagros', href: '/milagros-eucaristicos/' },
   { label: 'Ciencia y Fe', href: '/ciencia-y-fe/' },
-  { label: 'Santos y Místicos', href: '/santos/' },
+  { label: 'Santos', href: '/santos/' },
   { label: 'Fátima', href: '/virgen-de-fatima/' },
-  { label: 'Santo Rosario', href: '/rosario/' },
-  { label: 'Consuelo', href: '/consuelo/' },
-  { label: 'Apologética', href: '/apologetica/' },
+  { label: 'Rosario', href: '/rosario/' },
   { label: 'Biblia', href: '/biblia/' },
+  { label: 'Consuelo', href: '/consuelo/' },
+  { label: 'El Escudo', href: '/apologetica/' },
 ];
 
 const navItemsEn = [
@@ -84,8 +85,11 @@ const currentPath = Astro.url.pathname;
         })}
       </nav>
 
-      <!-- Acciones (Language Switcher, ThemeToggle y Botón Rosario de Hoy) -->
-      <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Acciones (Buscador, Language Switcher, ThemeToggle y Botón Rosario de Hoy) -->
+      <div class="flex items-center gap-2 sm:gap-2.5">
+        <!-- Buscador Interno con Pagefind -->
+        <SearchModal lang={lang} />
+
         <!-- Language Switcher -->
         <div class="inline-flex items-center rounded-lg border border-stone-300 dark:border-slate-700 bg-stone-100/90 dark:bg-slate-900/90 p-0.5 text-xs font-semibold">
           <a

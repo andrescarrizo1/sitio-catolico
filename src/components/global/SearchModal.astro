@@ -1,0 +1,205 @@
+---
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang = 'es' } = Astro.props;
+---
+
+<!-- Botón Gatillador de Búsqueda para el Header -->
+<button
+  type="button"
+  id="search-trigger-btn"
+  class="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 text-stone-600 dark:text-stone-300 hover:text-amber-700 dark:hover:text-amber-400 hover:border-amber-500/50 text-xs font-medium transition-colors shadow-2xs"
+  aria-label={lang === 'en' ? 'Search articles and prayers' : 'Buscar artículos y oraciones'}
+  title={lang === 'en' ? 'Search (Ctrl + K)' : 'Buscar (Ctrl + K)'}
+>
+  <svg class="w-4 h-4 text-stone-400 dark:text-stone-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+  <span class="hidden md:inline">{lang === 'en' ? 'Search...' : 'Buscar...'}</span>
+  <kbd class="hidden sm:inline-block px-1.5 py-0.5 rounded text-[10px] font-mono bg-stone-200/80 dark:bg-slate-800 text-stone-500 dark:text-stone-400 border border-stone-300/60 dark:border-slate-700">
+    ⌘K
+  </kbd>
+</button>
+
+<!-- Modal Accesible de Búsqueda -->
+<dialog
+  id="search-dialog"
+  class="backdrop:bg-slate-950/70 backdrop:backdrop-blur-sm p-0 rounded-3xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-2xl w-full max-w-2xl mx-auto my-12 sm:my-20 overflow-hidden"
+  aria-labelledby="search-dialog-title"
+>
+  <div class="flex flex-col max-h-[80vh]">
+    
+    <!-- Barra Superior del Modal -->
+    <div class="p-4 sm:p-5 border-b border-stone-200 dark:border-slate-800 flex items-center gap-3">
+      <svg class="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+      </svg>
+      <input
+        type="search"
+        id="search-input"
+        class="w-full bg-transparent border-none text-base sm:text-lg text-slate-950 dark:text-stone-100 placeholder-stone-400 dark:placeholder-stone-500 focus:outline-none focus:ring-0"
+        placeholder={lang === 'en' ? 'Search by miracle, saint, psalm, prayer...' : 'Buscar por milagro, santo, salmo, oración o tema...'}
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button
+        type="button"
+        id="search-close-btn"
+        class="p-1.5 rounded-lg text-stone-400 hover:text-stone-600 dark:hover:text-stone-200 hover:bg-stone-100 dark:hover:bg-slate-800 transition-colors"
+        aria-label={lang === 'en' ? 'Close search' : 'Cerrar búsqueda'}
+      >
+        <kbd class="text-xs font-mono font-bold px-1.5 py-0.5 rounded border border-stone-300 dark:border-slate-700">ESC</kbd>
+      </button>
+    </div>
+
+    <!-- Contenedor de Resultados Dinámicos -->
+    <div id="search-results" class="p-4 sm:p-6 overflow-y-auto space-y-3 min-h-[160px]">
+      <div id="search-placeholder" class="text-center py-8 text-stone-400 dark:text-stone-500 text-xs sm:text-sm">
+        {lang === 'en'
+          ? 'Type to search across all verified articles, miracles, and prayers.'
+          : 'Escribe para buscar en todos los artículos, milagros, santos y oraciones verificadas.'}
+      </div>
+      <div id="search-loading" class="hidden text-center py-8 text-amber-600 dark:text-amber-400 text-xs sm:text-sm font-medium animate-pulse">
+        {lang === 'en' ? 'Searching index...' : 'Consultando el índice...'}
+      </div>
+      <ul id="search-results-list" class="space-y-2.5"></ul>
+    </div>
+
+    <!-- Pie del Modal -->
+    <div class="px-5 py-3 bg-stone-50 dark:bg-slate-950 border-t border-stone-200/60 dark:border-slate-800 flex items-center justify-between text-[11px] text-stone-500 dark:text-stone-400 font-mono">
+      <span>Búsqueda estática indexada por Pagefind</span>
+      <span>Navega con flechas o pulsa ESC para salir</span>
+    </div>
+
+  </div>
+</dialog>
+
+<script is:inline>
+  const triggerBtn = document.getElementById('search-trigger-btn');
+  const dialog = document.getElementById('search-dialog');
+  const closeBtn = document.getElementById('search-close-btn');
+  const input = document.getElementById('search-input');
+  const resultsList = document.getElementById('search-results-list');
+  const placeholder = document.getElementById('search-placeholder');
+  const loading = document.getElementById('search-loading');
+
+  let pagefindInstance = null;
+
+  async function loadPagefind() {
+    if (pagefindInstance) return pagefindInstance;
+    try {
+      // Import dinámico de Pagefind generado en build
+      pagefindInstance = await import('/pagefind/pagefind.js');
+      await pagefindInstance.init();
+      return pagefindInstance;
+    } catch (e) {
+      console.warn('Pagefind index not found (only available after build in dist/)', e);
+      return null;
+    }
+  }
+
+  function openSearch() {
+    dialog?.showModal();
+    input?.focus();
+    loadPagefind();
+  }
+
+  function closeSearch() {
+    dialog?.close();
+    if (input) input.value = '';
+    if (resultsList) resultsList.innerHTML = '';
+    placeholder?.classList.remove('hidden');
+    loading?.classList.add('hidden');
+  }
+
+  triggerBtn?.addEventListener('click', openSearch);
+  closeBtn?.addEventListener('click', closeSearch);
+
+  // Cerrar haciendo clic en el backdrop
+  dialog?.addEventListener('click', (e) => {
+    const rect = dialog.getBoundingClientRect();
+    const inDialog =
+      rect.top <= e.clientY &&
+      e.clientY <= rect.top + rect.height &&
+      rect.left <= e.clientX &&
+      e.clientX <= rect.left + rect.width;
+    if (!inDialog) {
+      closeSearch();
+    }
+  });
+
+  // Atajos de teclado: Ctrl+K / Cmd+K / tecla '/'
+  window.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      if (dialog?.open) {
+        closeSearch();
+      } else {
+        openSearch();
+      }
+    }
+  });
+
+  let debounceTimer = null;
+  input?.addEventListener('input', () => {
+    const query = input.value.trim();
+    if (debounceTimer) clearTimeout(debounceTimer);
+
+    if (!query) {
+      if (resultsList) resultsList.innerHTML = '';
+      placeholder?.classList.remove('hidden');
+      loading?.classList.add('hidden');
+      return;
+    }
+
+    placeholder?.classList.add('hidden');
+    loading?.classList.remove('hidden');
+
+    debounceTimer = setTimeout(async () => {
+      const pf = await loadPagefind();
+      if (!pf) {
+        loading?.classList.add('hidden');
+        if (resultsList) {
+          resultsList.innerHTML = '<li class="p-3 text-xs text-stone-500">Búsqueda disponible en la versión compilada en vivo.</li>';
+        }
+        return;
+      }
+
+      const search = await pf.search(query);
+      loading?.classList.add('hidden');
+
+      if (!search.results || search.results.length === 0) {
+        if (resultsList) {
+          resultsList.innerHTML = `<li class="p-4 text-center text-xs text-stone-500">No se encontraron resultados para «${query}». Prueba con términos doctrinales o bíblicos.</li>`;
+        }
+        return;
+      }
+
+      const topResults = await Promise.all(search.results.slice(0, 6).map((r) => r.data()));
+      if (resultsList) {
+        resultsList.innerHTML = '';
+        topResults.forEach((item) => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = item.url;
+          a.className = 'block p-3.5 rounded-xl border border-stone-200 dark:border-slate-800 hover:border-amber-500/50 hover:bg-amber-500/5 dark:hover:bg-amber-400/5 transition-colors group';
+          
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'font-serif font-bold text-sm text-slate-900 dark:text-stone-100 group-hover:text-amber-700 dark:group-hover:text-amber-400';
+          titleDiv.textContent = item.meta?.title || item.url;
+          
+          const excerptDiv = document.createElement('div');
+          excerptDiv.className = 'text-xs text-stone-600 dark:text-stone-400 mt-1 line-clamp-2 leading-relaxed';
+          excerptDiv.innerHTML = item.excerpt || '';
+
+          a.appendChild(titleDiv);
+          a.appendChild(excerptDiv);
+          li.appendChild(a);
+          resultsList.appendChild(li);
+        });
+      }
+    }, 200);
+  });
+</script>

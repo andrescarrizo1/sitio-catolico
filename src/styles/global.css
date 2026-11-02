@@ -104,3 +104,83 @@ a:focus-visible, button:focus-visible, input:focus-visible {
     scroll-behavior: auto !important;
   }
 }
+
+/* Modos de tamaño de fuente editorial */
+.reading-size-sm { font-size: 0.9375rem; line-height: 1.7; }
+.reading-size-base { font-size: 1.0625rem; line-height: 1.8; }
+.reading-size-lg { font-size: 1.25rem; line-height: 1.9; }
+
+/* ==========================================================================
+   ESTILOS DE IMPRESIÓN Y EXPORTACIÓN A PDF (Recursos Descargables)
+   ========================================================================== */
+@media print {
+  @page {
+    margin: 1.5cm;
+    size: A4 portrait;
+  }
+
+  html, body {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    font-size: 11pt !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Ocultar elementos de navegación y controles interactivos en impresión */
+  header,
+  footer,
+  nav,
+  #mobile-menu,
+  .no-print,
+  button,
+  .theme-toggle,
+  .rosary-controls-bar,
+  .copy-verse-btn,
+  .share-buttons-container,
+  aside.support-card {
+    display: none !important;
+  }
+
+  /* Evitar saltos de página huérfanos dentro de oraciones o versículos */
+  article,
+  section,
+  figure,
+  blockquote,
+  .printable-card,
+  details {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Abrir todos los desplegables de preguntas frecuentes o notas en impresión */
+  details {
+    display: block !important;
+  }
+  details[open] summary,
+  details summary {
+    font-weight: bold !important;
+  }
+
+  /* Estilo tipográfico sobrio para papel */
+  h1, h2, h3, h4 {
+    color: #000000 !important;
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+
+  a {
+    color: #000000 !important;
+    text-decoration: none !important;
+  }
+
+  /* Pie de imprenta formal en la última página */
+  .print-footer {
+    display: block !important;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1pt solid #ccc;
+    font-size: 9pt;
+    color: #666;
+    text-align: center;
+  }
+}
