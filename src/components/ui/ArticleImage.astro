@@ -35,6 +35,7 @@ const imageMetadata = imageModule?.default;
 const isPrimary = isMain || loading === 'eager';
 const imageLoading = isPrimary ? 'eager' : 'lazy';
 const imagePriority = isPrimary ? 'high' : undefined;
+const targetWidth = imageMetadata ? Math.min(imageMetadata.width, 1000) : 1000;
 ---
 
 {imageMetadata ? (
@@ -43,6 +44,8 @@ const imagePriority = isPrimary ? 'high' : undefined;
       <Image
         src={imageMetadata}
         alt={alt}
+        width={targetWidth}
+        quality={78}
         class="w-full h-auto block max-h-[580px] object-contain sm:object-cover"
         loading={imageLoading}
         decoding="async"
