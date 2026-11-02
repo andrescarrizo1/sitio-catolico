@@ -110,6 +110,12 @@ if (metaDescription.length > 155) {
 <!-- Configuración esencial -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Tipografía auto-hospedada (WOFF2 subset latin) con preload prioritario -->
+<link rel="preload" href="/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/lora-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="manifest" href="/manifest.json" />
 <meta name="generator" content={Astro.generator} />
@@ -164,27 +170,41 @@ if (metaDescription.length > 155) {
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImageURL} />
 
-<!-- Tipografía auto-hospedada (WOFF2 subset latin) con preload de fuente principal -->
-<link rel="preload" href="/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link
-  id="local-fonts-stylesheet"
-  href="/fonts/fonts.css"
-  rel="stylesheet"
-  media="print"
-/>
-<script is:inline>
-  const fontSheet = document.getElementById('local-fonts-stylesheet');
-  if (fontSheet) {
-    if (fontSheet.sheet) {
-      fontSheet.media = 'all';
-    } else {
-      fontSheet.addEventListener('load', function() { this.media = 'all'; });
-    }
-  }
-</script>
-<noscript>
-  <link rel="stylesheet" href="/fonts/fonts.css" />
-</noscript>
+<!-- Definiciones @font-face en línea para eliminar bloqueos de renderizado -->
+<style is:inline>
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url('/fonts/cinzel-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/lora-normal-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
 
 <!-- Google Analytics 4 (GA4) -->
 <GoogleAnalytics />

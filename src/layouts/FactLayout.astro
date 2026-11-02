@@ -89,8 +89,6 @@ if (imagen?.src) {
   const norm = imagen.src.startsWith('/') ? imagen.src : `/${imagen.src}`;
   if (assetImages[norm]) {
     resolvedImageSrc = assetImages[norm].default.src;
-  } else if (imagen.src.startsWith('/images/')) {
-    resolvedImageSrc = imagen.src;
   } else {
     resolvedImageSrc = imagen.src;
   }
