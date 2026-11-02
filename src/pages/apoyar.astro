@@ -1,0 +1,301 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/global/Breadcrumbs.astro';
+
+// TODO: El usuario proporcionará sus identificadores reales cuando decida activar las cuentas.
+const aliasTransferenciaArgentina = "razonyasombro.mp"; // Alias sugerido / Placeholder
+const moneditaUrl = "https://monedita.ar/razonyasombrocom";
+const cafecitoUrl = "#TODO_CAFECITO_URL_PLACEHOLDER";
+const buyMeACoffeeUrl = "#TODO_BUYMEACOFFEE_URL_PLACEHOLDER";
+const kofiUrl = "#TODO_KOFI_URL_PLACEHOLDER";
+const paypalUrl = "#TODO_PAYPAL_URL_PLACEHOLDER";
+const showBuyMeACoffee = !buyMeACoffeeUrl.includes("TODO_");
+---
+
+<BaseLayout
+  title="Sostenimiento y Transparencia | Razón y Asombro"
+  description="Conoce el modelo de sostenibilidad de Razón y Asombro: apostolado libre de publicidad, desglose de fondos, comisiones y opciones de ofrenda voluntaria."
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-12">
+    <Breadcrumbs crumbs={[{ label: 'Sostenimiento y Transparencia' }]} />
+
+    <!-- Encabezado Principal -->
+    <header class="space-y-4">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        Sostenibilidad Ética &middot; Cero Publicidad Invasiva
+      </span>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Transparencia y Sostenimiento de Razón y Asombro
+      </h1>
+
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        <strong>Razón y Asombro</strong> es una publicación católica independiente, de acceso completamente abierto y gratuito. Creemos que la verdad del Evangelio y el rigor de la fe deben comunicarse con belleza, sin publicidad invasiva ni tácticas comerciales que comprometan la dignidad del lector.
+      </p>
+    </header>
+
+    <!-- 1. Manifiesto de Gratuidad y Cero Simonía -->
+    <section class="p-6 sm:p-8 rounded-3xl bg-amber-500/10 border border-amber-600/20 space-y-4">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">✝️</span>
+        <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-950 dark:text-stone-100">
+          Nuestros Principios No Negociables
+        </h2>
+      </div>
+
+      <div class="space-y-3 text-sm text-stone-700 dark:text-stone-300 font-reading leading-relaxed">
+        <p>
+          En el Evangelio según San Mateo, Nuestro Señor Jesucristo instruye a sus apóstoles con una claridad meridiana:
+        </p>
+        <blockquote class="pl-4 border-l-2 border-amber-600 italic text-stone-800 dark:text-stone-200 font-serif">
+          «Gratis lo recibisteis, dadlo gratis» (Mt 10, 8).
+        </blockquote>
+        <p>
+          Por ello, nuestro modelo económico se rige por compromisos inalterables:
+        </p>
+        <ul class="list-disc pl-5 space-y-2">
+          <li><strong>Cero muros de pago (Paywalls):</strong> Todo el contenido de la web (investigaciones, estudios forenses, salmos, guías de oración) es y será siempre 100% gratuito y accesible para cualquier persona en cualquier país.</li>
+          <li><strong>Prohibición absoluta de simonía:</strong> Jamás se condicionará una oración, una novena o la acogida de una intención espiritual a una ofrenda económica. Las peticiones recibidas en nuestro <a href="/contacto/" class="text-amber-700 dark:text-amber-400 font-medium underline">formulario de contacto</a> se presentan en el rezo diario del Santo Rosario con total gratuidad.</li>
+          <li><strong>Sin urgencia simulada ni manipulación emocional:</strong> No verás contadores regresivos alarmistas ni mensajes que pretendan generar culpa en el lector.</li>
+          <li><strong>Transparencia total de comisiones:</strong> Informamos exactamente qué porcentaje retienen los procesadores de pago y cuánto llega efectivamente a la labor de investigación.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. ¿Por qué no usamos publicidad comercial? -->
+    <section class="space-y-4">
+      <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+        ¿Por qué decidimos no mostrar anuncios publicitarios?
+      </h2>
+      <div class="prose-editorial text-stone-700 dark:text-stone-300 space-y-3 font-reading leading-relaxed text-sm sm:text-base">
+        <p>
+          La mayoría de los medios digitales católicos y seculares recurren a redes programáticas automáticas de anuncios (como Google AdSense o Taboola). Aunque es un modelo extendido, conlleva tres perjuicios graves que contradicen la esencia de Razón y Asombro:
+        </p>
+        <ol class="list-decimal pl-5 space-y-2">
+          <li><strong>Pérdida del ambiente de oración y recogimiento:</strong> Un lector que acude al sitio a rezar los Misterios Dolorosos o a leer sobre la agonía de Cristo no debe ser interrumpido por anuncios de productos comerciales, cosméticos o créditos financieros.</li>
+          <li><strong>Rastreo y violación de la privacidad:</strong> Las redes publicitarias instalan cookies de terceros y perfiles de seguimiento que violan la intimidad del usuario. En Razón y Asombro no hay un solo rastreador comercial de terceros.</li>
+          <li><strong>Lentitud y consumo de datos:</strong> Los scripts de publicidad consumen hasta el 70% del tiempo de carga en conexiones móviles modestas. Al eliminar toda publicidad, nuestras páginas cargan de inmediato en menos de un segundo en cualquier parte de Hispanoamérica.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 3. Presupuesto Operativo y Uso de Fondos -->
+    <section class="p-6 sm:p-8 rounded-3xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-6">
+      <div>
+        <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+          Rendición de Cuentas
+        </span>
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100 mt-1">
+          ¿En qué se invierten los fondos recibidos?
+        </h2>
+        <p class="text-sm text-stone-600 dark:text-stone-400 mt-2">
+          Gracias a una ingeniería de software moderna y optimizada (generación estática en servidores perimetrales de Cloudflare), nuestro coste mensual de servidores es de <strong>$0 USD</strong>. Esto nos permite dirigir el 100% de las ofrendas recibidas a la investigación documental y a la expansión formativa.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 space-y-2">
+          <div class="text-xs font-bold uppercase text-amber-600 dark:text-amber-400">Rubro 1 &middot; 45%</div>
+          <h3 class="font-serif font-bold text-base text-slate-900 dark:text-stone-100">Investigación y Fuentes</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            Adquisición de libros descatalogados de patrología e historia eclesiástica, peritajes forenses certificados y acceso a artículos científicos revisados por pares (Springer, Elsevier, Nature).
+          </p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 space-y-2">
+          <div class="text-xs font-bold uppercase text-amber-600 dark:text-amber-400">Rubro 2 &middot; 35%</div>
+          <h3 class="font-serif font-bold text-base text-slate-900 dark:text-stone-100">Material Catequético</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            Diseño, maquetación y entrega gratuita de recursos de alta resolución imprimibles (guías del Rosario, láminas de milagros eucarísticos) para comunidades parroquiales y colegios.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-2xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 space-y-2">
+          <div class="text-xs font-bold uppercase text-amber-600 dark:text-amber-400">Rubro 3 &middot; 20%</div>
+          <h3 class="font-serif font-bold text-base text-slate-900 dark:text-stone-100">Infraestructura y Dominio</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            Renovación anual del dominio institucional <code>razonyasombro.com</code>, certificados de seguridad criptográfica y herramientas técnicas de compilación y verificación continua.
+          </p>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl bg-amber-500/5 dark:bg-amber-400/5 border border-amber-600/20 text-xs text-stone-700 dark:text-stone-300">
+        <strong>Cláusula de destino benéfico:</strong> Si las ofrendas recibidas en un ejercicio fiscal superan los gastos operativos del proyecto, el remanente neto se dona anualmente a Cáritas Diocesana o a comedores comunitarios de la Iglesia Católica, publicando la constancia correspondiente en nuestra memoria de transparencia.
+      </div>
+    </section>
+
+    <!-- 4. Comparativa de Comisiones de Plataformas -->
+    <section class="space-y-4">
+      <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+        Transparencia de Pasarelas y Comisiones
+      </h2>
+      <p class="text-sm text-stone-600 dark:text-stone-400 font-reading">
+        Cada método de pago tiene costes de intermediación bancaria. Detallamos con claridad qué porcentaje retiene cada entidad para que puedas elegir la opción más eficiente:
+      </p>
+
+      <div class="overflow-x-auto rounded-2xl border border-stone-200 dark:border-slate-800">
+        <table class="w-full text-left text-xs sm:text-sm">
+          <thead class="bg-stone-100 dark:bg-slate-900 text-stone-700 dark:text-stone-300 font-semibold border-b border-stone-200 dark:border-slate-800">
+            <tr>
+              <th class="p-3 sm:p-4">Método de Pago</th>
+              <th class="p-3 sm:p-4">Región / Moneda</th>
+              <th class="p-3 sm:p-4">Comisión Estimada</th>
+              <th class="p-3 sm:p-4">Recepción Neta</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-stone-200 dark:divide-slate-800 text-stone-600 dark:text-stone-300">
+            <tr class="hover:bg-stone-50 dark:hover:bg-slate-900/40">
+              <td class="p-3 sm:p-4 font-semibold text-slate-900 dark:text-stone-100">
+                Transferencia Directa (Alias / CBU)
+              </td>
+              <td class="p-3 sm:p-4">Argentina (ARS)</td>
+              <td class="p-3 sm:p-4 text-emerald-600 dark:text-emerald-400 font-medium">0% (Sin comisión)</td>
+              <td class="p-3 sm:p-4 font-bold text-emerald-700 dark:text-emerald-400">100% de tu ofrenda</td>
+            </tr>
+            <tr class="hover:bg-stone-50 dark:hover:bg-slate-900/40">
+              <td class="p-3 sm:p-4 font-semibold text-slate-900 dark:text-stone-100">
+                Monedita / Cafecito (Mercado Pago)
+              </td>
+              <td class="p-3 sm:p-4">Argentina (ARS)</td>
+              <td class="p-3 sm:p-4">~4,5% a 5,9% + IVA</td>
+              <td class="p-3 sm:p-4">~93% - 95%</td>
+            </tr>
+            <tr class="hover:bg-stone-50 dark:hover:bg-slate-900/40">
+              <td class="p-3 sm:p-4 font-semibold text-slate-900 dark:text-stone-100">
+                Ko-fi
+              </td>
+              <td class="p-3 sm:p-4">Internacional (USD / EUR)</td>
+              <td class="p-3 sm:p-4">0% plataforma + ~2,9% Stripe</td>
+              <td class="p-3 sm:p-4">~97%</td>
+            </tr>
+            <tr class="hover:bg-stone-50 dark:hover:bg-slate-900/40">
+              <td class="p-3 sm:p-4 font-semibold text-slate-900 dark:text-stone-100">
+                Buy Me a Coffee
+              </td>
+              <td class="p-3 sm:p-4">Internacional (USD / EUR)</td>
+              <td class="p-3 sm:p-4">5% plataforma + ~2,9% Stripe</td>
+              <td class="p-3 sm:p-4">~92%</td>
+            </tr>
+            <tr class="hover:bg-stone-50 dark:hover:bg-slate-900/40">
+              <td class="p-3 sm:p-4 font-semibold text-slate-900 dark:text-stone-100">
+                PayPal Donaciones
+              </td>
+              <td class="p-3 sm:p-4">Internacional (USD / EUR / MXN)</td>
+              <td class="p-3 sm:p-4">~3,4% a 5,4% + tarifa fija</td>
+              <td class="p-3 sm:p-4">~94% - 96%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 5. Opciones para Aportar una Ofrenda Voluntaria -->
+    <section class="space-y-6">
+      <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+        Cómo Colaborar con el Apostolado
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Tarjeta Argentina -->
+        <div class="p-6 rounded-3xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-5">
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/10 text-sky-800 dark:text-sky-300 border border-sky-500/20">
+              🇦🇷 Lectores en Argentina
+            </div>
+            <h3 class="font-serif text-xl font-bold text-slate-900 dark:text-stone-100">
+              Aporte en Pesos Argentinos (ARS)
+            </h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-reading leading-relaxed">
+              Puedes colaborar mediante transferencia directa sin comisiones bancarias o a través de la plataforma Monedita / Mercado Pago.
+            </p>
+            
+            <div class="p-3.5 rounded-xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 text-xs font-mono">
+              <span class="text-stone-500 dark:text-stone-400 block mb-1">Transferencia bancaria / CVU (0% comisión):</span>
+              <strong class="text-amber-800 dark:text-amber-300 text-sm select-all">{aliasTransferenciaArgentina}</strong>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <a
+              href={moneditaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-analytics-donation="true"
+              data-provider="monedita_mercadopago"
+              class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 text-xs font-semibold rounded-xl bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-all"
+            >
+              🪙 Ofrenda con Mercado Pago (Monedita.ar) &rarr;
+            </a>
+          </div>
+        </div>
+
+        <!-- Tarjeta Internacional -->
+        <div class="p-6 rounded-3xl bg-white dark:bg-slate-950 border border-stone-200 dark:border-slate-800 shadow-sm flex flex-col justify-between space-y-5">
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-800 dark:text-emerald-300 border border-emerald-500/20">
+              🌎 Audiencia Internacional (España, México, Colombia, EE. UU.)
+            </div>
+            <h3 class="font-serif text-xl font-bold text-slate-900 dark:text-stone-100">
+              Aporte en USD / EUR / Moneda Local
+            </h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 font-reading leading-relaxed">
+              Opciones con tarjeta de débito o crédito internacional, Apple Pay, Google Pay o cuenta de PayPal.
+            </p>
+
+            <div class="p-3.5 rounded-xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+              <em>Las pasarelas internacionales se habilitarán en las cuentas oficiales del proyecto. Mientras tanto, tu mayor apoyo es rezar por esta labor y compartir los artículos con quienes buscan la verdad.</em>
+            </div>
+          </div>
+
+          <div class="space-y-2 pt-2">
+            {showBuyMeACoffee ? (
+              <a
+                href={buyMeACoffeeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 text-xs font-semibold rounded-xl bg-slate-900 dark:bg-stone-800 hover:bg-slate-800 text-white transition-all"
+              >
+                ☕ Apoyar en Buy Me a Coffee
+              </a>
+            ) : (
+              <div class="text-center text-xs text-stone-500 py-1">
+                (Próximamente: Buy Me a Coffee y PayPal internacional)
+              </div>
+            )}
+            
+            <a
+              href="/contacto/"
+              class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-medium rounded-xl border border-stone-300 dark:border-slate-700 hover:bg-stone-100 dark:hover:bg-slate-900 text-stone-700 dark:text-stone-300 transition-colors"
+            >
+              Envíanos una sugerencia o consulta sobre cómo apoyar
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6. Patrocinio Institucional Ético y Alianzas -->
+    <section class="p-6 sm:p-8 rounded-3xl bg-amber-500/5 dark:bg-amber-400/5 border border-amber-600/20 space-y-4">
+      <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-950 dark:text-stone-100">
+        Colaboraciones y Patrocinio Institucional Ético
+      </h2>
+      <p class="text-sm text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        Estamos abiertos a colaborar con <strong>universidades católicas, editoriales religiosas, institutos de bioética y comisiones diocesanas</strong> que deseen respaldar la investigación de expedientes documentales específicos.
+      </p>
+      <div class="text-xs text-stone-500 dark:text-stone-400 space-y-2">
+        <p>
+          <strong>Criterio de independencia editorial:</strong> Ninguna institución patrocinadora tiene facultad de censura ni de modificación sobre los hechos históricos, datos forenses o doctrinales de los artículos. Los patrocinios se identifican con una nota transparente de agradecimiento institucional al final del estudio.
+        </p>
+        <p>
+          Para propuestas institucionales o exposiciones parroquiales, contáctanos directamente en <a href="mailto:carrizo226@gmail.com" class="text-amber-700 dark:text-amber-400 underline font-medium">carrizo226@gmail.com</a>.
+        </p>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
