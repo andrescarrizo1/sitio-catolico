@@ -698,7 +698,14 @@ export default {
     // ==========================================
     const cleanPath = url.pathname.replace(/\/+$/, '');
     if (cleanPath === '/santos/estudios-medicos-y-santo-oficio') {
-      return Response.redirect(`${url.origin}/padre-pio/estudios-medicos-y-santo-oficio/`, 301);
+      const target = new URL('/padre-pio/estudios-medicos-y-santo-oficio/', url.origin);
+      target.search = url.search;
+      return Response.redirect(target.toString(), 301);
+    }
+    if (cleanPath === '/en/rosary') {
+      const target = new URL('/en/interactive-rosary/', url.origin);
+      target.search = url.search;
+      return Response.redirect(target.toString(), 301);
     }
 
     // ==========================================

@@ -25,10 +25,6 @@ export default defineConfig({
       },
     })
   ],
-  redirects: {
-    '/santos/estudios-medicos-y-santo-oficio': '/padre-pio/estudios-medicos-y-santo-oficio/',
-    '/en/rosary': '/en/interactive-rosary/',
-  },
   vite: {
     plugins: [tailwindcss()],
   },
