@@ -95,9 +95,12 @@ const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
 const allowIndexing = (import.meta.env.PROD || import.meta.env.PUBLIC_ALLOW_INDEXING === 'true') && !noindex;
-const metaDescription = description.length > 165
-  ? description.slice(0, 155).replace(/\s+\S*$/, '') + '...'
-  : description;
+let metaDescription = description.trim().replace(/\s+/g, ' ');
+if (metaDescription.length > 155) {
+  const truncated = metaDescription.slice(0, 155);
+  const lastSpace = truncated.lastIndexOf(' ');
+  metaDescription = (lastSpace > 115 ? truncated.slice(0, lastSpace) : truncated).replace(/[,.:;–—-]+$/, '').trim();
+}
 ---
 
 <!-- Configuración esencial -->
