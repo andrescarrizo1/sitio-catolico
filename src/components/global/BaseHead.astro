@@ -12,6 +12,7 @@ interface Props {
   lang?: 'es' | 'en';
   alternateLinks?: { href: string; hreflang: string }[];
   preloadImage?: string;
+  canonicalUrl?: string;
 }
 
 const {
@@ -25,6 +26,7 @@ const {
   lang = 'es',
   alternateLinks = [],
   preloadImage,
+  canonicalUrl,
 } = Astro.props;
 
 const siteBrand = 'Razón y Asombro';
@@ -96,7 +98,7 @@ if (knownShortTitles[cleanTitle]) {
 
 const fullTitle = `${cleanTitle} | ${siteBrand}`;
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
-const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const canonicalURL = new URL(canonicalUrl || Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
 const allowIndexing = (import.meta.env.PROD || import.meta.env.PUBLIC_ALLOW_INDEXING === 'true') && !noindex;
 let metaDescription = description.trim().replace(/\s+/g, ' ');

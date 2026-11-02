@@ -18,9 +18,11 @@ export default defineConfig({
           const urlObj = new URL(page);
           if (urlObj.pathname.includes('/404')) return false;
           if (urlObj.pathname === '/jesus/' || urlObj.pathname === '/jesus') return false;
+          if (urlObj.pathname.startsWith('/embed/')) return false;
+          if (urlObj.pathname === '/parroquias/' || urlObj.pathname === '/parroquias') return false;
           return true;
         } catch {
-          return !page.includes('/404') && !page.endsWith('/jesus/') && !page.endsWith('/jesus');
+          return !page.includes('/404') && !page.includes('/embed/') && !page.includes('/parroquias') && !page.endsWith('/jesus/') && !page.endsWith('/jesus');
         }
       },
     })

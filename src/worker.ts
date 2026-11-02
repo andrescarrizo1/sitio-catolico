@@ -711,7 +711,9 @@ export default {
     // ==========================================
     // 4. ASSETS ESTÁTICOS Y PLANTILLA 404 PERSONALIZADA
     // ==========================================
+    const isEmbedPath = url.pathname.startsWith('/embed/');
     const response = await env.ASSETS.fetch(request);
+
     if (response.status === 404) {
       const notFoundUrl = new URL('/404.html', request.url);
       const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl.toString()));
@@ -722,9 +724,28 @@ export default {
         headers: {
           'Content-Type': 'text/html; charset=utf-8',
           'X-Robots-Tag': 'noindex, follow',
+          'X-Frame-Options': 'SAMEORIGIN',
+          'Content-Security-Policy': "frame-ancestors 'self';",
         },
       });
     }
-    return response;
+
+    // Cabeceras de seguridad: permitir enmarcado en <iframe> SOLO para rutas /embed/*
+    const securityHeaders = new Headers(response.headers);
+    if (isEmbedPath) {
+      // Widget embebible: habilitar para sitios parroquiales, colegios y diócesis
+      securityHeaders.delete('X-Frame-Options');
+      securityHeaders.set('Content-Security-Policy', 'frame-ancestors *;');
+    } else {
+      // Resto del sitio: protección estricta contra clickjacking
+      securityHeaders.set('X-Frame-Options', 'SAMEORIGIN');
+      securityHeaders.set('Content-Security-Policy', "frame-ancestors 'self';");
+    }
+
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: securityHeaders,
+    });
   },
 };
