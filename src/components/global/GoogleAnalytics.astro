@@ -1,0 +1,21 @@
+---
+interface Props {
+  id?: string;
+}
+
+const gaId = Astro.props.id || import.meta.env.PUBLIC_GA_MEASUREMENT_ID || 'G-H1RZ545XS3';
+---
+
+{gaId && (
+  <>
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    <script is:inline set:html={`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', '${gaId}');
+    `} />
+  </>
+)}
