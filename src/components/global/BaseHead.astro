@@ -62,9 +62,11 @@ const knownShortTitles: Record<string, string> = {
   'Fe Católica, Evangelio y Rigor Documental': 'Fe Católica y Evangelio',
   'The Chaplet of Divine Mercy: Prayers, Promises & History': 'Chaplet of Divine Mercy',
   'The Chaplet of Divine Mercy: Prayers, Promises &amp; History': 'Chaplet of Divine Mercy',
-  'Catholic Faith, Historical Rigor & Science': 'Catholic Faith & Science',
-  'Reason & Wonder | Catholic Faith, Historical Rigor & Science': 'Catholic Faith & Science',
-  'Reason &amp; Wonder | Catholic Faith, Historical Rigor &amp; Science': 'Catholic Faith & Science',
+  'Catholic Faith, Historical Rigor & Science': 'Catholic Faith and Science',
+  'Reason & Wonder | Catholic Faith, Historical Rigor & Science': 'Catholic Faith and Science',
+  'Reason &amp; Wonder | Catholic Faith, Historical Rigor &amp; Science': 'Catholic Faith and Science',
+  'Catholic Faith & Science': 'Catholic Faith and Science',
+  'Catholic Faith &amp; Science': 'Catholic Faith and Science',
   'Interactive Catholic Rosary & Bead Visualizer': 'Interactive Rosary',
   'Interactive Catholic Rosary &amp; Bead Visualizer': 'Interactive Rosary',
   'How to Pray the Rosary Step by Step: Complete Beginner Guide': 'How to Pray the Rosary',
@@ -136,7 +138,7 @@ if (metaDescription.length > 155) {
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={metaDescription} />
 <meta property="og:image" content={ogImageURL} />
-<meta property="og:locale" content={lang === 'en' ? 'en' : 'es'} />
+<meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es'} />
 <meta property="og:site_name" content={siteBrand} />
 
 {articleDate && (
