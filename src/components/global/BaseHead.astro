@@ -11,6 +11,7 @@ interface Props {
   noindex?: boolean;
   lang?: 'es' | 'en';
   alternateLinks?: { href: string; hreflang: string }[];
+  preloadImage?: string;
 }
 
 const {
@@ -23,6 +24,7 @@ const {
   noindex = false,
   lang = 'es',
   alternateLinks = [],
+  preloadImage,
 } = Astro.props;
 
 const siteBrand = 'Razón y Asombro';
@@ -115,6 +117,10 @@ if (metaDescription.length > 155) {
 <!-- Canónica -->
 <link rel="canonical" href={canonicalURL} />
 
+{preloadImage && (
+  <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
+)}
+
 <!-- Etiquetas hreflang recíprocas para internacionalización -->
 {alternateLinks && alternateLinks.map((alt) => (
   <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
@@ -155,13 +161,32 @@ if (metaDescription.length > 155) {
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImageURL} />
 
-<!-- Tipografía de Google Fonts optimizada con font-display: swap -->
+<!-- Tipografía de Google Fonts optimizada con font-display: swap (asíncrona) -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
+  rel="preload"
+  as="style"
+  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+/>
+<link
+  id="google-fonts-stylesheet"
   href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
   rel="stylesheet"
+  media="print"
 />
+<script is:inline>
+  const fontSheet = document.getElementById('google-fonts-stylesheet');
+  if (fontSheet) {
+    fontSheet.addEventListener('load', function() { this.media = 'all'; });
+  }
+</script>
+<noscript>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+</noscript>
 
 <!-- Google Analytics 4 (GA4) -->
 <GoogleAnalytics />

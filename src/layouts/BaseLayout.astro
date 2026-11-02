@@ -15,6 +15,7 @@ interface Props {
   lang?: 'es' | 'en';
   alternateLinks?: { href: string; hreflang: string }[];
   alternateUrl?: string;
+  preloadImage?: string;
 }
 
 const {
@@ -27,7 +28,8 @@ const {
   noindex,
   lang = 'es',
   alternateLinks,
-  alternateUrl
+  alternateUrl,
+  preloadImage,
 } = Astro.props;
 ---
 
@@ -44,6 +46,7 @@ const {
       noindex={noindex}
       lang={lang}
       alternateLinks={alternateLinks}
+      preloadImage={preloadImage}
     />
   </head>
   <body class="min-h-screen flex flex-col bg-stone-50 text-slate-900 dark:bg-slate-950 dark:text-stone-100 transition-colors duration-200">
