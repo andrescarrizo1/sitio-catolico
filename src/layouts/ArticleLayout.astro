@@ -105,6 +105,12 @@ const dateModifiedIso = formattedRevDate
   ? formattedRevDate.toISOString()
   : (contentFilePath ? getGitCommitDate(contentFilePath) : '2026-01-01T00:00:00Z');
 
+const isPlaceholder = (val?: string) => {
+  if (!val) return true;
+  const lower = val.trim().toLowerCase();
+  return lower === '' || lower === 'todo' || lower === 'placeholder' || lower === 'n/a' || lower === 'none';
+};
+
 const allSources = (sources && sources.length > 0) ? sources : (fuentes && fuentes.length > 0 ? fuentes : []);
 
 const articleSchema = {
@@ -164,18 +170,18 @@ const articleSchema = {
         {resumen}
       </p>
 
-      {(effectiveAuthor || effectiveReviewedBy || formattedRevDate) && (
+      {(!isPlaceholder(effectiveAuthor) || !isPlaceholder(effectiveReviewedBy) || formattedRevDate) && (
         <div class="flex flex-wrap items-center gap-4 text-xs text-stone-500 dark:text-stone-400 pt-2 border-b border-stone-200 dark:border-slate-800 pb-4">
-          {effectiveAuthor && <span>Por <strong>{effectiveAuthor}</strong></span>}
-          {effectiveReviewedBy && (
+          {!isPlaceholder(effectiveAuthor) && <span>Por <strong>{effectiveAuthor}</strong></span>}
+          {!isPlaceholder(effectiveReviewedBy) && (
             <>
-              {effectiveAuthor && <span>&middot;</span>}
+              {!isPlaceholder(effectiveAuthor) && <span>&middot;</span>}
               <span>Revisado por: <strong>{effectiveReviewedBy}</strong></span>
             </>
           )}
           {formattedRevDate && (
             <>
-              {(effectiveAuthor || effectiveReviewedBy) && <span>&middot;</span>}
+              {(!isPlaceholder(effectiveAuthor) || !isPlaceholder(effectiveReviewedBy)) && <span>&middot;</span>}
               <span>Revisado el: <time datetime={formattedRevDate.toISOString()}>{formattedRevDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>
             </>
           )}

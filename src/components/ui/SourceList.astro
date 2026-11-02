@@ -1,11 +1,13 @@
 ---
 interface Source {
-  titulo: string;
+  titulo?: string;
+  title?: string;
   autor?: string;
-  tipo: string;
+  tipo?: string;
+  type?: string;
   url?: string;
-  cita_o_referencia: string;
-  nivel_confianza: string;
+  cita_o_referencia?: string;
+  nivel_confianza?: string;
 }
 
 interface Props {
@@ -28,39 +30,49 @@ const { fuentes } = Astro.props;
   </p>
 
   <ol class="space-y-4 list-decimal pl-5 text-sm">
-    {fuentes.map((f) => (
-      <li class="pl-1 text-stone-700 dark:text-stone-300">
-        <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5">
-          <div class="font-medium text-slate-900 dark:text-stone-100">
-            {f.url ? (
-              <a
-                href={f.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="hover:text-amber-700 dark:hover:text-amber-400 underline decoration-stone-300 dark:decoration-slate-700 underline-offset-2 transition-colors"
-              >
-                {f.titulo}
-              </a>
-            ) : (
-              <span>{f.titulo}</span>
-            )}
-            {f.autor && <span class="text-stone-500 dark:text-stone-400 font-normal"> &mdash; {f.autor}</span>}
+    {fuentes.map((f) => {
+      const displayTitle = f.title || f.titulo;
+      const displayType = f.type || f.tipo;
+      return (
+        <li class="pl-1 text-stone-700 dark:text-stone-300">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5">
+            <div class="font-medium text-slate-900 dark:text-stone-100">
+              {f.url ? (
+                <a
+                  href={f.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:text-amber-700 dark:hover:text-amber-400 underline decoration-stone-300 dark:decoration-slate-700 underline-offset-2 transition-colors"
+                >
+                  {displayTitle}
+                </a>
+              ) : (
+                <span>{displayTitle}</span>
+              )}
+              {f.autor && <span class="text-stone-500 dark:text-stone-400 font-normal"> &mdash; {f.autor}</span>}
+            </div>
+
+            <div class="flex items-center gap-2 shrink-0">
+              {displayType && (
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-stone-200/60 dark:bg-slate-800 text-stone-700 dark:text-stone-300">
+                  {displayType}
+                </span>
+              )}
+              {f.nivel_confianza && (
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+                  {f.nivel_confianza}
+                </span>
+              )}
+            </div>
           </div>
 
-          <div class="flex items-center gap-2 shrink-0">
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-stone-200/60 dark:bg-slate-800 text-stone-700 dark:text-stone-300">
-              {f.tipo}
-            </span>
-            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
-              {f.nivel_confianza}
-            </span>
-          </div>
-        </div>
-
-        <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 m-0">
-          <strong>Referencia / Archivo:</strong> {f.cita_o_referencia}
-        </p>
-      </li>
-    ))}
+          {f.cita_o_referencia && (
+            <p class="text-xs text-stone-500 dark:text-stone-400 mt-1 m-0">
+              <strong>Referencia / Archivo:</strong> {f.cita_o_referencia}
+            </p>
+          )}
+        </li>
+      );
+    })}
   </ol>
 </section>
