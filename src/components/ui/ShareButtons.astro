@@ -13,10 +13,9 @@ const currentUrl = url || (Astro.url ? new URL(Astro.url.pathname, siteUrl).toSt
 const shareText = `«${title}» — Razón y Asombro`;
 const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText + '\n' + currentUrl)}`;
 const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(shareText)}`;
-const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(currentUrl)}`;
 ---
 
-<div class="my-8 p-5 rounded-2xl bg-stone-100/80 dark:bg-slate-900/80 border border-stone-200 dark:border-slate-800 transition-colors">
+<div class="my-8 p-5 rounded-2xl bg-stone-100/80 dark:bg-slate-900/80 border border-stone-200 dark:border-slate-800 transition-colors no-print">
   <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
     <div>
       <span class="text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
@@ -30,8 +29,23 @@ const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(s
       </p>
     </div>
 
-    <!-- Botones de Redes Sociales -->
+    <!-- Botones de Redes Sociales y Acciones -->
     <div class="flex flex-wrap items-center gap-2">
+      <!-- Botón Nativo de Compartir (Web Share API para móviles) -->
+      <button
+        type="button"
+        id="native-share-btn"
+        data-title={title}
+        data-url={currentUrl}
+        class="hidden inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-amber-600 text-white hover:bg-amber-700 shadow-sm transition-all"
+        aria-label="Compartir"
+      >
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+        Compartir
+      </button>
+
       <!-- WhatsApp -->
       <a
         href={whatsappUrl}
@@ -60,20 +74,6 @@ const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(s
         Telegram
       </a>
 
-      <!-- X / Twitter -->
-      <a
-        href={twitterUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-stone-900 text-white hover:bg-black dark:bg-stone-800 dark:hover:bg-stone-700 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
-        aria-label="Compartir en X (Twitter)"
-      >
-        <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-        </svg>
-        X
-      </a>
-
       <!-- Copiar Enlace -->
       <button
         type="button"
@@ -88,7 +88,18 @@ const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(s
         <svg id="check-icon" class="w-4 h-4 hidden text-emerald-600 dark:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
         </svg>
-        <span id="copy-text">Copiar enlace</span>
+        <span id="copy-text">Copiar</span>
+      </button>
+
+      <!-- Imprimir / Guardar en PDF -->
+      <button
+        type="button"
+        onclick="window.print()"
+        class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg bg-stone-200 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-300 dark:hover:bg-slate-700 border border-stone-300/60 dark:border-slate-700 transition-colors"
+        title="Imprimir estudio o guardar en PDF"
+      >
+        <span>🖨️</span>
+        <span class="hidden sm:inline">PDF</span>
       </button>
     </div>
   </div>
@@ -99,11 +110,45 @@ const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(s
   const copyIcon = document.getElementById('copy-icon');
   const checkIcon = document.getElementById('check-icon');
   const copyText = document.getElementById('copy-text');
+  const shareBtn = document.getElementById('native-share-btn');
+
+  // Si el navegador soporta Web Share API (móviles iOS/Android), mostrar botón nativo
+  if (typeof navigator !== 'undefined' && navigator.share && shareBtn) {
+    shareBtn.classList.remove('hidden');
+    shareBtn.addEventListener('click', async () => {
+      const title = shareBtn.getAttribute('data-title') || document.title;
+      const url = shareBtn.getAttribute('data-url') || window.location.href;
+      try {
+        await navigator.share({
+          title,
+          text: `«${title}» — Razón y Asombro`,
+          url,
+        });
+        if (typeof (window as any).trackGAEvent === 'function') {
+          (window as any).trackGAEvent('share', {
+            method: 'web_share',
+            content_type: 'article',
+            item_id: url,
+          });
+        }
+      } catch (err) {
+        // Usuario canceló compartir o no soportado
+      }
+    });
+  }
 
   copyBtn?.addEventListener('click', async () => {
     const url = copyBtn.getAttribute('data-url') || window.location.href;
     try {
       await navigator.clipboard.writeText(url);
+      if (typeof (window as any).trackGAEvent === 'function') {
+        (window as any).trackGAEvent('share', {
+          method: 'copy_link',
+          content_type: 'article',
+          item_id: url,
+        });
+      }
+
       copyIcon?.classList.add('hidden');
       checkIcon?.classList.remove('hidden');
       if (copyText) copyText.textContent = '¡Copiado!';
@@ -111,10 +156,25 @@ const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(s
       setTimeout(() => {
         copyIcon?.classList.remove('hidden');
         checkIcon?.classList.add('hidden');
-        if (copyText) copyText.textContent = 'Copiar enlace';
+        if (copyText) copyText.textContent = 'Copiar';
       }, 2500);
     } catch (err) {
       console.error('Error al copiar al portapapeles:', err);
     }
+  });
+
+  // Tracking de clics en WhatsApp y Telegram
+  document.querySelectorAll('a[aria-label^="Compartir en"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const label = link.getAttribute('aria-label') || '';
+      const method = label.includes('WhatsApp') ? 'whatsapp' : label.includes('Telegram') ? 'telegram' : 'other';
+      if (typeof (window as any).trackGAEvent === 'function') {
+        (window as any).trackGAEvent('share', {
+          method: method,
+          content_type: 'article',
+          item_id: window.location.href,
+        });
+      }
+    });
   });
 </script>

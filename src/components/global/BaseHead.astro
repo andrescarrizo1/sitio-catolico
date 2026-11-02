@@ -37,9 +37,20 @@ const knownShortTitles: Record<string, string> = {
   'La Tilma de Guadalupe: El Ayate Incorrupto, los Pigmentos Inexplicables y el Fenómeno Ocular': 'La Tilma de Guadalupe',
   'El Milagro del Sol (Fátima, 13 de Octubre de 1917): Historia, Testimonios y Prensa Secular': 'El Milagro del Sol',
   'La Parábola del Buen Samaritano: El Amor al Prójimo sin Fronteras': 'El Buen Samaritano',
+  'El Sermón de la Montaña y las Bienaventuranzas: La Carta Magna del Reino de Dios': 'Sermón de la Montaña',
+  'La Parábola del Hijo Pródigo: La Teología del Padre Misericordioso': 'El Hijo Pródigo',
+  'Criterios del Vaticano para Apariciones: Las Normas 2024 y sus 6 Conclusiones': 'Criterios del Vaticano: Normas 2024',
+  'Misterios Dolorosos del Rosario: Meditación y Pasajes Bíblicos': 'Misterios Dolorosos del Rosario',
+  'El Misterio del Sufrimiento en la Biblia: De Job y la Cruz a Salvifici Doloris': 'El Sufrimiento en la Biblia',
+  'Coronilla de la Divina Misericordia: Guía Paso a Paso y Promesas': 'Coronilla Divina Misericordia',
+  'Salmo 91: Oración de Protección y Amparo del Altísimo | Versículos Bíblicos y Meditación': 'Salmo 91',
+  'Salmo 91: Oración de Protección y Amparo del Altísimo': 'Salmo 91',
+  'Salmo 23: El Señor es mi Pastor y Nada me Faltará | Versículos Bíblicos y Meditación': 'Salmo 23',
+  'Salmo 23: El Señor es mi Pastor y Nada me Faltará': 'Salmo 23',
   'El Signo Eucarístico de Buenos Aires (1996): El Análisis Ciego del Cardiólogo Frederic Zugibe': 'Milagro de Buenos Aires (1996)',
   'El Milagro Eucarístico de Lanciano: Historia y Evidencia Científica': 'Milagro Eucarístico de Lanciano',
   'El Milagro Eucarístico de Sokółka (2008): La Fusión Microscópica de Pan y Tejido Cardíaco': 'Milagro Eucarístico de Sokółka',
+  'El Milagro Eucarístico de Legnica (2013): Fibras Miocárdicas en Agonía en Polonia': 'Milagro Eucarístico de Legnica',
   'San Carlo Acutis: El Apóstol de la Eucaristía, los Milagros y la Red': 'San Carlo Acutis',
   'Padre Pío: Los Peritajes Médicos de sus Estigmas y los Decretos del Santo Oficio': 'Estigmas del Padre Pío',
   'Santa Faustina Kowalska: Las Visiones de Jesús, el Diario y el Retrato de Vilna': 'Santa Faustina Kowalska',
@@ -171,6 +182,11 @@ if (metaDescription.length > 155) {
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImageURL} />
+
+<!-- Verificación de Google Search Console -->
+{import.meta.env.PUBLIC_GSC_VERIFICATION && (
+  <meta name="google-site-verification" content={import.meta.env.PUBLIC_GSC_VERIFICATION} />
+)}
 
 <!-- Definiciones @font-face en línea para eliminar bloqueos de renderizado -->
 <style is:inline>
