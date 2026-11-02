@@ -93,6 +93,7 @@ const currentYear = new Date().getFullYear();
           <li><a href="/metodologia/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">{lang === 'en' ? 'Methodology & Verification' : 'Metodología y Verificación'}</a></li>
           <li><a href="/acerca/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">{lang === 'en' ? 'About the Project' : 'Acerca del Proyecto'}</a></li>
           <li><a href="/autor/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">{lang === 'en' ? 'Editorial Team & Author' : 'Equipo y Responsable'}</a></li>
+          <li><a href="/licencia/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">{lang === 'en' ? 'License & Attribution (CC BY 4.0)' : 'Licencia y Atribución (CC BY 4.0)'}</a></li>
           <li><a href="/contacto/" class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors font-medium text-amber-800 dark:text-amber-400">{lang === 'en' ? 'Contact & Prayer Intentions' : 'Contacto e Intenciones'}</a></li>
           <li><a href={lang === 'en' ? '/en/rosary/how-to-pray/' : '/rosario/como-rezar/'} class="hover:text-amber-700 dark:hover:text-amber-400 transition-colors">{lang === 'en' ? 'Guide: How to Pray the Rosary' : 'Guía: Cómo rezar el Rosario'}</a></li>
         </ul>
@@ -103,7 +104,7 @@ const currentYear = new Date().getFullYear();
     <!-- Barra inferior -->
     <div class="mt-12 pt-8 border-t border-stone-200/80 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500 dark:text-stone-500">
       <p>
-        &copy; {currentYear} {lang === 'en' ? 'Reason & Wonder' : 'Razón y Asombro'} &middot; {lang === 'en' ? 'Free license for evangelization. Public domain biblical texts.' : 'Contenido bajo licencia libre para evangelización. Textos bíblicos de dominio público (Torres Amat 1825).'}
+        &copy; {currentYear} {lang === 'en' ? 'Reason & Wonder' : 'Razón y Asombro'} &middot; <a href="/licencia/" class="underline hover:text-amber-700 dark:hover:text-amber-400">{lang === 'en' ? 'CC BY 4.0 License' : 'Licencia CC BY 4.0'}</a> &middot; {lang === 'en' ? 'Public domain biblical texts.' : 'Textos bíblicos de dominio público (Torres Amat 1825).'}
       </p>
       <p class="flex items-center gap-4">
         <span>{lang === 'en' ? 'No third-party trackers or cookies' : 'Sin rastreadores ni cookies de terceros'}</span>
