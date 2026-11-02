@@ -25,12 +25,72 @@ const {
   alternateLinks = [],
 } = Astro.props;
 
-const siteBrand = lang === 'en' ? 'Reason & Wonder' : 'Razón y Asombro';
-const normalizedTitle = title.trim();
-const hasBrand = normalizedTitle.includes('Razón y Asombro') || 
-                 normalizedTitle.includes('Reason & Wonder') ||
-                 normalizedTitle.includes('Reason &amp; Wonder');
-const fullTitle = hasBrand ? normalizedTitle : `${normalizedTitle} | ${siteBrand}`;
+const siteBrand = 'Razón y Asombro';
+
+const knownShortTitles: Record<string, string> = {
+  'El Bureau Médical de Lourdes: El Tribunal Científico más Riguroso del Mundo y los 7 Criterios Médicos': 'El Bureau Médical de Lourdes',
+  'La Sábana Santa de Turín: STURP, carbono 14 y qué dicen los estudios científicos': 'La Sábana Santa de Turín',
+  'La Tilma de Guadalupe: El Ayate Incorrupto, los Pigmentos Inexplicables y el Fenómeno Ocular': 'La Tilma de Guadalupe',
+  'El Milagro del Sol (Fátima, 13 de Octubre de 1917): Historia, Testimonios y Prensa Secular': 'El Milagro del Sol',
+  'La Parábola del Buen Samaritano: El Amor al Prójimo sin Fronteras': 'El Buen Samaritano',
+  'El Signo Eucarístico de Buenos Aires (1996): El Análisis Ciego del Cardiólogo Frederic Zugibe': 'Milagro de Buenos Aires (1996)',
+  'El Milagro Eucarístico de Lanciano: Historia y Evidencia Científica': 'Milagro Eucarístico de Lanciano',
+  'El Milagro Eucarístico de Sokółka (2008): La Fusión Microscópica de Pan y Tejido Cardíaco': 'Milagro Eucarístico de Sokółka',
+  'San Carlo Acutis: El Apóstol de la Eucaristía, los Milagros y la Red': 'San Carlo Acutis',
+  'Padre Pío: Los Peritajes Médicos de sus Estigmas y los Decretos del Santo Oficio': 'Estigmas del Padre Pío',
+  'Santa Faustina Kowalska: Las Visiones de Jesús, el Diario y el Retrato de Vilna': 'Santa Faustina Kowalska',
+  'Esperanza y Fortaleza en el Sufrimiento | Versículos Bíblicos y Meditación': 'Esperanza en el Sufrimiento',
+  'Esperanza y Fortaleza en el Sufrimiento': 'Esperanza en el Sufrimiento',
+  'Acerca de Razón y Asombro | Misión, Principios y Fidelidad Eclesial': 'Misión y Principios',
+  'El Escudo de la Fe | Respuestas Bíblicas a Objeciones Católicas': 'El Escudo de la Fe',
+  'Biblia y Conversión: Versículos por Temas Espirituales': 'Biblia y Conversión',
+  'Ciencia y Fe Católica: Evidencia Empírica y Forense': 'Ciencia y Fe Católica',
+  'Consuelo Espiritual y Paz para el Alma': 'Consuelo Espiritual',
+  'Contacto e Intenciones de Oración': 'Contacto e Intenciones',
+  'Jesús y sus Enseñanzas: Evangelio y Parábolas': 'Jesús y sus Enseñanzas',
+  'Metodología Editorial y Criterios de Verificación': 'Metodología Editorial',
+  'Milagros Eucarísticos y Ciencia | Peritajes Médicos e Históricos': 'Milagros Eucarísticos y Ciencia',
+  'Muro de Oración y Comunión de los Santos': 'Muro de Oración',
+  'San Pío de Pietrelcina: Vida, Estigmas y Espiritualidad': 'San Pío de Pietrelcina',
+  'Cómo Rezar el Santo Rosario Paso a Paso | Guía Completa para Principiantes': 'Cómo Rezar el Santo Rosario',
+  'Santo Rosario Interactivo con Visor Visual de Cuentas': 'Santo Rosario Interactivo',
+  '¿Qué Misterios tocan Hoy en el Rosario? | Asignación Diaria y Rezo Guiado': 'Misterios de Hoy en el Rosario',
+  'Santos y Místicos de la Iglesia Católica: Fe, Ciencia y Caridad': 'Santos y Místicos',
+  'Virgen de Fátima: Historia, Mensaje y Milagro del Sol': 'Virgen de Fátima',
+  'Responsable Editorial y Equipo': 'Equipo Editorial',
+  'Página no encontrada (404)': 'Página no encontrada (404)',
+  'Fe Católica, Evangelio y Rigor Documental': 'Fe Católica y Evangelio',
+  'The Chaplet of Divine Mercy: Prayers, Promises & History': 'Chaplet of Divine Mercy',
+  'The Chaplet of Divine Mercy: Prayers, Promises &amp; History': 'Chaplet of Divine Mercy',
+  'Catholic Faith, Historical Rigor & Science': 'Catholic Faith & Science',
+  'Reason & Wonder | Catholic Faith, Historical Rigor & Science': 'Catholic Faith & Science',
+  'Reason &amp; Wonder | Catholic Faith, Historical Rigor &amp; Science': 'Catholic Faith & Science',
+  'Interactive Catholic Rosary & Bead Visualizer': 'Interactive Rosary',
+  'Interactive Catholic Rosary &amp; Bead Visualizer': 'Interactive Rosary',
+  'How to Pray the Rosary Step by Step: Complete Beginner Guide': 'How to Pray the Rosary',
+  'The Shroud of Turin: STURP, Carbon-14, and Modern Scientific Studies': 'The Shroud of Turin',
+};
+
+let cleanTitle = title.trim();
+cleanTitle = cleanTitle.replace(/\s*\|\s*(Razón y Asombro|Reason & Wonder|Reason &amp; Wonder)[\s|]*$/i, '').trim();
+cleanTitle = cleanTitle.replace(/^Razón y Asombro\s*\|\s*/i, '').trim();
+
+if (knownShortTitles[cleanTitle]) {
+  cleanTitle = knownShortTitles[cleanTitle];
+} else {
+  if (cleanTitle.includes('|')) cleanTitle = cleanTitle.split('|')[0].trim();
+  if (cleanTitle.length > 41 && cleanTitle.includes(':')) {
+    const beforeColon = cleanTitle.split(':')[0].trim();
+    if (beforeColon.length <= 41) cleanTitle = beforeColon;
+  }
+  if (cleanTitle.length > 41) {
+    const sub = cleanTitle.slice(0, 41);
+    const lastSpace = sub.lastIndexOf(' ');
+    cleanTitle = (lastSpace > 15 ? sub.slice(0, lastSpace) : sub).replace(/[,.:;–—-]+$/, '').trim();
+  }
+}
+
+const fullTitle = `${cleanTitle} | ${siteBrand}`;
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
