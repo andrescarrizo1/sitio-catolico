@@ -115,7 +115,9 @@ if (metaDescription.length > 155) {
 <meta name="generator" content={Astro.generator} />
 
 <!-- Canónica -->
-<link rel="canonical" href={canonicalURL} />
+{Astro.url.pathname !== '/404' && Astro.url.pathname !== '/404/' && (
+  <link rel="canonical" href={canonicalURL} />
+)}
 
 {preloadImage && (
   <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
