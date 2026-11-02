@@ -11,7 +11,6 @@ const jesusList = await getCollection('jesus');
 <BaseLayout
   title="Jesús y sus Enseñanzas: Evangelio y Parábolas | Razón y Asombro"
   description="Las enseñanzas de Jesucristo en los Evangelios: parábolas y Sermón de la Montaña analizados en su contexto del siglo I con aplicación práctica hoy."
-  noindex={true}
 >
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
     <Breadcrumbs crumbs={[{ label: 'Jesús y sus Enseñanzas' }]} />
@@ -23,7 +22,38 @@ const jesusList = await getCollection('jesus');
     subtitle="Exégesis católica fiel a la Tradición y a los Evangelios. Cada parábola y enseñanza anclada en pasajes bíblicos exactos (Torres Amat 1825) con una llamada radical al seguimiento."
   />
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8">
+    <div class="p-6 sm:p-8 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-4 text-stone-700 dark:text-stone-300 text-sm sm:text-base leading-relaxed">
+      <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-950 dark:text-stone-100">
+        El Fundamento Histórico y Teológico del Mensaje de Cristo
+      </h2>
+      <p>
+        El cristianismo no nace de una especulación filosófica abstracta ni de un mito simbólico desvinculado del tiempo, sino de un acontecimiento histórico irrevocable: la Encarnación del Hijo de Dios bajo el reinado de Augusto y Poncio Pilato. Jesucristo, verdadero Dios y verdadero Hombre, proclamó la llegada del Reino de Dios transformando de raíz las categorías religiosas, morales y sociales de su época.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+        <div class="space-y-1.5">
+          <h3 class="font-serif font-semibold text-amber-800 dark:text-amber-400">1. Las Parábolas del Reino</h3>
+          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+            Relatos vivos tomados de la vida rural y social de Galilea y Judea que desvelan el misterio de la gracia, la justicia divina y la misericordia entrañable del Padre.
+          </p>
+        </div>
+        <div class="space-y-1.5">
+          <h3 class="font-serif font-semibold text-amber-800 dark:text-amber-400">2. El Sermón de la Montaña</h3>
+          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+            La Carta Magna de la santidad cristiana. Jesús perfecciona la Ley mosaica y sitúa las Bienaventuranzas en el corazón mismo de la vocación del discípulo.
+          </p>
+        </div>
+        <div class="space-y-1.5">
+          <h3 class="font-serif font-semibold text-amber-800 dark:text-amber-400">3. Fidelidad y Exégesis</h3>
+          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+            Cada estudio se fundamenta en los Santos Padres de la Iglesia (Agustín, Crisóstomo, Jerónimo), el Magisterio pontificio y la traducción histórica de la Vulgata por Torres Amat (1825).
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {jesusList.map((j) => (
         <PillarCard
@@ -38,4 +68,3 @@ const jesusList = await getCollection('jesus');
     </div>
   </div>
 </BaseLayout>
-
