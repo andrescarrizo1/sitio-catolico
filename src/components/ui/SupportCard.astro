@@ -4,6 +4,10 @@ interface Props {
 }
 
 const { variant = 'full' } = Astro.props;
+
+// TODO: El usuario proporcionará la URL real de PayPal.me. Dejado temporalmente como PLACEHOLDER.
+const paypalUrl = "#TODO_PAYPAL_URL_PLACEHOLDER";
+const showPaypal = Boolean(paypalUrl) && !paypalUrl.includes("TODO_PAYPAL_URL_PLACEHOLDER");
 ---
 
 <div class={`rounded-2xl border transition-colors ${
@@ -25,8 +29,18 @@ const { variant = 'full' } = Astro.props;
       </h3>
       
       <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-300 leading-relaxed font-reading">
-        <strong>Razón y Asombro</strong> es un proyecto independiente de evangelización digital. No tenemos anunciantes comerciales ni rastreadores invasivos. Si deseas apoyar el sostenimiento del dominio y la adquisición de peritajes y libros de investigación, puedes colaborar con una ofrenda voluntaria.
+        <strong>Razón y Asombro</strong> es un apostolado independiente y libre de publicidad comercial. Si este contenido te ha servido y deseas ayudar a sostener la adquisición de libros de investigación, peritajes forenses y recursos parroquiales, puedes colaborar con una ofrenda voluntaria.
       </p>
+
+      <div class="pt-1">
+        <a
+          href="/apoyar/"
+          class="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 dark:text-amber-400 hover:underline"
+        >
+          <span>Conoce el desglose de fondos y nuestra política de transparencia</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
     </div>
 
     <!-- Botones de Donación -->
@@ -36,20 +50,26 @@ const { variant = 'full' } = Astro.props;
         href="https://monedita.ar/razonyasombrocom"
         target="_blank"
         rel="noopener noreferrer"
+        data-analytics-donation="true"
+        data-provider="monedita_mercadopago"
         class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-amber-600 hover:bg-amber-700 text-white shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
       >
         🪙 Aportar en Monedita (Mercado Pago)
       </a>
 
       <!-- PayPal (Internacional) -->
-      <a
-        href="https://paypal.me"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-900 dark:bg-stone-800 hover:bg-slate-800 dark:hover:bg-stone-700 text-white border border-stone-700 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
-      >
-        Ofrenda con PayPal
-      </a>
+      {showPaypal && (
+        <a
+          href={paypalUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-analytics-donation="true"
+          data-provider="paypal"
+          class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-semibold rounded-xl bg-slate-900 dark:bg-stone-800 hover:bg-slate-800 dark:hover:bg-stone-700 text-white border border-stone-700 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+        >
+          Ofrenda con PayPal
+        </a>
+      )}
     </div>
   </div>
 </div>

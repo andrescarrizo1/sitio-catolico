@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/global/Breadcrumbs.astro';
+
+const embedCodeSnippet = `<iframe
+  src="https://razonyasombro.com/embed/rosario/"
+  width="100%"
+  height="760"
+  style="border:0; border-radius:1rem; overflow:hidden; max-width:100%; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+  title="Santo Rosario Interactivo - Razón y Asombro"
+  loading="lazy"
+></iframe>`;
+---
+
+<BaseLayout
+  title="Widget del Rosario para Parroquias | Razón y Asombro"
+  description="Guía técnica y código de inserción iframe para integrar el widget del Santo Rosario interactivo en sitios web de parroquias, colegios y diócesis."
+  noindex={true}
+>
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs crumbs={[{ label: 'Parroquias y Diócesis' }]} />
+
+    <header class="mt-4 mb-8 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Recursos Pastorales &middot; Integración Web
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Widget del Santo Rosario para Parroquias
+      </h1>
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        Ponga a disposición de su comunidad parroquial, movimiento apostólico o centro educativo la experiencia del Santo Rosario interactivo directamente en su sitio web, sin costo alguno.
+      </p>
+    </header>
+
+    <div class="space-y-10 text-stone-700 dark:text-stone-300 leading-relaxed">
+      
+      <!-- Características del Widget -->
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-5 rounded-2xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">
+            1
+          </div>
+          <h3 class="font-serif font-bold text-slate-900 dark:text-stone-100 text-base">Misterio Automático</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400">
+            Detecta el día de la semana y carga automáticamente los misterios correspondientes (Gozosos, Luminosos, Dolorosos o Gloriosos).
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">
+            2
+          </div>
+          <h3 class="font-serif font-bold text-slate-900 dark:text-stone-100 text-base">Cuentas Interactivas</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400">
+            El fiel avanza cuenta por cuenta mediante clics o teclas, con oraciones completas en español y latín, y citas bíblicas meditadas.
+          </p>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 font-bold text-sm">
+            3
+          </div>
+          <h3 class="font-serif font-bold text-slate-900 dark:text-stone-100 text-base">Cero Mantenimiento</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400">
+            Se ejecuta de forma aislada y ligera; no consume recursos de su servidor ni recopila datos personales de sus feligreses.
+          </p>
+        </div>
+      </section>
+
+      <!-- Código de Inserción -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100 border-b border-stone-200 dark:border-slate-800 pb-2">
+          Código de Inserción (HTML Embed)
+        </h2>
+        <p class="text-sm">
+          Copie y pegue el siguiente bloque de código HTML dentro de la sección o página deseada de su portal web:
+        </p>
+
+        <div class="relative">
+          <pre class="p-4 sm:p-5 rounded-2xl bg-slate-950 text-stone-100 overflow-x-auto text-xs sm:text-sm font-mono border border-stone-800 leading-relaxed select-all"><code>{embedCodeSnippet}</code></pre>
+        </div>
+
+        <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs sm:text-sm text-amber-900 dark:text-amber-300">
+          <strong>Condición pastoral de uso:</strong> El widget incluye en la parte inferior una discreta barra de atribución fija que vincula al recurso matriz en <em>Razón y Asombro</em>. Dicha barra no debe ocultarse ni removerse mediante reglas CSS superpuestas.
+        </div>
+      </section>
+
+      <!-- Instrucciones de Integración por CMS -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100 border-b border-stone-200 dark:border-slate-800 pb-2">
+          Cómo instalarlo en su plataforma
+        </h2>
+
+        <div class="space-y-4">
+          <div class="p-4 rounded-xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800">
+            <h3 class="font-bold text-slate-900 dark:text-stone-100 text-sm mb-1">WordPress (Gutenberg / Elementor)</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+              Añada un bloque de tipo <strong>«HTML personalizado»</strong> (o widget «HTML» en Elementor) y pegue el código proporcionado arriba. Ajuste el ancho al 100% del contenedor.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800">
+            <h3 class="font-bold text-slate-900 dark:text-stone-100 text-sm mb-1">Sitios en HTML o frameworks estáticos</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+              Pegue la etiqueta <code>&lt;iframe&gt;</code> directamente en el cuerpo del documento en el área donde desea que se visualice la herramienta.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800">
+            <h3 class="font-bold text-slate-900 dark:text-stone-100 text-sm mb-1">Wix, Squarespace o Webflow</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+              Utilice el componente de «Elemento Embebido» o «Embed Code» e introduzca el fragmento de código. Verifique que la altura mínima configurada sea de al menos 760 píxeles.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Vista Previa / Enlace al Widget -->
+      <section class="p-6 rounded-2xl bg-stone-100 dark:bg-slate-900 border border-stone-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h3 class="font-serif font-bold text-slate-950 dark:text-stone-100 text-base">
+            ¿Desea probar el widget en funcionamiento aislado?
+          </h3>
+          <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+            Puede abrir directamente la URL de inserción en su navegador para comprobar la interfaz limpia y responsiva.
+          </p>
+        </div>
+        <a
+          href="/embed/rosario/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-600 text-white font-semibold text-xs sm:text-sm hover:bg-amber-700 transition-colors shrink-0 shadow-sm"
+        >
+          <span>Abrir Vista Previa</span>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      </section>
+
+    </div>
+  </div>
+</BaseLayout>

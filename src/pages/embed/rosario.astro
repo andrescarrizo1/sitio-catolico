@@ -1,0 +1,53 @@
+---
+import BaseHead from '../../components/global/BaseHead.astro';
+import RosaryApp from '../../components/rosario/RosaryApp.tsx';
+import '../../styles/global.css';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <BaseHead
+      title="Widget del Santo Rosario | Razón y Asombro"
+      description="Widget interactivo del Santo Rosario para embeber en sitios web parroquiales, colegios y movimientos católicos. Gratuito y con atribución."
+      noindex={true}
+      canonicalUrl="/rosario/"
+    />
+  </head>
+  <body class="min-h-screen flex flex-col bg-stone-50 text-slate-900 dark:bg-slate-950 dark:text-stone-100 transition-colors duration-200 pb-12">
+    <!-- Contenedor del widget embebible -->
+    <main class="flex-grow p-2 sm:p-4 max-w-4xl mx-auto w-full">
+      <RosaryApp client:load />
+    </main>
+
+    <!-- Barra de atribución fija obligatoria e inamovible (Licencia y procedencia de fe) -->
+    <footer
+      id="embed-attribution-bar"
+      class="fixed bottom-0 inset-x-0 z-50 bg-stone-900 text-stone-200 border-t border-amber-600/40 shadow-lg px-3 py-2 flex items-center justify-between text-xs backdrop-blur-sm select-none"
+      role="contentinfo"
+      aria-label="Atribución del Widget del Santo Rosario"
+    >
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="inline-block w-2 h-2 rounded-full bg-amber-400 shrink-0"></span>
+        <span class="truncate font-medium text-stone-300">
+          Santo Rosario Interactivo &middot; <strong class="text-white font-serif">Razón y Asombro</strong>
+        </span>
+      </div>
+
+      <a
+        href="https://razonyasombro.com/rosario/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1 font-semibold text-amber-400 hover:text-amber-300 hover:underline shrink-0 ml-2"
+        title="Abrir el Santo Rosario en razonyasombro.com"
+      >
+        <span>Pantalla completa</span>
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+        </svg>
+      </a>
+    </footer>
+  </body>
+</html>

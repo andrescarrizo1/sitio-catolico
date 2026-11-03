@@ -11,6 +11,8 @@ interface Props {
   noindex?: boolean;
   lang?: 'es' | 'en';
   alternateLinks?: { href: string; hreflang: string }[];
+  preloadImage?: string;
+  canonicalUrl?: string;
 }
 
 const {
@@ -23,32 +25,122 @@ const {
   noindex = false,
   lang = 'es',
   alternateLinks = [],
+  preloadImage,
+  canonicalUrl,
 } = Astro.props;
 
-const siteBrand = lang === 'en' ? 'Reason & Wonder' : 'Razón y Asombro';
-const normalizedTitle = title.trim();
-const hasBrand = normalizedTitle.includes('Razón y Asombro') || 
-                 normalizedTitle.includes('Reason & Wonder') ||
-                 normalizedTitle.includes('Reason &amp; Wonder');
-const fullTitle = hasBrand ? normalizedTitle : `${normalizedTitle} | ${siteBrand}`;
+const siteBrand = 'Razón y Asombro';
+
+const knownShortTitles: Record<string, string> = {
+  'El Bureau Médical de Lourdes: El Tribunal Científico más Riguroso del Mundo y los 7 Criterios Médicos': 'El Bureau Médical de Lourdes',
+  'La Sábana Santa de Turín: STURP, carbono 14 y qué dicen los estudios científicos': 'La Sábana Santa de Turín',
+  'La Tilma de Guadalupe: El Ayate Incorrupto, los Pigmentos Inexplicables y el Fenómeno Ocular': 'La Tilma de Guadalupe',
+  'El Milagro del Sol (Fátima, 13 de Octubre de 1917): Historia, Testimonios y Prensa Secular': 'El Milagro del Sol',
+  'La Parábola del Buen Samaritano: El Amor al Prójimo sin Fronteras': 'El Buen Samaritano',
+  'El Sermón de la Montaña y las Bienaventuranzas: La Carta Magna del Reino de Dios': 'Sermón de la Montaña',
+  'La Parábola del Hijo Pródigo: La Teología del Padre Misericordioso': 'El Hijo Pródigo',
+  'Criterios del Vaticano para Apariciones: Las Normas 2024 y sus 6 Conclusiones': 'Criterios del Vaticano: Normas 2024',
+  'Misterios Dolorosos del Rosario: Meditación y Pasajes Bíblicos': 'Misterios Dolorosos del Rosario',
+  'El Misterio del Sufrimiento en la Biblia: De Job y la Cruz a Salvifici Doloris': 'El Sufrimiento en la Biblia',
+  'Coronilla de la Divina Misericordia: Guía Paso a Paso y Promesas': 'Coronilla Divina Misericordia',
+  'Salmo 91: Oración de Protección y Amparo del Altísimo | Versículos Bíblicos y Meditación': 'Salmo 91',
+  'Salmo 91: Oración de Protección y Amparo del Altísimo': 'Salmo 91',
+  'Salmo 23: El Señor es mi Pastor y Nada me Faltará | Versículos Bíblicos y Meditación': 'Salmo 23',
+  'Salmo 23: El Señor es mi Pastor y Nada me Faltará': 'Salmo 23',
+  'El Signo Eucarístico de Buenos Aires (1996): El Análisis Ciego del Cardiólogo Frederic Zugibe': 'Milagro de Buenos Aires (1996)',
+  'El Milagro Eucarístico de Lanciano: Historia y Evidencia Científica': 'Milagro Eucarístico de Lanciano',
+  'El Milagro Eucarístico de Sokółka (2008): La Fusión Microscópica de Pan y Tejido Cardíaco': 'Milagro Eucarístico de Sokółka',
+  'El Milagro Eucarístico de Legnica (2013): Fibras Miocárdicas en Agonía en Polonia': 'Milagro Eucarístico de Legnica',
+  'San Carlo Acutis: El Apóstol de la Eucaristía, los Milagros y la Red': 'San Carlo Acutis',
+  'Padre Pío: Los Peritajes Médicos de sus Estigmas y los Decretos del Santo Oficio': 'Estigmas del Padre Pío',
+  'Santa Faustina Kowalska: Las Visiones de Jesús, el Diario y el Retrato de Vilna': 'Santa Faustina Kowalska',
+  'Esperanza y Fortaleza en el Sufrimiento | Versículos Bíblicos y Meditación': 'Esperanza en el Sufrimiento',
+  'Esperanza y Fortaleza en el Sufrimiento': 'Esperanza en el Sufrimiento',
+  'Acerca de Razón y Asombro | Misión, Principios y Fidelidad Eclesial': 'Misión y Principios',
+  'El Escudo de la Fe | Respuestas Bíblicas a Objeciones Católicas': 'El Escudo de la Fe',
+  'Biblia y Conversión: Versículos por Temas Espirituales': 'Biblia y Conversión',
+  'Ciencia y Fe Católica: Evidencia Empírica y Forense': 'Ciencia y Fe Católica',
+  'Consuelo Espiritual y Paz para el Alma': 'Consuelo Espiritual',
+  'Contacto e Intenciones de Oración': 'Contacto e Intenciones',
+  'Jesús y sus Enseñanzas: Evangelio y Parábolas': 'Jesús y sus Enseñanzas',
+  'Metodología Editorial y Criterios de Verificación': 'Metodología Editorial',
+  'Milagros Eucarísticos y Ciencia | Peritajes Médicos e Históricos': 'Milagros Eucarísticos y Ciencia',
+  'Muro de Oración y Comunión de los Santos': 'Muro de Oración',
+  'San Pío de Pietrelcina: Vida, Estigmas y Espiritualidad': 'San Pío de Pietrelcina',
+  'Cómo Rezar el Santo Rosario Paso a Paso | Guía Completa para Principiantes': 'Cómo Rezar el Santo Rosario',
+  'Santo Rosario Interactivo con Visor Visual de Cuentas': 'Santo Rosario Interactivo',
+  '¿Qué Misterios tocan Hoy en el Rosario? | Asignación Diaria y Rezo Guiado': 'Misterios de Hoy en el Rosario',
+  'Santos y Místicos de la Iglesia Católica: Fe, Ciencia y Caridad': 'Santos y Místicos',
+  'Virgen de Fátima: Historia, Mensaje y Milagro del Sol': 'Virgen de Fátima',
+  'Responsable Editorial y Equipo': 'Equipo Editorial',
+  'Página no encontrada (404)': 'Página no encontrada (404)',
+  'Fe Católica, Evangelio y Rigor Documental': 'Fe Católica y Evangelio',
+  'The Chaplet of Divine Mercy: Prayers, Promises & History': 'Chaplet of Divine Mercy',
+  'The Chaplet of Divine Mercy: Prayers, Promises &amp; History': 'Chaplet of Divine Mercy',
+  'Catholic Faith, Historical Rigor & Science': 'Catholic Faith and Science',
+  'Reason & Wonder | Catholic Faith, Historical Rigor & Science': 'Catholic Faith and Science',
+  'Reason &amp; Wonder | Catholic Faith, Historical Rigor &amp; Science': 'Catholic Faith and Science',
+  'Catholic Faith & Science': 'Catholic Faith and Science',
+  'Catholic Faith &amp; Science': 'Catholic Faith and Science',
+  'Interactive Catholic Rosary & Bead Visualizer': 'Interactive Rosary',
+  'Interactive Catholic Rosary &amp; Bead Visualizer': 'Interactive Rosary',
+  'How to Pray the Rosary Step by Step: Complete Beginner Guide': 'How to Pray the Rosary',
+  'The Shroud of Turin: STURP, Carbon-14, and Modern Scientific Studies': 'The Shroud of Turin',
+};
+
+let cleanTitle = title.trim();
+cleanTitle = cleanTitle.replace(/\s*\|\s*(Razón y Asombro|Reason & Wonder|Reason &amp; Wonder)[\s|]*$/i, '').trim();
+cleanTitle = cleanTitle.replace(/^Razón y Asombro\s*\|\s*/i, '').trim();
+
+if (knownShortTitles[cleanTitle]) {
+  cleanTitle = knownShortTitles[cleanTitle];
+} else {
+  if (cleanTitle.includes('|')) cleanTitle = cleanTitle.split('|')[0].trim();
+  if (cleanTitle.length > 41 && cleanTitle.includes(':')) {
+    const beforeColon = cleanTitle.split(':')[0].trim();
+    if (beforeColon.length <= 41) cleanTitle = beforeColon;
+  }
+  if (cleanTitle.length > 41) {
+    const sub = cleanTitle.slice(0, 41);
+    const lastSpace = sub.lastIndexOf(' ');
+    cleanTitle = (lastSpace > 15 ? sub.slice(0, lastSpace) : sub).replace(/[,.:;–—-]+$/, '').trim();
+  }
+}
+
+const fullTitle = `${cleanTitle} | ${siteBrand}`;
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
-const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const canonicalURL = new URL(canonicalUrl || Astro.url.pathname, siteUrl);
 const ogImageURL = new URL(image, siteUrl);
 const allowIndexing = (import.meta.env.PROD || import.meta.env.PUBLIC_ALLOW_INDEXING === 'true') && !noindex;
-const metaDescription = description.length > 165
-  ? description.slice(0, 155).replace(/\s+\S*$/, '') + '...'
-  : description;
+let metaDescription = description.trim().replace(/\s+/g, ' ');
+if (metaDescription.length > 155) {
+  const truncated = metaDescription.slice(0, 155);
+  const lastSpace = truncated.lastIndexOf(' ');
+  metaDescription = (lastSpace > 115 ? truncated.slice(0, lastSpace) : truncated).replace(/[,.:;–—-]+$/, '').trim();
+}
 ---
 
 <!-- Configuración esencial -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Tipografía auto-hospedada (WOFF2 subset latin) con preload prioritario -->
+<link rel="preload" href="/fonts/plus-jakarta-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/cinzel-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/lora-normal-latin.woff2" as="font" type="font/woff2" crossorigin />
+
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="manifest" href="/manifest.json" />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Canónica -->
-<link rel="canonical" href={canonicalURL} />
+{Astro.url.pathname !== '/404' && Astro.url.pathname !== '/404/' && (
+  <link rel="canonical" href={canonicalURL} />
+)}
+
+{preloadImage && (
+  <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />
+)}
 
 <!-- Etiquetas hreflang recíprocas para internacionalización -->
 {alternateLinks && alternateLinks.map((alt) => (
@@ -73,13 +165,14 @@ const metaDescription = description.length > 165
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={metaDescription} />
 <meta property="og:image" content={ogImageURL} />
-<meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_ES'} />
+<meta property="og:locale" content={lang === 'en' ? 'en_US' : 'es_LA'} />
+<meta property="og:locale:alternate" content={lang === 'en' ? 'es_LA' : 'en_US'} />
 <meta property="og:site_name" content={siteBrand} />
 
 {articleDate && (
   <meta property="article:published_time" content={articleDate.toISOString()} />
 )}
-{articleModified && (
+{articleModified && !isNaN(articleModified.getTime()) && (
   <meta property="article:modified_time" content={articleModified.toISOString()} />
 )}
 
@@ -90,13 +183,46 @@ const metaDescription = description.length > 165
 <meta name="twitter:description" content={metaDescription} />
 <meta name="twitter:image" content={ogImageURL} />
 
-<!-- Tipografía de Google Fonts optimizada con font-display: swap -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
-  rel="stylesheet"
-/>
+<!-- Verificación de Google Search Console -->
+{import.meta.env.PUBLIC_GSC_VERIFICATION && (
+  <meta name="google-site-verification" content={import.meta.env.PUBLIC_GSC_VERIFICATION} />
+)}
+
+<!-- Definiciones @font-face en línea para eliminar bloqueos de renderizado -->
+<style is:inline>
+@font-face {
+  font-family: 'Plus Jakarta Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/plus-jakarta-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Cinzel';
+  font-style: normal;
+  font-weight: 500 800;
+  font-display: swap;
+  src: url('/fonts/cinzel-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/lora-normal-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
 
 <!-- Google Analytics 4 (GA4) -->
 <GoogleAnalytics />

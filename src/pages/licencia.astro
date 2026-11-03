@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/global/Breadcrumbs.astro';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+---
+
+<BaseLayout
+  title="Licencia y Atribución CC BY 4.0 | Razón y Asombro"
+  description="Términos de uso bajo licencia Creative Commons Atribución 4.0 Internacional (CC BY 4.0) para los textos editoriales originales de Razón y Asombro."
+>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs crumbs={[{ label: 'Licencia y Atribución' }]} />
+
+    <header class="mt-4 mb-8 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Propiedad Intelectual &middot; Licencia Libre &middot; CC BY 4.0
+      </span>
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+        Licencia de Contenido y Atribución
+      </h1>
+      <p class="text-base sm:text-lg text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        Ponemos a disposición de la comunidad el trabajo editorial original para promover la evangelización, el estudio teológico y la investigación con honestidad intelectual y rigor.
+      </p>
+    </header>
+
+    <div class="prose-editorial mx-auto space-y-8 text-stone-700 dark:text-stone-300 leading-relaxed">
+      
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100 border-b border-stone-200 dark:border-slate-800 pb-2">
+          1. Alcance de la Licencia Creative Commons (CC BY 4.0)
+        </h2>
+        <p>
+          Salvo indicación en contrario, todos los <strong>textos editoriales originales, ensayos de investigación, introducciones y guías de navegación elaborados por Razón y Asombro</strong> se distribuyen bajo los términos de la licencia internacional <a href="https://creativecommons.org/licenses/by/4.0/deed.es" target="_blank" rel="noopener noreferrer" class="text-amber-700 dark:text-amber-400 font-semibold underline">Creative Commons Atribución 4.0 Internacional (CC BY 4.0)</a>.
+        </p>
+        <p>
+          Bajo esta licencia, usted es libre de:
+        </p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li><strong>Compartir:</strong> Copiar, distribuir y comunicar públicamente el material en cualquier medio o formato.</li>
+          <li><strong>Adaptar:</strong> Remezclar, transformar y crear a partir del material para cualquier propósito, incluso educativo, parroquial o catequético.</li>
+        </ul>
+        <p>
+          Bajo la siguiente condición ineludible: <strong>debe otorgar el crédito correspondiente</strong> de manera adecuada, brindar un enlace a la licencia e indicar si se han realizado cambios sobre el texto original.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100 border-b border-stone-200 dark:border-slate-800 pb-2">
+          2. Exclusiones Explícitas (Materiales no cubiertos por esta licencia)
+        </h2>
+        <p>
+          La licencia CC BY 4.0 <strong>NO</strong> se extiende a los siguientes elementos integrados en la plataforma:
+        </p>
+        <div class="space-y-4">
+          <div class="p-4 rounded-xl bg-stone-100 dark:bg-slate-900 border-l-4 border-amber-600 dark:border-amber-400">
+            <h3 class="font-bold text-slate-900 dark:text-stone-100 mb-1">a) Imágenes, Fotografías y Arte Sacro de Terceros</h3>
+            <p class="text-sm text-stone-600 dark:text-stone-400">
+              Las reproducciones de obras de arte sacro y las fotografías históricas pertenecen a sus respectivos autores o fondos archivísticos y se utilizan bajo Dominio Público (ej. <em>PD-old-70</em>) o licencias abiertas específicas (Wikimedia Commons, CC BY-SA). Cada imagen cuenta con su ficha de procedencia y autoría detallada en el pie de figura correspondiente.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-100 dark:bg-slate-900 border-l-4 border-amber-600 dark:border-amber-400">
+            <h3 class="font-bold text-slate-900 dark:text-stone-100 mb-1">b) Citas de Estudios Científicos, Informes Médicos y Textos Magisteriales</h3>
+            <p class="text-sm text-stone-600 dark:text-stone-400">
+              Los extractos textuales de publicaciones científicas (artículos de STURP, peritajes forenses, informes anatomo-patológicos) y documentos del Magisterio de la Iglesia se citan al amparo del derecho de cita con propósitos de examen crítico, estudio e investigación, permaneciendo sujetos a los derechos editoriales de sus respectivas publicaciones originales.
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-stone-100 dark:bg-slate-900 border-l-4 border-amber-600 dark:border-amber-400">
+            <h3 class="font-bold text-slate-900 dark:text-stone-100 mb-1">c) Textos Bíblicos y Oraciones Tradicionales</h3>
+            <p class="text-sm text-stone-600 dark:text-stone-400">
+              Las traducciones íntegras de las Sagradas Escrituras empleadas proceden de ediciones históricas en Dominio Público formal (como la traducción del P. Félix Torres Amat de 1825). Las fórmulas del Santo Rosario, la Coronilla de la Divina Misericordia y las oraciones litúrgicas tradicionales constituyen el patrimonio devocional inmemorial de la Iglesia Católica y se hallan en Dominio Público universal.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100 border-b border-stone-200 dark:border-slate-800 pb-2">
+          3. Fórmula de Atribución Requerida
+        </h2>
+        <p>
+          Al reproducir o adaptar contenido de nuestro sitio web, le solicitamos incluir una mención clara que preserve el origen documental. Puede utilizar cualquiera de los siguientes formatos:
+        </p>
+
+        <div class="p-4 rounded-xl bg-stone-100 dark:bg-slate-900 border border-stone-300 dark:border-slate-700 space-y-3 font-mono text-xs sm:text-sm">
+          <div>
+            <span class="block text-stone-500 dark:text-stone-400 font-sans font-semibold mb-1">Formato para páginas web o publicaciones digitales:</span>
+            <code class="block p-3 rounded-lg bg-stone-200/80 dark:bg-slate-950 text-slate-900 dark:text-stone-200 whitespace-pre-wrap select-all">Fuente: Andrés Carrizo / Razón y Asombro (https://razonyasombro.com) &mdash; Licencia Creative Commons Atribución 4.0 Internacional (CC BY 4.0).</code>
+          </div>
+
+          <div>
+            <span class="block text-stone-500 dark:text-stone-400 font-sans font-semibold mb-1">Formato para publicaciones impresas, boletines parroquiales o catequesis:</span>
+            <code class="block p-3 rounded-lg bg-stone-200/80 dark:bg-slate-950 text-slate-900 dark:text-stone-200 whitespace-pre-wrap select-all">Texto reproducido de «Razón y Asombro» (razonyasombro.com), bajo licencia CC BY 4.0.</code>
+          </div>
+        </div>
+
+        <p class="text-sm text-stone-600 dark:text-stone-400">
+          Para consultas sobre el uso de recursos específicos o colaboraciones académicas y diocesanas, visite nuestra página de <a href="/contacto/" class="text-amber-700 dark:text-amber-400 underline font-medium">contacto</a>.
+        </p>
+      </section>
+
+    </div>
+  </div>
+</BaseLayout>

@@ -12,12 +12,20 @@ export default defineConfig({
   integrations: [
     mdx(),
     preact({ compat: true }),
-    sitemap()
+    sitemap({
+      filter: (page) => {
+        try {
+          const urlObj = new URL(page);
+          if (urlObj.pathname.includes('/404')) return false;
+          if (urlObj.pathname.startsWith('/embed/')) return false;
+          if (urlObj.pathname === '/parroquias/' || urlObj.pathname === '/parroquias') return false;
+          return true;
+        } catch {
+          return !page.includes('/404') && !page.includes('/embed/') && !page.includes('/parroquias');
+        }
+      },
+    })
   ],
-  redirects: {
-    '/santos/estudios-medicos-y-santo-oficio': '/padre-pio/estudios-medicos-y-santo-oficio/',
-    '/en/rosary': '/en/interactive-rosary/',
-  },
   vite: {
     plugins: [tailwindcss()],
   },

@@ -1,0 +1,313 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import FaqAccordion from '../../components/ui/FaqAccordion.astro';
+import NextStep from '../../components/ui/NextStep.astro';
+import { getGitCommitDate } from '../../utils/getGitDate';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const currentURL = `${siteUrl}/rosario/misterios-dolorosos/`;
+
+const alternateLinks = [
+  { hreflang: 'es', href: currentURL },
+  { hreflang: 'x-default', href: currentURL },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": currentURL
+  },
+  "headline": "Misterios Dolorosos del Rosario: Meditación y Pasajes Bíblicos",
+  "description": "Guía bíblica y teológica de los Misterios Dolorosos del Santo Rosario (martes y viernes). Pasajes evangélicos, frutos espirituales y meditación profunda.",
+  "image": [`${siteUrl}/images/rosario-manos-devocion.jpg`],
+  "url": currentURL,
+  "datePublished": "2026-05-20T00:00:00Z",
+  "dateModified": getGitCommitDate('src/pages/rosario/misterios-dolorosos.astro'),
+  "author": [
+    {
+      "@type": "Organization",
+      "name": "Razón y Asombro",
+      "url": `${siteUrl}/autor/`
+    }
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Razón y Asombro",
+    "url": `${siteUrl}/`,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteUrl}/favicon.svg`
+    }
+  }
+};
+
+const faqItems = [
+  {
+    question: "¿Qué días de la semana se rezan los Misterios Dolorosos?",
+    answer: "Según la distribución tradicional y la carta apostólica Rosarium Virginis Mariae de San Juan Pablo II, los Misterios Dolorosos se rezan ordinariamente los martes y los viernes. Durante el tiempo litúrgico de Cuaresma, es también una piadosa costumbre rezarlos con mayor frecuencia o los domingos."
+  },
+  {
+    question: "¿Cuál es el fruto espiritual propio de los Misterios Dolorosos?",
+    answer: "Cada misterio contempla una virtud específica: 1) En Getsemaní, la contrición del corazón y el abandono a la voluntad del Padre; 2) En la Flagelación, la mortificación y pureza; 3) En la Coronación, la humildad frente a la soberbia; 4) En la Cruz a cuestas, la paciencia ante las tribulaciones diarias; y 5) En la Crucifixión, el perdón a los enemigos y el amor redentor."
+  },
+  {
+    question: "¿Por qué contemplar el dolor de Cristo con la Virgen María?",
+    answer: "Como enseñó San Juan Pablo II, la Virgen María no es una espectadora lejana sino quien estuvo de pie junto a la Cruz (Jn 19, 25). Contemplar la Pasión con sus ojos permite comprender que el sufrimiento de Cristo no fue una derrota trágica, sino el acto supremo y libre de amor con el que venció al pecado y a la muerte."
+  },
+  {
+    question: "¿Qué diferencia hay entre el dolor humano ordinario y el sufrimiento redentor?",
+    answer: "El dolor físico o moral en sí mismo es fruto de la fragilidad de la condición humana creada. Sin embargo, al unirse conscientemente a la Pasión de Cristo, el sufrimiento adquiere un valor salvífico sobrenatural para la propia purificación y la salvación de las almas, tal como explica San Pablo en Colosenses 1, 24."
+  }
+];
+---
+
+<BaseLayout
+  title="Misterios Dolorosos del Rosario: Meditación y Pasajes Bíblicos | Razón y Asombro"
+  description="Guía bíblica y teológica de los Misterios Dolorosos del Santo Rosario (martes y viernes). Pasajes evangélicos, frutos espirituales y meditación profunda."
+  image="/images/rosario-manos-devocion.jpg"
+  alternateLinks={alternateLinks}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Santo Rosario', href: '/rosario/' },
+        { label: 'Misterios Dolorosos' }
+      ]}
+    />
+
+    <!-- Header Principal -->
+    <header class="space-y-4 border-b border-stone-200 dark:border-slate-800 pb-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-500/10 text-red-800 dark:text-red-300 border border-red-500/20">
+          Rezo de Martes y Viernes &middot; Tiempo de Pasión
+        </span>
+        <span class="text-xs font-mono text-stone-500 dark:text-stone-400">
+          Magisterio: Rosarium Virginis Mariae (nn. 22-25)
+        </span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+        Los Misterios Dolorosos del Santo Rosario: Meditación y Guía Bíblica
+      </h1>
+
+      <p class="text-base sm:text-lg text-stone-700 dark:text-stone-300 font-reading leading-relaxed">
+        Los Misterios Dolorosos introducen al creyente en el corazón mismo del misterio redentor. A través de cinco estaciones de amor y entrega, contemplamos con los ojos de María el camino de Cristo desde la agonía en Getsemaní hasta la consumación en la Cruz del Calvario.
+      </p>
+
+      <!-- Clasificación Epistémica -->
+      <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 text-xs sm:text-sm text-stone-600 dark:text-stone-400 space-y-1">
+        <p><strong>Certeza Doctrinal:</strong> Los relatos de la Pasión pertenecen a la <em>Sagrada Escritura canónica</em> (Evangelios de Mateo, Marcos, Lucas y Juan). La estructura del Rosario representa una práctica devocional enriquecida por siglos de <em>Magisterio eclesiástico</em> e indulgenciada por la Santa Sede.</p>
+        <p><strong>Traducción Bíblica:</strong> Pasajes tomados fielmente de la <em>Vulgata latina</em> por el Ilmo. D. Félix Torres Amat (Madrid, 1825, Dominio Público).</p>
+      </div>
+    </header>
+
+    <!-- Navegación Rápida a los 5 Misterios -->
+    <nav aria-label="Índice de Misterios" class="p-5 rounded-2xl bg-stone-50 dark:bg-slate-900 border border-stone-200 dark:border-slate-800">
+      <h2 class="font-serif text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-stone-100 mb-3">
+        Los Cinco Misterios Dolorosos
+      </h2>
+      <ol class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-amber-800 dark:text-amber-400">
+        <li><a href="#primer-misterio" class="hover:underline">1. La Oración en el Huerto de Getsemaní</a></li>
+        <li><a href="#segundo-misterio" class="hover:underline">2. La Flagelación del Señor en la Columna</a></li>
+        <li><a href="#tercer-misterio" class="hover:underline">3. La Coronación de Espinas</a></li>
+        <li><a href="#cuarto-misterio" class="hover:underline">4. Jesús con la Cruz a Cuestas</a></li>
+        <li class="sm:col-span-2"><a href="#quinto-misterio" class="hover:underline">5. La Crucifixión y Muerte de Nuestro Señor Jesucristo</a></li>
+      </ol>
+    </nav>
+
+    <!-- Desarrollo de los 5 Misterios -->
+    <div class="space-y-12">
+      
+      <!-- Primer Misterio -->
+      <section id="primer-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-red-700 dark:text-red-400 font-bold">
+            Primer Misterio Doloroso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: Contrición y Conformidad Divina</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Oración y Agonía de Jesús en el Huerto de Getsemaní
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-red-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Y puesto de rodillas, oraba diciendo: Padre, si quieres, traslada de mí este cáliz; pero no se haga mi voluntad, sino la tuya. Y se le apareció un ángel del cielo que le confortaba. Y puesto en agonía, oraba más intensamente. Y vino a ser su sudor como gotas espesas de sangre que caían en tierra.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Lucas 22, 41-44 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            En la noche oscura de Getsemaní, Cristo experimenta todo el peso de los pecados de la humanidad, el horror del rechazo y el temor humano ante la inminencia del tormento. Su combate interior no es debilidad moral, sino la victoria suprema de la filiación: <em>«No se haga mi voluntad, sino la tuya»</em>.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Cuando el desánimo, la soledad o el miedo al sufrimiento nos asalten, miremos a Getsemaní. Jesús oró con mayor intensidad en medio de la agonía, mostrándonos que la oración humilde y perseverante es el único refugio capaz de transformar la angustia en obediencia confiada.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Segundo Misterio -->
+      <section id="segundo-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-red-700 dark:text-red-400 font-bold">
+            Segundo Misterio Doloroso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: Mortificación de los Sentidos y Pureza</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Flagelación de Nuestro Señor en la Columna
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-red-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Tomó entonces Pilato a Jesús, y mandó que le azotasen.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Juan 19, 1 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Atado a la columna del pretorio romano, el cuerpo purísimo del Salvador es entregado a la brutalidad de los verdugos. Cada herida desgarrada cumple el vaticinio del profeta Isaías: <em>«Él fue herido por nuestras iniquidades, molido por nuestros pecados; el castigo que nos procura la paz cayó sobre él, y por sus llagas fuimos nosotros curados»</em> (Is 53, 5).
+          </p>
+          <p>
+            <strong>Meditación:</strong> En un mundo inclinado a la satisfacción egoísta de los sentidos y al desprecio de la templanza, la carne herida de Cristo nos llama a la pureza del cuerpo y a la sobriedad del espíritu, reconociendo que nuestros miembros han sido rescatados a precio inestimable.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Tercer Misterio -->
+      <section id="tercer-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-red-700 dark:text-red-400 font-bold">
+            Tercer Misterio Doloroso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: Humildad Interior y Victoria sobre la Soberbia</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Coronación de Espinas y los Ultrajes al Rey de Reyes
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-red-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Y tejiendo una corona de espinas, se la pusieron sobre su cabeza, y una caña en su mano derecha; e hincando la rodilla delante de él, le hacían burla, diciendo: Dios te guarde, Rey de los Judíos.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Mateo 27, 29 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Los soldados despojan al Creador del universo, le visten una clámide purpúrea de burla y clavan en su frente ramas espinosas de acanto. El desprecio y la sátira pública constituyen una tortura psicológica tan lacerante como los azotes corporales. Jesús reina desde la mansedumbre absoluta, sin proferir maldición alguna contra quienes lo escarnecen.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Este misterio destruye toda pretensión de vanagloria, vanidad de juicio y orgullo humano. Si nuestro Rey y Dios aceptó ser despojado de honra mundana por amor a nosotros, ¿con qué derecho reclamamos aplausos humanos o nos resentimos ante la menor humillación?
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Cuarto Misterio -->
+      <section id="cuarto-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-red-700 dark:text-red-400 font-bold">
+            Cuarto Misterio Doloroso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: Paciencia en las Tribulaciones y Fortaleza</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          Jesús con la Cruz a Cuestas Camino al Monte Calvario
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-red-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Y llevando sobre sí su cruz, salió para el lugar llamado de la Calavera, que en hebreo se dice Gólgota.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Juan 19, 17 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Agotado por la pérdida de sangre, las vigilias y los golpes, Jesús carga sobre sus hombros lacerados el madero de la Cruz a través de las calles adoquinadas de Jerusalén. En el camino tropieza y cae, pero se levanta para cumplir el mandato redentor. En esa Vía Dolorosa, María le acompaña con la mirada silenciosa de la fidelidad intacta.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Cristo no nos pide cargar una cruz que Él no haya llevado antes con infinita caridad. Cuando las responsabilidades de la vida, la enfermedad crónica o las penas familiares parezcan doblar nuestras espaldas, recordemos que cada paso sostenido con fe es un acto de corredención junto a Jesús y su Santa Madre.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Quinto Misterio -->
+      <section id="quinto-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-red-700 dark:text-red-400 font-bold">
+            Quinto Misterio Doloroso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: Perdón a los Enemigos y Amor Redentor</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Crucifixión y Muerte de Nuestro Señor Jesucristo
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-red-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Jesús entonces, viendo a su madre, y al discípulo que él amaba presente, dice a su madre: Mujer, he ahí a tu hijo. Después dice al discípulo: He ahí a tu madre. Y desde aquella hora el discípulo la recibió en su casa... E inclinando la cabeza, entregó el espíritu.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Juan 19, 26-27.30 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Tres horas de lenta asfixia bajo el sol del mediodía culminan la obra de la redención. Desde el trono de la Cruz, antes de exhalar el último aliento, Jesús pronuncia la oración de intercesión suprema: <em>«Padre, perdónalos, porque no saben lo que hacen»</em> (Lc 23, 34). Allí, en la persona del apóstol Juan, nos entrega a María como Madre universal de todos los redimidos.
+          </p>
+          <p>
+            <strong>Meditación:</strong> En la Cruz contemplamos la respuesta definitiva de Dios al misterio del mal. El Padre no eliminó el dolor mediante un decreto abstracto, sino que lo abrazó en la persona de su propio Hijo encarnado para vaciarlo de su veneno desesperante y convertirlo en fuente de resurrección y vida eterna.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Salve Regina de clausura.
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Sección de Preguntas Frecuentes con Componente Reutilizable -->
+    <FaqAccordion
+      title="Preguntas Frecuentes sobre los Misterios Dolorosos"
+      subtitle="Dudas doctrinales y prácticas sobre la contemplación de la Pasión en el rezo del Rosario."
+      items={faqItems}
+    />
+
+    <!-- Bloque de Enlaces Internos y Siguiente Paso -->
+    <NextStep
+      variant="jesus"
+      customTitle="Profundiza en la Oración y las Enseñanzas de Cristo"
+      customAction="Continúa tu itinerario espiritual aprendiendo a rezar el Rosario completo paso a paso o meditando en los pasajes bíblicos de consuelo en la tribulación."
+    />
+
+    <!-- Fuentes y Metadatos de Revisión -->
+    <footer class="mt-12 pt-6 border-t border-stone-200 dark:border-slate-800 text-xs text-stone-500 dark:text-stone-400 space-y-2">
+      <p>
+        <strong>Fuentes Principales:</strong> San Juan Pablo II, Carta Apostólica <em>Rosarium Virginis Mariae</em> (16 de octubre de 2002); San Juan Pablo II, Carta Apostólica <em>Salvifici Doloris</em> sobre el sentido cristiano del sufrimiento (11 de febrero de 1984); Sagrada Biblia Vulgata Latina, trad. Félix Torres Amat (Madrid, 1825).
+      </p>
+      <p>
+        <strong>Equipo Editorial:</strong> Razón y Asombro &middot; Revisión Canónica y Bíblica Interna &middot; Última actualización: Octubre de 2026.
+      </p>
+    </footer>
+
+  </div>
+</BaseLayout>

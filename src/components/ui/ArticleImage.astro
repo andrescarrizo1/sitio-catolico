@@ -11,6 +11,7 @@ interface Props {
   class?: string;
   caption?: string;
   loading?: 'eager' | 'lazy';
+  isMain?: boolean;
 }
 
 const {
@@ -21,7 +22,8 @@ const {
   url_fuente,
   caption,
   class: className = '',
-  loading = 'eager',
+  loading,
+  isMain = false,
 } = Astro.props;
 
 // Vite import.meta.glob con { eager: true } importa sincrónicamente el objeto ImageMetadata
@@ -29,6 +31,11 @@ const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{j
 const normalizedSrc = src.startsWith('/') ? src : `/${src}`;
 const imageModule = images[normalizedSrc];
 const imageMetadata = imageModule?.default;
+
+const isPrimary = isMain || loading === 'eager';
+const imageLoading = isPrimary ? 'eager' : 'lazy';
+const imagePriority = isPrimary ? 'high' : undefined;
+const targetWidth = imageMetadata ? Math.min(imageMetadata.width, 800) : 800;
 ---
 
 {imageMetadata ? (
@@ -37,10 +44,13 @@ const imageMetadata = imageModule?.default;
       <Image
         src={imageMetadata}
         alt={alt}
+        widths={[400, 640, targetWidth]}
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 768px, 800px"
+        quality={75}
         class="w-full h-auto block max-h-[580px] object-contain sm:object-cover"
-        loading={loading}
+        loading={imageLoading}
         decoding="async"
-        fetchpriority={loading === 'eager' ? 'high' : 'auto'}
+        fetchpriority={imagePriority}
       />
     </div>
     {(caption || credito || licencia || alt) && (

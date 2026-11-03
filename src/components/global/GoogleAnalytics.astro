@@ -7,15 +7,128 @@ const gaId = Astro.props.id || import.meta.env.PUBLIC_GA_MEASUREMENT_ID || 'G-H1
 ---
 
 {gaId && (
-  <>
-    <!-- Google tag (gtag.js) -->
-    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
-    <script is:inline set:html={`
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+  <script is:inline define:vars={{ gaId }}>
+    // Inicialización universal segura de dataLayer y gtag
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    window.gtag = gtag;
 
-      gtag('config', '${gaId}');
-    `} />
-  </>
+    // Helper global de eventos con sanitización estricta libre de PII
+    window.trackGAEvent = function (eventName, params) {
+      if (!eventName) return;
+      const cleanParams = Object.assign({}, params || {});
+      
+      // Asegurar que no se transmita ningún dato sensible ni correos
+      for (const key in cleanParams) {
+        if (typeof cleanParams[key] === 'string') {
+          // Si contiene un '@' o parece email, eliminarlo
+          if (cleanParams[key].includes('@')) {
+            cleanParams[key] = '[REDACTED_PII]';
+          }
+        }
+      }
+
+      // Despachar a Google Analytics
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', eventName, cleanParams);
+      }
+    };
+
+    // Carga de gtag.js únicamente fuera de entornos locales de desarrollo
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (!isLocalhost) {
+      const s = document.createElement('script');
+      s.async = true;
+      s.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+      document.head.appendChild(s);
+
+      gtag('js', new Date());
+      gtag('config', gaId, {
+        anonymize_ip: true,
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+        restricted_data_processing: true,
+        send_page_view: true,
+      });
+    }
+
+    // ==========================================
+    // AUTO-TRACKING DE EVENTOS CON DEDUPLICACIÓN
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Seguimiento de Scroll Depth (50% y 90%) sin duplicación
+      let scrolled50 = false;
+      let scrolled90 = false;
+
+      window.addEventListener(
+        'scroll',
+        () => {
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          if (docHeight <= 0) return;
+          const scrollPercent = (window.scrollY / docHeight) * 100;
+
+          if (scrollPercent >= 50 && !scrolled50) {
+            scrolled50 = true;
+            window.trackGAEvent('scroll', { percent_scrolled: 50 });
+          }
+
+          if (scrollPercent >= 90 && !scrolled90) {
+            scrolled90 = true;
+            window.trackGAEvent('scroll', { percent_scrolled: 90 });
+          }
+        },
+        { passive: true }
+      );
+
+      // 2. Delegación de clics: Donaciones y Salidas Externas
+      document.addEventListener('click', (e) => {
+        const target = e.target instanceof Element ? e.target.closest('a') : null;
+        if (!target) return;
+
+        const href = target.getAttribute('href') || '';
+
+        // Detección de clics de donación o ofrenda voluntaria
+        const isDonation =
+          target.hasAttribute('data-analytics-donation') ||
+          href.includes('monedita.ar') ||
+          href.includes('cafecito.app') ||
+          href.includes('buymeacoffee.com') ||
+          href.includes('ko-fi.com') ||
+          href.includes('paypal.me') ||
+          href.includes('paypal.com');
+
+        if (isDonation) {
+          const provider =
+            target.getAttribute('data-provider') ||
+            (href.includes('monedita.ar')
+              ? 'monedita_mercadopago'
+              : href.includes('cafecito.app')
+                ? 'cafecito'
+                : href.includes('buymeacoffee')
+                  ? 'buymeacoffee'
+                  : href.includes('ko-fi')
+                    ? 'kofi'
+                    : href.includes('paypal')
+                      ? 'paypal'
+                      : 'other');
+
+          window.trackGAEvent('donation_click', {
+            provider: provider,
+            link_url: href,
+          });
+          return;
+        }
+
+        // Detección de descargas de archivos o PDFs
+        if (href.endsWith('.pdf') || target.hasAttribute('data-analytics-download')) {
+          window.trackGAEvent('file_download', {
+            file_name: href.split('/').pop() || 'document',
+            file_extension: 'pdf',
+          });
+        }
+      });
+    });
+  </script>
 )}

@@ -8,6 +8,7 @@
     "build": "astro check && astro build && pagefind --site dist",
     "preview": "astro preview",
     "check": "node scripts/check-licenses.mjs && node scripts/check-links.mjs",
+    "verify:seo": "node scripts/ci-verify-seo.mjs",
     "lighthouse": "node scripts/lighthouse-runner.mjs"
   },
   "dependencies": {

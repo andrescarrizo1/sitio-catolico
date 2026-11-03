@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RosaryApp from '../../components/rosario/RosaryApp.tsx';
 import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import rosarioHeroImg from '../../assets/rosario/rosario-manos-devocion.jpg';
 
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
@@ -51,6 +51,25 @@ const faqSchema = {
     }
   ]
 };
+
+const webAppSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Interactive Catholic Rosary',
+  url: `${siteUrl}/en/interactive-rosary/`,
+  applicationCategory: 'LifestyleApplication',
+  operatingSystem: 'All',
+  browserRequirements: 'Requires JavaScript. Requires HTML5.',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  description: 'Interactive Catholic web application for praying the Holy Rosary with bead visualizer, daily mystery detection, and offline capability.',
+  inLanguage: 'en',
+};
+
+const optimizedHero = await getImage({ src: rosarioHeroImg, width: 480, format: 'webp', quality: 78 });
 ---
 
 <BaseLayout
@@ -60,8 +79,10 @@ const faqSchema = {
   lang="en"
   alternateLinks={alternateLinks}
   alternateUrl="/rosario/"
+  preloadImage={optimizedHero.src}
 >
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(webAppSchema)} />
 
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
     <Breadcrumbs crumbs={[{ label: 'Interactive Rosary' }]} />
@@ -99,10 +120,13 @@ const faqSchema = {
             <Image
               src={rosarioHeroImg}
               alt="Hands holding a wooden Catholic rosary over an open Holy Bible"
-              widths={[320, 480, 640]}
-              sizes="(max-width: 640px) 100vw, 400px"
+              width={480}
+              quality={78}
+              format="webp"
               class="w-full h-56 sm:h-64 object-cover transition-transform duration-500 group-hover:scale-105"
               loading="eager"
+              decoding="async"
+              fetchpriority="high"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent flex items-end p-4">
               <span class="text-[11px] text-stone-300 font-serif italic">

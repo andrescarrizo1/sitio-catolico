@@ -1,0 +1,239 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import FaqAccordion from '../../components/ui/FaqAccordion.astro';
+import NextStep from '../../components/ui/NextStep.astro';
+import CoronillaInteractiveApp from '../../components/rosario/CoronillaInteractiveApp';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const currentURL = `${siteUrl}/rosario/coronilla-divina-misericordia/`;
+
+const alternateLinks = [
+  { hreflang: 'es', href: currentURL },
+  { hreflang: 'en', href: `${siteUrl}/en/divine-mercy-chaplet/` },
+  { hreflang: 'x-default', href: currentURL },
+];
+
+const howToSchema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Cómo Rezar la Coronilla de la Divina Misericordia Paso a Paso",
+  "description": "Tutorial completo para rezar la Coronilla de la Divina Misericordia utilizando las cuentas de un rosario común tradicional de cinco decenas.",
+  "image": `${siteUrl}/images/rosario-manos-devocion.jpg`,
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": "Señal de la Cruz y Oraciones Iniciales",
+      "text": "Comienza con la Señal de la Cruz. En las tres primeras cuentas del rosario se reza: un Padre Nuestro, un Ave María y el Credo de los Apóstoles."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": "Oración del Padre Eterno en las Cuentas Grandes",
+      "text": "Al inicio de cada una de las 5 decenas (en la cuenta grande del Padre Nuestro), reza: 'Padre Eterno, te ofrezco el Cuerpo y la Sangre, el Alma y la Divinidad de tu amadísimo Hijo, nuestro Señor Jesucristo, como propiciación de nuestros pecados y los del mundo entero'."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": "Jaculatoria en las Diez Cuentas Pequeñas",
+      "text": "En cada una de las 10 cuentas pequeñas de la decena (donde habitualmente se reza el Ave María), reza: 'Por su dolorosa Pasión, ten misericordia de nosotros y del mundo entero'."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": "Repetición de las 5 Decenas",
+      "text": "Repite este mismo ciclo a lo largo de las 5 decenas que componen la corona del rosario ordinario."
+    },
+    {
+      "@type": "HowToStep",
+      "position": 5,
+      "name": "Trisagio Santo Inmortal de Clausura",
+      "text": "Al terminar las cinco decenas, se reza tres veces consecutivas: 'Santo Dios, Santo Fuerte, Santo Inmortal, ten piedad de nosotros y del mundo entero'."
+    }
+  ]
+};
+
+const faqItems = [
+  {
+    question: "¿A qué hora es más recomendable rezar la Coronilla?",
+    answer: "Aunque puede rezarse a cualquier hora del día o de la noche, Nuestro Señor pidió a Santa Faustina honrar especialmente la 'Hora de la Misericordia' a las tres de la tarde (las 15:00 horas), rememorando el instante exacto de su agonía y Muerte redentora en la Cruz del Calvario."
+  },
+  {
+    question: "¿Se necesita un rosario especial para rezar la Coronilla?",
+    answer: "No. La Coronilla se reza exactamente sobre las mismas 59 cuentas de un rosario católico tradicional de cinco decenas. No se requiere ningún objeto diferente ni añadido material."
+  },
+  {
+    question: "¿Rezar la Coronilla sustituye a la Santa Misa o la Confesión?",
+    answer: "De ninguna manera. La doctrina católica enseña con firmeza que ninguna devoción privada sustituye jamás a los Sacramentos instituidos por Cristo. La devoción a la Divina Misericordia conduce y prepara el alma para acudir con contrición a la Reconciliación sacramental y recibir dignamente la Eucaristía."
+  },
+  {
+    question: "¿Cuál es la promesa de Jesús para la hora de la muerte?",
+    answer: "En el Diario de Santa Faustina (n. 687), Jesús prometió: 'A quienes recen esta coronilla, mi misericordia los envolverá en vida y especialmente en la hora de la muerte'. Si se reza junto a un moribundo, calma la ira de Dios y abre el corazón a la gracia de la contrición final."
+  }
+];
+---
+
+<BaseLayout
+  title="Coronilla de la Divina Misericordia | Razón y Asombro"
+  description="Guía paso a paso para rezar la Coronilla de la Divina Misericordia con el rosario tradicional: oraciones, historia de Santa Faustina y la Hora de las 3 PM."
+  lang="es"
+  alternateLinks={alternateLinks}
+  alternateUrl="/en/divine-mercy-chaplet/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(howToSchema)} />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Santo Rosario', href: '/rosario/' },
+        { label: 'Coronilla de la Divina Misericordia' }
+      ]}
+    />
+
+    <header class="mt-6 mb-10 space-y-4">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+        Devoción y Exégesis &middot; Santa Faustina Kowalska
+      </span>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+        Cómo Rezar la Coronilla de la Divina Misericordia Paso a Paso
+      </h1>
+
+      <p class="text-lg sm:text-xl text-stone-600 dark:text-stone-300 font-reading leading-relaxed">
+        La Coronilla de la Divina Misericordia es una de las oraciones católicas más poderosas y consoladoras del siglo XX. Dictada por Nuestro Señor a Santa Faustina Kowalska en 1935, se reza utilizando las cuentas de un rosario común para ofrecer al Padre el sacrificio expiatorio de Cristo por la conversión del mundo.
+      </p>
+    </header>
+
+    <!-- Experiencia Interactiva Propia de la Coronilla -->
+    <CoronillaInteractiveApp client:idle />
+
+    <!-- Resumen Rápido de Estructura -->
+    <div class="p-5 sm:p-6 rounded-2xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 space-y-3 mb-10">
+      <h2 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100">
+        Estructura Rápida de la Coronilla (5 Decenas)
+      </h2>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-stone-700 dark:text-stone-300">
+        <li class="flex items-start gap-2">
+          <span class="font-bold text-amber-700 dark:text-amber-400">1. Inicio:</span>
+          <span>Señal de la Cruz, 1 Padre Nuestro, 1 Ave María y 1 Credo.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="font-bold text-amber-700 dark:text-amber-400">2. En cuenta grande:</span>
+          <span>Oración del <em>Padre Eterno</em>.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="font-bold text-amber-700 dark:text-amber-400">3. En 10 cuentas pequeñas:</span>
+          <span><em>Por su dolorosa Pasión, ten misericordia...</em></span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="font-bold text-amber-700 dark:text-amber-400">4. Conclusión (3 veces):</span>
+          <span><em>Santo Dios, Santo Fuerte, Santo Inmortal...</em></span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Guía Paso a Paso Detallada -->
+    <article class="space-y-10 text-stone-800 dark:text-stone-200 font-reading leading-relaxed">
+      
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          1. Las Oraciones Preparatorias Iniciales
+        </h2>
+        <p>
+          Sosteniendo el crucifijo del rosario, haz con devoción la <strong>Señal de la Cruz</strong>:
+        </p>
+        <blockquote class="p-4 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-amber-600 dark:border-amber-500 shadow-xs italic text-stone-700 dark:text-stone-300">
+          «En el nombre del Padre, y del Hijo, y del Espíritu Santo. Amén.»
+        </blockquote>
+        <p>
+          En las tres primeras cuentas pequeñas previas a la primera decena, reza un <strong>Padre Nuestro</strong>, un <strong>Ave María</strong> y el <strong>Credo de los Apóstoles</strong>, pidiendo al Señor el aumento teologal de la fe, la esperanza y la caridad en tu corazón.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          2. En las Cuentas Grandes: Ofrecimiento al Padre Eterno
+        </h2>
+        <p>
+          Al llegar a la cuenta grande que precede a cada una de las cinco decenas (la cuenta donde habitualmente se rezaría el Padre Nuestro), se pronuncia la oración sacerdotal de intercesión dictada a Santa Faustina:
+        </p>
+        <blockquote class="p-5 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-amber-600 dark:border-amber-500 shadow-xs text-base font-serif text-slate-900 dark:text-stone-100 font-semibold leading-relaxed">
+          «Padre Eterno, te ofrezco el Cuerpo y la Sangre, el Alma y la Divinidad de tu amadísimo Hijo, nuestro Señor Jesucristo, como propiciación de nuestros pecados y los del mundo entero.»
+        </blockquote>
+        <p class="text-sm text-stone-600 dark:text-stone-400">
+          <em>Nota teológica:</em> Este ofrecimiento no significa que el laico consagre la Eucaristía, sino que, en virtud del sacerdocio común de los bautizados (1 Pedro 2, 9), une su oración al único y eterno Sacrificio de Cristo en la Cruz renovado en cada Santa Misa.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          3. En las Diez Cuentas Pequeñas: Súplica por la Pasión
+        </h2>
+        <p>
+          En cada una de las diez cuentas pequeñas de la decena (donde en el rosario tradicional se rezaría el Ave María), se repite con recogimiento:
+        </p>
+        <blockquote class="p-5 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-amber-600 dark:border-amber-500 shadow-xs text-base font-serif text-slate-900 dark:text-stone-100 font-semibold leading-relaxed">
+          «Por su dolorosa Pasión, ten misericordia de nosotros y del mundo entero.»
+        </blockquote>
+        <p>
+          Este ciclo (una cuenta grande + diez cuentas pequeñas) se repite cinco veces completas a lo largo de toda la corona del rosario.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          4. Oración Final de Conclusión: El Trisagio
+        </h2>
+        <p>
+          Al concluir las cinco decenas, se reza tres veces consecutivas el trisagio de la tradición patrística y litúrgica oriental:
+        </p>
+        <blockquote class="p-5 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-amber-600 dark:border-amber-500 shadow-xs text-base font-serif text-slate-900 dark:text-stone-100 font-semibold leading-relaxed">
+          «Santo Dios, Santo Fuerte, Santo Inmortal, ten piedad de nosotros y del mundo entero.» <span class="text-xs text-stone-500 font-sans font-normal">(Repetir 3 veces)</span>
+        </blockquote>
+        <p>
+          Se concluye habitualmente con la jaculatoria confiada: <em>«Oh Sangre y Agua que brotaste del Corazón de Jesús como una fuente de misericordia para nosotros, en Ti confío»</em> y la Señal de la Cruz.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          5. El Origen Histórico: Vilna, Septiembre de 1935
+        </h2>
+        <p>
+          El 13 de septiembre de 1935, en su convento de Vilna (Lituania), Sor Faustina tuvo una visión interior de un ángel ejecutor de la justicia divina enviado a herir la tierra por los pecados del mundo. Movida por una inspiración íntima del Espíritu Santo, Faustina comenzó a implorar a Dios con las palabras que escuchó en su interior: <em>«Padre Eterno, te ofrezco...»</em>. Al pronunciar esta súplica de ofrecimiento del sacrificio de Cristo, el ángel quedó desarmado y no pudo ejecutar el castigo.
+        </p>
+        <p>
+          A la mañana siguiente, al entrar en la capilla, Jesús le enseñó formalmente cómo debía rezarse esta oración sobre las cuentas del rosario ordinario, pidiéndole que la enseñara a toda la Iglesia.
+        </p>
+      </section>
+
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          6. La Hora de la Misericordia: Las Tres de la Tarde (15:00)
+        </h2>
+        <p>
+          En el <em>Diario</em> (n. 1572), Jesús le confió a Faustina una práctica espiritual unida a esta devoción:
+        </p>
+        <blockquote class="p-4 rounded-xl bg-stone-100/60 dark:bg-slate-900/60 border border-stone-200 dark:border-slate-800 text-sm text-stone-700 dark:text-stone-300 italic">
+          «A las tres de la tarde ruega por mi misericordia, en especial para los pecadores y, aunque sea por un brevísimo momento, sumérgete en mi Pasión, particularmente en mi desamparo en el momento de la agonía. Esta es la hora de la gran misericordia para el mundo entero. Te permitiré penetrar en mi dolor mortal. En esta hora nada le será negado al alma que lo pida por los méritos de mi Pasión.»
+        </blockquote>
+      </section>
+
+      <!-- Preguntas Frecuentes Reutilizables -->
+      <FaqAccordion
+        title="Preguntas Frecuentes sobre la Coronilla"
+        subtitle="Respuestas claras a dudas teológicas y prácticas sobre esta devoción."
+        items={faqItems}
+      />
+
+      <!-- Siguiente paso pastoral -->
+      <NextStep
+        variant="santos"
+        customTitle="Profundiza en la Vida de Santa Faustina"
+        customAction="Conoce los peritajes históricos del Cuadro de Vilna (1934), su coincidencia biométrica con la Sábana Santa y el proceso de rehabilitación eclesial en nuestro expediente documental."
+      />
+
+    </article>
+  </div>
+</BaseLayout>

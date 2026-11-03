@@ -303,6 +303,13 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
   const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
   const [vibrateEnabled, setVibrateEnabled] = useState<boolean>(true);
   const [fontSize, setFontSize] = useState<'normal' | 'large'>('normal');
+  const [hasTrackedStart, setHasTrackedStart] = useState<boolean>(false);
+
+  const trackPrayerEvent = (eventName: string, params?: Record<string, any>) => {
+    if (typeof window !== 'undefined' && typeof (window as any).trackGAEvent === 'function') {
+      (window as any).trackGAEvent(eventName, params);
+    }
+  };
 
   useEffect(() => {
     // En entorno local (localhost), desregistrar service worker para evitar colisiones de caché con CSS
@@ -412,6 +419,15 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
     setCurrentBead(0);
     setIsPrayerStarted(true);
     setShowConfigModal(false);
+
+    if (!hasTrackedStart) {
+      setHasTrackedStart(true);
+      trackPrayerEvent(prayerType === 'coronilla' ? 'chaplet_start' : 'rosary_start', {
+        prayer_type: prayerType,
+        mystery_key: activeKey,
+        language: language,
+      });
+    }
   };
 
   const triggerFeedback = () => {
@@ -469,6 +485,11 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
           setStage('salve');
           setCurrentBead(0);
           persistState('salve', 4, 11);
+          trackPrayerEvent(prayerType === 'coronilla' ? 'chaplet_complete' : 'rosary_complete', {
+            prayer_type: prayerType,
+            mystery_key: activeKey,
+            language: language,
+          });
         }
       }
       return;
@@ -1047,14 +1068,26 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
               </span>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setShowConfigModal(true)}
-              class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-slate-700 hover:border-amber-500 font-semibold transition-colors flex items-center gap-1.5"
-            >
-              <span>⚙️</span>
-              <span>{ui.changeOptions}</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => window.print()}
+                class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-slate-700 hover:border-amber-500 font-semibold transition-colors flex items-center gap-1.5 no-print"
+                title="Imprimir guía o guardar en PDF"
+              >
+                <span>🖨️</span>
+                <span class="hidden sm:inline">Imprimir / PDF</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setShowConfigModal(true)}
+                class="px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-slate-700 hover:border-amber-500 font-semibold transition-colors flex items-center gap-1.5"
+              >
+                <span>⚙️</span>
+                <span>{ui.changeOptions}</span>
+              </button>
+            </div>
           </div>
 
           {/* Barra de Navegación por Decenas */}
@@ -1260,13 +1293,42 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
                       <span>{prayerType === 'coronilla' ? 'Vilna 1935' : currentSet.diasOrdinarios}</span>
                     </div>
 
-                    <div class="space-y-1">
-                      <span class="text-xs font-serif font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                        {ui.decadeLabel} {prayerType === 'coronilla' ? coronillaItem.numeroRomano : mystery.numeroRomano}
-                      </span>
-                      <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-950 dark:text-stone-100 leading-snug m-0">
-                        {prayerType === 'coronilla' ? coronillaItem.titulo : mystery.titulo}
-                      </h2>
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="space-y-1">
+                        <span class="text-xs font-serif font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                          {ui.decadeLabel} {prayerType === 'coronilla' ? coronillaItem.numeroRomano : mystery.numeroRomano}
+                        </span>
+                        <h2 class="font-serif text-xl sm:text-2xl font-bold text-slate-950 dark:text-stone-100 leading-snug m-0">
+                          {prayerType === 'coronilla' ? coronillaItem.titulo : mystery.titulo}
+                        </h2>
+                      </div>
+
+                      <div class="flex items-center gap-1.5 shrink-0 no-print">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (currentDecade > 0) jumpToDecade(currentDecade - 1);
+                          }}
+                          disabled={currentDecade === 0}
+                          class="p-2 rounded-xl bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-800 text-stone-700 dark:text-stone-300 hover:text-amber-800 disabled:opacity-30 disabled:cursor-not-allowed text-xs transition-colors shadow-2xs"
+                          aria-label="Misterio anterior"
+                          title="Ir al misterio anterior"
+                        >
+                          &larr;
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (currentDecade < 4) jumpToDecade(currentDecade + 1);
+                          }}
+                          disabled={currentDecade === 4}
+                          class="p-2 rounded-xl bg-white dark:bg-slate-900 border border-amber-300 dark:border-amber-800 text-stone-700 dark:text-stone-300 hover:text-amber-800 disabled:opacity-30 disabled:cursor-not-allowed text-xs transition-colors shadow-2xs"
+                          aria-label="Misterio siguiente"
+                          title="Ir al misterio siguiente"
+                        >
+                          &rarr;
+                        </button>
+                      </div>
                     </div>
 
                     {/* Texto Narrativo Completo de la Meditación */}
@@ -1447,6 +1509,38 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
 
             </div>
 
+          </div>
+
+          {/* Barra flotante inferior para dispositivos móviles (Ergonomía de pulgar con una mano) */}
+          <div class="lg:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-stone-50/95 dark:bg-slate-950/95 backdrop-blur-md border-t border-stone-200/80 dark:border-slate-800 shadow-2xl flex items-center justify-between gap-3 no-print">
+            <button
+              type="button"
+              onClick={prevBead}
+              disabled={stage === 'intro' && currentBead === 0}
+              class="px-4 py-2.5 rounded-xl bg-stone-200 dark:bg-slate-800 text-stone-800 dark:text-stone-200 disabled:opacity-30 font-bold text-sm min-h-[46px] min-w-[46px] flex items-center justify-center transition-colors"
+              aria-label={ui.previousBead}
+            >
+              &larr;
+            </button>
+
+            <div class="text-center px-1">
+              <span class="text-[10px] font-mono text-stone-500 dark:text-stone-400 block truncate max-w-[170px]">
+                {stage === 'decena' ? `${ui.decadeLabel} ${currentDecade + 1}/5 · Cuenta ${currentBead}/10` : prayerBadge}
+              </span>
+              <span class="text-xs font-bold text-amber-700 dark:text-amber-400">
+                {progressPercent}% {ui.prayerProgress}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              onClick={nextBead}
+              class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-sm shadow-md min-h-[46px] flex items-center gap-1.5 active:scale-95 transition-all"
+              aria-label={stage === 'salve' ? ui.finishPrayer : ui.nextBead}
+            >
+              <span>{stage === 'salve' ? ui.finishPrayer : ui.nextBead}</span>
+              <span>&rarr;</span>
+            </button>
           </div>
 
         </div>

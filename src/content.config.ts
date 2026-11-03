@@ -45,6 +45,18 @@ const baseSchema = z.object({
   revisado_por: z.string().default("Revisión Editorial Interna (Basada en Magisterio y Fuentes Primarias)"),
   fecha_publicacion: z.coerce.date(),
   fecha_revision: z.coerce.date(),
+  // Campos opcionales (Fase 2 - Estructura)
+  author: z.string().optional(),
+  reviewedBy: z.string().optional(),
+  lastReviewed: z.coerce.date().optional(),
+  sources: z.array(
+    z.object({
+      title: z.string(),
+      url: z.string().optional(),
+      type: z.enum(['primaria', 'secundaria']),
+    })
+  ).optional(),
+  evidenceLevel: z.string().optional(),
 });
 
 // 1. Colección: Milagros Eucarísticos

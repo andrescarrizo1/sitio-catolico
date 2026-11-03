@@ -31,9 +31,9 @@ const data = entry.data;
       ]}
     />
 
-    <header class="mt-4 mb-10 space-y-4">
+    <header class="mt-4 mb-8 space-y-4">
       <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
-        Sagrada Escritura &middot; Itinerario de Conversión
+        Sagrada Escritura &middot; Itinerario de Conversión y Salterio
       </span>
 
       <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
@@ -47,15 +47,73 @@ const data = entry.data;
       <div class="p-4 rounded-xl bg-stone-100/60 dark:bg-slate-900/60 text-xs text-stone-500 dark:text-stone-400 border border-stone-200/60 dark:border-slate-800">
         <strong>Traducción verificada:</strong> Textos tomados íntegramente de la <em>Biblia traducida al español de la Vulgata latina</em> por el Ilmo. Sr. D. Félix Torres Amat (Madrid: Imprenta de D. Miguel de Burgos, 1825, Dominio Público).
       </div>
+
+      <!-- Barra Editorial de Controles de Lectura e Impresión (Mobile-Friendly) -->
+      <div class="no-print pt-2 flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl bg-stone-100/80 dark:bg-slate-900/80 border border-stone-200 dark:border-slate-800">
+        <!-- Selector de Modo de Vista -->
+        <div class="flex items-center p-1 rounded-xl bg-stone-200/60 dark:bg-slate-800 text-xs font-semibold">
+          <button
+            type="button"
+            id="view-study-btn"
+            class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-900 text-amber-800 dark:text-amber-400 shadow-xs transition-all"
+            aria-pressed="true"
+          >
+            📖 Modo Estudio
+          </button>
+          <button
+            type="button"
+            id="view-psalm-btn"
+            class="px-3 py-1.5 rounded-lg text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition-all"
+            aria-pressed="false"
+          >
+            📜 Salmo Continuo
+          </button>
+        </div>
+
+        <!-- Controles de Tipografía e Impresión -->
+        <div class="flex items-center gap-2">
+          <!-- Control de Tamaño de Letra -->
+          <div class="flex items-center rounded-xl bg-stone-200/60 dark:bg-slate-800 p-0.5 text-xs font-bold text-stone-700 dark:text-stone-300">
+            <button
+              type="button"
+              id="font-size-dec"
+              class="px-2 py-1 rounded-lg hover:bg-stone-300/60 dark:hover:bg-slate-700 transition-colors"
+              title="Reducir tamaño de letra"
+            >
+              A-
+            </button>
+            <span class="px-1 text-[11px] text-stone-400 font-mono">Aa</span>
+            <button
+              type="button"
+              id="font-size-inc"
+              class="px-2 py-1 rounded-lg hover:bg-stone-300/60 dark:hover:bg-slate-700 transition-colors"
+              title="Aumentar tamaño de letra"
+            >
+              A+
+            </button>
+          </div>
+
+          <!-- Botón Imprimir / PDF -->
+          <button
+            type="button"
+            onclick="window.print()"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-800 hover:bg-stone-200 dark:hover:bg-slate-700 text-stone-800 dark:text-stone-200 text-xs font-semibold border border-stone-200 dark:border-slate-700 transition-colors shadow-2xs"
+            title="Imprimir o guardar en PDF"
+          >
+            <span>🖨️</span>
+            <span class="hidden sm:inline">Imprimir / PDF</span>
+          </button>
+        </div>
+      </div>
     </header>
 
-    <!-- Listado de Versículos con Meditación y Acción -->
-    <div class="space-y-8">
+    <!-- VISTA 1: Modo Estudio (Versículo por versículo con meditación y acción) -->
+    <div id="study-view" class="space-y-8 psalm-reader-content">
       {data.versiculos.map((v, idx) => (
-        <article class="p-6 sm:p-7 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-sm space-y-4">
+        <article class="printable-card p-6 sm:p-7 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-sm space-y-4">
           <div class="flex items-center justify-between">
             <span class="font-serif text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
-              Pasaje {idx + 1} de {data.versiculos.length}
+              Versículo {idx + 1} de {data.versiculos.length}
             </span>
             <span class="text-xs font-mono text-stone-400">
               {v.referencia}
@@ -69,19 +127,120 @@ const data = entry.data;
             reflection={v.reflexion_corta}
           />
 
-          <div class="p-3.5 rounded-xl bg-amber-500/5 dark:bg-amber-400/5 border border-amber-500/20 text-xs sm:text-sm text-stone-700 dark:text-stone-300">
-            <strong>Examen y acción sugerida:</strong> {v.accion_sugerida}
-          </div>
+          <!-- Explicación y acción sugerida desplegable o visible -->
+          <details class="group rounded-xl border border-amber-500/20 bg-amber-500/5 dark:bg-amber-400/5 p-3.5 text-xs sm:text-sm text-stone-700 dark:text-stone-300" open>
+            <summary class="font-semibold text-amber-900 dark:text-amber-300 cursor-pointer list-none flex items-center justify-between select-none">
+              <span>✦ Examen y acción sugerida para hoy</span>
+              <span class="text-amber-600 dark:text-amber-400 group-open:rotate-180 transition-transform text-xs">&darr;</span>
+            </summary>
+            <p class="mt-2.5 pt-2 border-t border-amber-500/20 leading-relaxed font-reading m-0">
+              {v.accion_sugerida}
+            </p>
+          </details>
         </article>
       ))}
     </div>
 
+    <!-- VISTA 2: Modo Salmo Continuo (Lectura orante en prosa lírica ininterrumpida) -->
+    <div id="psalm-view" class="hidden psalm-reader-content p-6 sm:p-10 rounded-3xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-sm space-y-6">
+      <div class="border-b border-stone-200 dark:border-slate-800 pb-4">
+        <h2 class="font-serif text-2xl font-bold text-slate-950 dark:text-stone-100">
+          Texto Íntegro para la Oración y Meditación
+        </h2>
+        <p class="text-xs text-stone-500 dark:text-stone-400 mt-1">
+          Lectura orante continua &middot; Traducción Vulgata Latina Torres Amat (1825)
+        </p>
+      </div>
+
+      <div class="font-reading text-lg sm:text-xl text-slate-900 dark:text-stone-100 leading-[2] space-y-4">
+        <p class="m-0">
+          {data.versiculos.map((v, idx) => (
+            <span class="inline">
+              <sup class="font-mono text-xs font-bold text-amber-700 dark:text-amber-400 mr-1 select-none">
+                {idx + 1}
+              </sup>
+              <span>{v.texto}</span>{' '}
+            </span>
+          ))}
+        </p>
+      </div>
+
+      <div class="pt-6 border-t border-stone-200 dark:border-slate-800 text-xs text-stone-500 dark:text-stone-400 font-mono">
+        Gloria al Padre, y al Hijo, y al Espíritu Santo. Como era en el principio, ahora y siempre, por los siglos de los siglos. Amén.
+      </div>
+    </div>
+
     <!-- Siguiente Paso pastoral -->
-    <NextStep
-      variant="biblia"
-      customTitle="Tu siguiente paso espiritual"
-      customAction="La Palabra de Dios no vuelve a Él vacía sin haber cumplido lo que se proponía (Isaías 55, 11). Elige uno de estos ocho versículos, anótalo en tu libreta de oración y medítalo durante tres días seguidos en silencio ante el Sagrario."
-    />
+    <div class="no-print mt-10">
+      <NextStep
+        variant="biblia"
+        customTitle="Tu siguiente paso espiritual"
+        customAction="La Palabra de Dios no vuelve a Él vacía sin haber cumplido lo que se proponía (Isaías 55, 11). Elige uno de estos versículos, anótalo en tu libreta de oración y medítalo durante tres días seguidos en silencio ante el Sagrario."
+      />
+    </div>
+
+    <!-- Pie de Imprenta Formal para Exportación a PDF -->
+    <div class="hidden print-footer">
+      <p>
+        <strong>Razón y Asombro</strong> &middot; Sagrada Escritura (Torres Amat 1825, Dominio Público) &middot; Documento de oración personal &middot; razonyasombro.com
+      </p>
+    </div>
 
   </div>
 </BaseLayout>
+
+<script is:inline>
+  const studyBtn = document.getElementById('view-study-btn');
+  const psalmBtn = document.getElementById('view-psalm-btn');
+  const studyView = document.getElementById('study-view');
+  const psalmView = document.getElementById('psalm-view');
+  const incBtn = document.getElementById('font-size-inc');
+  const decBtn = document.getElementById('font-size-dec');
+  const readerContents = document.querySelectorAll('.psalm-reader-content');
+
+  let currentSizeIdx = 1; // 0 = sm, 1 = base, 2 = lg
+  const sizeClasses = ['reading-size-sm', 'reading-size-base', 'reading-size-lg'];
+
+  function setSize(idx) {
+    currentSizeIdx = Math.max(0, Math.min(2, idx));
+    readerContents.forEach((el) => {
+      sizeClasses.forEach((cls) => el.classList.remove(cls));
+      el.classList.add(sizeClasses[currentSizeIdx]);
+    });
+    localStorage.setItem('psalm_font_size', currentSizeIdx.toString());
+  }
+
+  // Restaurar tamaño guardado
+  const savedSize = localStorage.getItem('psalm_font_size');
+  if (savedSize !== null) {
+    setSize(parseInt(savedSize, 10));
+  }
+
+  incBtn?.addEventListener('click', () => setSize(currentSizeIdx + 1));
+  decBtn?.addEventListener('click', () => setSize(currentSizeIdx - 1));
+
+  function activateStudyMode() {
+    studyView?.classList.remove('hidden');
+    psalmView?.classList.add('hidden');
+    studyBtn?.classList.add('bg-white', 'dark:bg-slate-900', 'text-amber-800', 'dark:text-amber-400', 'shadow-xs');
+    studyBtn?.classList.remove('text-stone-600', 'dark:text-stone-400');
+    studyBtn?.setAttribute('aria-pressed', 'true');
+    psalmBtn?.classList.remove('bg-white', 'dark:bg-slate-900', 'text-amber-800', 'dark:text-amber-400', 'shadow-xs');
+    psalmBtn?.classList.add('text-stone-600', 'dark:text-stone-400');
+    psalmBtn?.setAttribute('aria-pressed', 'false');
+  }
+
+  function activatePsalmsMode() {
+    psalmView?.classList.remove('hidden');
+    studyView?.classList.add('hidden');
+    psalmBtn?.classList.add('bg-white', 'dark:bg-slate-900', 'text-amber-800', 'dark:text-amber-400', 'shadow-xs');
+    psalmBtn?.classList.remove('text-stone-600', 'dark:text-stone-400');
+    psalmBtn?.setAttribute('aria-pressed', 'true');
+    studyBtn?.classList.remove('bg-white', 'dark:bg-slate-900', 'text-amber-800', 'dark:text-amber-400', 'shadow-xs');
+    studyBtn?.classList.add('text-stone-600', 'dark:text-stone-400');
+    studyBtn?.setAttribute('aria-pressed', 'false');
+  }
+
+  studyBtn?.addEventListener('click', activateStudyMode);
+  psalmBtn?.addEventListener('click', activatePsalmsMode);
+</script>

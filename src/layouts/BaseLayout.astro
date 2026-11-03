@@ -15,6 +15,7 @@ interface Props {
   lang?: 'es' | 'en';
   alternateLinks?: { href: string; hreflang: string }[];
   alternateUrl?: string;
+  preloadImage?: string;
 }
 
 const {
@@ -27,8 +28,39 @@ const {
   noindex,
   lang = 'es',
   alternateLinks,
-  alternateUrl
+  alternateUrl,
+  preloadImage,
 } = Astro.props;
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+
+const siteGraphSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': `${siteUrl}/#organization`,
+      name: 'Razón y Asombro',
+      url: `${siteUrl}/`,
+      logo: {
+        '@type': 'ImageObject',
+        '@id': `${siteUrl}/#logo`,
+        url: `${siteUrl}/favicon.svg`,
+        caption: 'Razón y Asombro',
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${siteUrl}/#website`,
+      url: `${siteUrl}/`,
+      name: 'Razón y Asombro',
+      publisher: {
+        '@id': `${siteUrl}/#organization`,
+      },
+      inLanguage: lang === 'en' ? 'en-US' : 'es-LA',
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -44,7 +76,9 @@ const {
       noindex={noindex}
       lang={lang}
       alternateLinks={alternateLinks}
+      preloadImage={preloadImage}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(siteGraphSchema)} />
   </head>
   <body class="min-h-screen flex flex-col bg-stone-50 text-slate-900 dark:bg-slate-950 dark:text-stone-100 transition-colors duration-200">
     <!-- Enlace de salto accesible WCAG 2.1 AA -->

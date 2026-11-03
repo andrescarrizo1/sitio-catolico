@@ -1,0 +1,71 @@
+---
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  items: FaqItem[];
+  includeSchema?: boolean;
+}
+
+const {
+  title = "Preguntas Frecuentes",
+  subtitle = "Respuestas documentadas a dudas habituales sobre la fe, la doctrina y la investigación.",
+  items = [],
+  includeSchema = true,
+} = Astro.props;
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": items.map((item) => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer,
+    },
+  })),
+};
+---
+
+<section class="mt-12 pt-8 border-t border-stone-200 dark:border-slate-800 space-y-6">
+  {includeSchema && items.length > 0 && (
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  )}
+
+  <div class="space-y-1">
+    <span class="text-xs font-serif font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400">
+      Clarificaciones Doctrinales y Prácticas
+    </span>
+    <h2 class="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 dark:text-stone-100">
+      {title}
+    </h2>
+    {subtitle && (
+      <p class="text-sm text-stone-600 dark:text-stone-400">
+        {subtitle}
+      </p>
+    )}
+  </div>
+
+  <div class="space-y-3">
+    {items.map((item) => (
+      <details class="group rounded-xl border border-stone-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 p-4 transition-all duration-200 open:bg-amber-500/5 dark:open:bg-amber-500/5 open:border-amber-500/30">
+        <summary class="flex cursor-pointer items-center justify-between text-base font-semibold text-slate-900 dark:text-stone-100 select-none list-none group-hover:text-amber-700 dark:group-hover:text-amber-400">
+          <span>{item.question}</span>
+          <span class="ml-4 shrink-0 rounded-full p-1 text-stone-400 transition-transform duration-200 group-open:rotate-180">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </span>
+        </summary>
+        <div class="mt-3 pt-3 border-t border-stone-200/50 dark:border-slate-800/50 text-sm leading-relaxed text-stone-700 dark:text-stone-300">
+          <p>{item.answer}</p>
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
