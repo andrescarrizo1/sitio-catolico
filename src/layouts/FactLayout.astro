@@ -25,7 +25,7 @@ interface Props {
   estadoReliquias?: string;
   fuentes?: any[];
   sources?: { title: string; url?: string; type: 'primaria' | 'secundaria' }[];
-  nextStepVariant?: 'jesus' | 'milagros' | 'fatima' | 'santos' | 'biblia';
+  nextStepVariant?: 'jesus' | 'milagros' | 'fatima' | 'santos' | 'biblia' | 'ciencia';
   fechaPublicacion?: Date | string;
   datePublished?: Date | string;
   fechaRevision?: Date | string;
@@ -63,7 +63,7 @@ const {
   estadoReliquias,
   fuentes = [],
   sources = [],
-  nextStepVariant = 'milagros',
+  nextStepVariant = 'ciencia',
   fechaPublicacion,
   datePublished,
   fechaRevision,
