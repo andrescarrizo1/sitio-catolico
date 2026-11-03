@@ -119,6 +119,15 @@ const isPlaceholder = (val?: string) => {
   return lower === '' || lower === 'todo' || lower === 'placeholder' || lower === 'n/a' || lower === 'none';
 };
 
+const isConcreteReviewer = (val?: string) => {
+  if (!val) return false;
+  const lower = val.trim().toLowerCase();
+  if (isPlaceholder(val)) return false;
+  if (lower.includes('revisión editorial interna') || lower.includes('revision editorial interna')) return false;
+  if (lower.includes('equipo editorial')) return false;
+  return true;
+};
+
 const allSources = (sources && sources.length > 0) ? sources : (fuentes && fuentes.length > 0 ? fuentes : []);
 
 const articleSchema = {
@@ -179,10 +188,10 @@ const articleSchema = {
         {resumen}
       </p>
 
-      {(!isPlaceholder(effectiveAuthor) || !isPlaceholder(effectiveReviewedBy) || formattedRevDate) && (
+      {(!isPlaceholder(effectiveAuthor) || isConcreteReviewer(effectiveReviewedBy) || formattedRevDate) && (
         <div class="flex flex-wrap items-center gap-4 text-xs text-stone-500 dark:text-stone-400 pt-2 border-b border-stone-200 dark:border-slate-800 pb-4">
           {!isPlaceholder(effectiveAuthor) && <span>Por <strong>{effectiveAuthor}</strong></span>}
-          {!isPlaceholder(effectiveReviewedBy) && (
+          {isConcreteReviewer(effectiveReviewedBy) && (
             <>
               {!isPlaceholder(effectiveAuthor) && <span>&middot;</span>}
               <span>Revisado por: <strong>{effectiveReviewedBy}</strong></span>
@@ -190,8 +199,8 @@ const articleSchema = {
           )}
           {formattedRevDate && (
             <>
-              {(!isPlaceholder(effectiveAuthor) || !isPlaceholder(effectiveReviewedBy)) && <span>&middot;</span>}
-              <span>Revisado el: <time datetime={formattedRevDate.toISOString()}>{formattedRevDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>
+              {(!isPlaceholder(effectiveAuthor) || isConcreteReviewer(effectiveReviewedBy)) && <span>&middot;</span>}
+              <span>Última revisión: <time datetime={formattedRevDate.toISOString()}>{formattedRevDate.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>
             </>
           )}
         </div>
