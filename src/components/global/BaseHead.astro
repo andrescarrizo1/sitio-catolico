@@ -172,7 +172,7 @@ if (metaDescription.length > 155) {
 {articleDate && (
   <meta property="article:published_time" content={articleDate.toISOString()} />
 )}
-{articleModified && (
+{articleModified && !isNaN(articleModified.getTime()) && (
   <meta property="article:modified_time" content={articleModified.toISOString()} />
 )}
 

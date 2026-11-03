@@ -111,7 +111,7 @@ if (rawRevDate) {
 }
 const dateModifiedIso = formattedRevDate
   ? formattedRevDate.toISOString()
-  : (contentFilePath ? getGitCommitDate(contentFilePath) : '2026-01-01T00:00:00Z');
+  : (contentFilePath ? getGitCommitDate(contentFilePath, rawRevDate) : undefined);
 
 const isPlaceholder = (val?: string) => {
   if (!val) return true;
@@ -152,7 +152,7 @@ const articleSchema = {
   description={resumen}
   image={imageUrl}
   articleDate={rawPubDate ? new Date(rawPubDate) : undefined}
-  articleModified={rawRevDate ? new Date(rawRevDate) : new Date(dateModifiedIso)}
+  articleModified={formattedRevDate ? formattedRevDate : (dateModifiedIso ? new Date(dateModifiedIso) : undefined)}
   ogType="article"
   lang={lang}
   alternateLinks={alternateLinks}
