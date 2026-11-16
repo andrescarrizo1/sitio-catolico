@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant?: 'jesus' | 'milagros' | 'fatima' | 'santos' | 'biblia';
+  variant?: 'jesus' | 'milagros' | 'fatima' | 'santos' | 'biblia' | 'ciencia';
   customTitle?: string;
   customAction?: string;
 }
@@ -37,6 +37,16 @@ const {
               <ul class="list-disc pl-5 space-y-1.5 text-stone-600 dark:text-stone-400 text-sm">
                 <li><strong>Un examen sincero:</strong> Dedica diez minutos esta noche a poner nombre a los rencores o juicios que aún albergas.</li>
                 <li><strong>El sacramento de la paz:</strong> Acércate esta semana a una parroquia y confiesa tus faltas. La misericordia de Cristo siempre te espera.</li>
+              </ul>
+            </>
+          )}
+
+          {variant === 'ciencia' && (
+            <>
+              <p>Los signos físicos e históricos documentados invitan a profundizar en la fe con rigor intelectual y apertura del corazón:</p>
+              <ul class="list-disc pl-5 space-y-1.5 text-stone-600 dark:text-stone-400 text-sm">
+                <li><strong>Meditación personal:</strong> Dedica diez minutos de recogimiento a contemplar cómo la concordancia entre fe y razón ilumina tu vida cotidiana.</li>
+                <li><strong>Vida de oración:</strong> Acércate al Sagrario o al Santo Rosario para transformar el asombro intelectual en amistad viva con Jesucristo.</li>
               </ul>
             </>
           )}

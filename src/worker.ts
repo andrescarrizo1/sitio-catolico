@@ -530,6 +530,81 @@ export default {
     }
 
     // ==========================================
+    // 0. CANONICALIZACIÓN DE PROTOCOLO (HTTPS) Y SUBDOMINIO (NO-WWW)
+    // ==========================================
+    const isLocalhost = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+    const cfVisitor = request.headers.get('cf-visitor');
+    const isCfHttp = cfVisitor ? cfVisitor.includes('"scheme":"http"') : false;
+    const isHttp = url.protocol === 'http:' || request.headers.get('x-forwarded-proto')?.toLowerCase() === 'http' || isCfHttp;
+    const hasWww = url.hostname.toLowerCase().startsWith('www.');
+
+    if ((!isLocalhost && isHttp) || hasWww) {
+      const canonicalHostname = hasWww ? url.hostname.replace(/^www\./i, '') : url.hostname;
+      const canonicalUrl = new URL(url.pathname + url.search, `https://${canonicalHostname}`);
+
+      // Resolver normalización de trailing slash en el mismo salto si corresponde
+      if (
+        !canonicalUrl.pathname.endsWith('/') &&
+        !canonicalUrl.pathname.startsWith('/api/') &&
+        !/\.[a-zA-Z0-9]+$/.test(canonicalUrl.pathname) &&
+        canonicalUrl.pathname !== '/404' &&
+        canonicalUrl.pathname !== '/404.html'
+      ) {
+        canonicalUrl.pathname += '/';
+      }
+
+      return Response.redirect(canonicalUrl.toString(), 301);
+    }
+
+    // ==========================================
+    // 1. REDIRECCIONES PERMANENTES HISTÓRICAS (HTTP 301)
+    // ==========================================
+    const cleanPath = url.pathname.replace(/\/+$/, '');
+    if (cleanPath === '/santos/estudios-medicos-y-santo-oficio') {
+      const target = new URL('/padre-pio/estudios-medicos-y-santo-oficio/', url.origin);
+      target.search = url.search;
+      return Response.redirect(target.toString(), 301);
+    }
+    if (cleanPath === '/en/rosary') {
+      const target = new URL('/en/interactive-rosary/', url.origin);
+      target.search = url.search;
+      return Response.redirect(target.toString(), 301);
+    }
+
+    // ==========================================
+    // 2. NORMALIZACIÓN DE TRAILING SLASH (HTTP 301)
+    // ==========================================
+    if (
+      !url.pathname.endsWith('/') &&
+      !url.pathname.startsWith('/api/') &&
+      !/\.[a-zA-Z0-9]+$/.test(url.pathname) &&
+      url.pathname !== '/404' &&
+      url.pathname !== '/404.html'
+    ) {
+      const target = new URL(url.pathname + '/' + url.search, url.origin);
+      return Response.redirect(target.toString(), 301);
+    }
+
+    // ==========================================
+    // 3. RESPUESTA 404 ESTRICTA PARA RUTA DIRECTA /404 Y /404.html
+    // ==========================================
+    if (url.pathname === '/404' || url.pathname === '/404/' || url.pathname === '/404.html') {
+      const notFoundUrl = new URL('/404.html', request.url);
+      const notFoundRes = await env.ASSETS.fetch(new Request(notFoundUrl.toString()));
+      const htmlText = await notFoundRes.text();
+      return new Response(htmlText, {
+        status: 404,
+        statusText: 'Not Found',
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'X-Robots-Tag': 'noindex, follow',
+          'X-Frame-Options': 'SAMEORIGIN',
+          'Content-Security-Policy': "frame-ancestors 'self';",
+        },
+      });
+    }
+
+    // ==========================================
     // 1. ENDPOINT DE CONSUELO ESPIRITUAL
     // ==========================================
     if (url.pathname === '/api/consuelo') {
@@ -691,21 +766,6 @@ export default {
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         });
       }
-    }
-
-    // ==========================================
-    // 3. REDIRECCIONES PERMANENTES (HTTP 301)
-    // ==========================================
-    const cleanPath = url.pathname.replace(/\/+$/, '');
-    if (cleanPath === '/santos/estudios-medicos-y-santo-oficio') {
-      const target = new URL('/padre-pio/estudios-medicos-y-santo-oficio/', url.origin);
-      target.search = url.search;
-      return Response.redirect(target.toString(), 301);
-    }
-    if (cleanPath === '/en/rosary') {
-      const target = new URL('/en/interactive-rosary/', url.origin);
-      target.search = url.search;
-      return Response.redirect(target.toString(), 301);
     }
 
     // ==========================================
