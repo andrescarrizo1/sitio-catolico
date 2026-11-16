@@ -1,0 +1,358 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import FaqAccordion from '../../components/ui/FaqAccordion.astro';
+import NextStep from '../../components/ui/NextStep.astro';
+import { getGitCommitDate } from '../../utils/getGitDate';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const currentURL = `${siteUrl}/rosario/misterios-luminosos/`;
+
+const alternateLinks = [
+  { hreflang: 'es', href: currentURL },
+  { hreflang: 'x-default', href: currentURL },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": currentURL
+  },
+  "headline": "Misterios Luminosos del Rosario: Meditación y Citas Bíblicas",
+  "description": "Guía bíblica y teológica de los Misterios Luminosos del Santo Rosario (jueves). Pasajes evangélicos, frutos espirituales de cada misterio y meditación.",
+  "image": [`${siteUrl}/images/rosario-manos-devocion.jpg`],
+  "url": currentURL,
+  "datePublished": "2026-11-16T00:00:00Z",
+  "dateModified": getGitCommitDate('src/pages/rosario/misterios-luminosos.astro', '2026-11-16T00:00:00Z'),
+  "author": [
+    {
+      "@type": "Organization",
+      "name": "Razón y Asombro",
+      "url": `${siteUrl}/autor/`
+    }
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Razón y Asombro",
+    "url": `${siteUrl}/`,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteUrl}/favicon.svg`
+    }
+  }
+};
+
+const faqItems = [
+  {
+    question: "¿Quién instituyó los Misterios Luminosos y en qué año?",
+    answer: "Los Misterios Luminosos fueron instituidos por el Papa San Juan Pablo II el 16 de octubre de 2002 mediante la Carta Apostólica Rosarium Virginis Mariae, con el fin de incorporar al Rosario la contemplación explícita del ministerio público de Jesucristo entre su Bautismo y su Pasión."
+  },
+  {
+    question: "¿Qué día de la semana se rezan los Misterios Luminosos?",
+    answer: "Se rezan ordinariamente los días jueves de cada semana. Al asignar el jueves a los Misterios Luminosos, los sábados quedaron libres para rezar nuevamente los Misterios Gozosos, día tradicionalmente dedicado a la Santísima Virgen María."
+  },
+  {
+    question: "¿Por qué se llaman «Misterios de Luz» o Luminosos?",
+    answer: "Porque Jesucristo es la «Luz del mundo» (Jn 8, 12). En cada uno de estos cinco episodios de su vida pública, la luz del Reino de Dios brilla a través de sus palabras, sus signos milagrosos, su gloria transfigurada y el sacramento de la Sagrada Eucaristía."
+  },
+  {
+    question: "¿Cuáles son los frutos espirituales de los cinco Misterios Luminosos?",
+    answer: "1) En el Bautismo: la fidelidad a las promesas bautismales y la docilidad al Espíritu; 2) En Caná: la fe en Cristo por la intercesión maternal de María; 3) En el Anuncio del Reino: la conversión personal y el deseo del sacramento de la Confesión; 4) En la Transfiguración: el anhelo de santidad y vida eterna; 5) En la Eucaristía: el amor ardiente a la Santa Misa y al Santísimo Sacramento."
+  }
+];
+---
+
+<BaseLayout
+  title="Misterios Luminosos del Rosario | Razón y Asombro"
+  description="Guía bíblica y teológica de los Misterios Luminosos del Santo Rosario (jueves). Pasajes evangélicos, frutos espirituales de cada misterio y meditación."
+  image="/images/rosario-manos-devocion.jpg"
+  alternateLinks={alternateLinks}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Santo Rosario', href: '/rosario/' },
+        { label: 'Misterios Luminosos' }
+      ]}
+    />
+
+    <!-- Header Principal -->
+    <header class="space-y-4 border-b border-stone-200 dark:border-slate-800 pb-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-800 dark:text-blue-300 border border-blue-500/20">
+          Rezo de Jueves &middot; Misterios de Luz
+        </span>
+        <span class="text-xs font-mono text-stone-500 dark:text-stone-400">
+          Magisterio: Rosarium Virginis Mariae (n. 21) &middot; San Juan Pablo II (2002)
+        </span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+        Los Misterios Luminosos del Santo Rosario: Meditación y Guía Bíblica
+      </h1>
+
+      <p class="text-base sm:text-lg text-stone-700 dark:text-stone-300 font-reading leading-relaxed">
+        Los Misterios Luminosos o «Misterios de Luz» contemplan la vida pública de Nuestro Señor Jesucristo. Con ellos, el Rosario adquiere su plena fisonomía cristológica: desde la manifestación en las aguas del Jordán hasta la suprema donación de su Cuerpo y Sangre en la Última Cena.
+      </p>
+
+      <!-- Clasificación Epistémica -->
+      <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 text-xs sm:text-sm text-stone-600 dark:text-stone-400 space-y-1">
+        <p><strong>Certeza Doctrinal:</strong> Los cinco misterios corresponden a hechos y enseñanzas fundacionales de la <em>Sagrada Escritura evangélica</em>. Su incorporación al Rosario responde a una decisión magisterial solemne de la Santa Sede que enriqueció la oración tradicional sin alterar su esencia contemplativa.</p>
+        <p><strong>Traducción Bíblica:</strong> Pasajes de la <em>Vulgata Latina</em> traducidos por el Ilmo. D. Félix Torres Amat (Madrid, 1825, Dominio Público).</p>
+      </div>
+
+      <!-- Barra de Navegación del Ecosistema de Misterios -->
+      <div class="pt-2 flex flex-wrap gap-2 text-xs">
+        <a href="/rosario/misterios-gozosos/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          &larr; Misterios Gozosos (Lun / Sáb)
+        </a>
+        <span class="px-3 py-1.5 rounded-lg bg-blue-500/20 text-blue-900 dark:text-blue-200 font-bold border border-blue-500/30">
+          Misterios Luminosos (Jue)
+        </span>
+        <a href="/rosario/misterios-dolorosos/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Misterios Dolorosos (Mar / Vie) &rarr;
+        </a>
+        <a href="/rosario/misterios-gloriosos/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Misterios Gloriosos (Mié / Dom) &rarr;
+        </a>
+      </div>
+    </header>
+
+    <!-- Navegación Rápida a los 5 Misterios -->
+    <nav aria-label="Índice de Misterios Luminosos" class="p-5 rounded-2xl bg-stone-50 dark:bg-slate-900 border border-stone-200 dark:border-slate-800">
+      <h2 class="font-serif text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-stone-100 mb-3">
+        Los Cinco Misterios Luminosos
+      </h2>
+      <ol class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-blue-800 dark:text-blue-400">
+        <li><a href="#primer-misterio" class="hover:underline">1. El Bautismo de Jesús en el Río Jordán</a></li>
+        <li><a href="#segundo-misterio" class="hover:underline">2. La Autorrevelación en las Bodas de Caná</a></li>
+        <li><a href="#tercer-misterio" class="hover:underline">3. El Anuncio del Reino y la Conversión</a></li>
+        <li><a href="#cuarto-misterio" class="hover:underline">4. La Transfiguración en el Monte Tabor</a></li>
+        <li class="sm:col-span-2"><a href="#quinto-misterio" class="hover:underline">5. La Institución de la Sagrada Eucaristía</a></li>
+      </ol>
+    </nav>
+
+    <!-- Desarrollo de los 5 Misterios -->
+    <div class="space-y-12">
+      
+      <!-- Primer Misterio -->
+      <section id="primer-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-blue-700 dark:text-blue-400 font-bold">
+            Primer Misterio Luminoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Fidelidad a las Promesas Bautismales</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          El Bautismo de Nuestro Señor Jesucristo en el Río Jordán
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-blue-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Bautizado Jesús, salió luego del agua; y en esto se abrieron los cielos, y vio al Espíritu de Dios que descendía en forma de paloma y venía sobre él. Y se oyó una voz del cielo que decía: Este es mi Hijo amado, en el cual tengo todas mis complacencias.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Mateo 3, 16-17 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Jesús, totalmente libre de pecado, desciende a las aguas del Jordán para santificarlas con su presencia y cargar sobre sí el peso de la humanidad extraviada. En ese instante, la Santísima Trinidad se manifiesta solemnemente: el Padre habla desde lo alto, el Espíritu desciende y el Hijo es consagrado como Siervo doliente y Mesías esperado.
+          </p>
+          <p>
+            <strong>Meditación:</strong> En nuestro propio Bautismo fuimos regenerados como hijos de Dios y templos vivos de la gracia. Contemplar este misterio nos invita a renovar con valentía el rechazo al pecado y el compromiso firme de vivir conforme al Evangelio.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Segundo Misterio -->
+      <section id="segundo-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-blue-700 dark:text-blue-400 font-bold">
+            Segundo Misterio Luminoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Fe en Cristo y la Mediación de María</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Autorrevelación de Jesús en las Bodas de Caná
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-blue-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Faltó el vino, y la madre de Jesús le dijo: No tienen vino... Dice la madre a los sirvientes: Haced cuanto él os dijere... Este fue el principio de los milagros que hizo Jesús en Caná de Galilea, con que manifestó su gloria, y creyeron en él sus discípulos.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Juan 2, 3.5.11 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            En la fiesta nupcial de Caná, la mirada atenta de María detecta la necesidad de los esposos antes que nadie y se acerca a su Hijo con confianza inquebrantable. Con sus últimas palabras registradas en la Sagrada Escritura: <em>«Haced lo que Él os diga»</em>, la Virgen resume toda la espiritualidad católica: dirigir nuestras miradas y pasos hacia Jesucristo.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Cuando en nuestras vidas familiares o espirituales escasee el gozo o sintamos que se agota el vino de la esperanza, acudamos con humildad a María. Ella intercede ante su Hijo para que transforme el agua insípida de nuestras limitaciones en el vino nuevo de la gracia.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Tercer Misterio -->
+      <section id="tercer-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-blue-700 dark:text-blue-400 font-bold">
+            Tercer Misterio Luminoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Conversión del Corazón y el Arrepentimiento</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          El Anuncio del Reino de Dios y la Llamada a la Conversión
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-blue-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Vino Jesús a Galilea, predicando el Evangelio del reino de Dios, y diciendo: Cumplido es el tiempo, y el reino de Dios está cercano; convertíos, y creed al Evangelio.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Marcos 1, 14-15 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            A través de las Bienaventuranzas, las parábolas de misericordia y la curación de enfermos, Jesús proclama la llegada del Reino. Su llamado no es una condena moralista, sino una invitación amorosa a abandonar los caminos de muerte, pedir perdón y abrir el corazón al perdón del Padre. San Juan Pablo II subrayó que este misterio incluye la práctica del sacramento de la Reconciliación.
+          </p>
+          <p>
+            <strong>Meditación:</strong> La conversión no es un evento de un solo día, sino una actitud cotidiana de vigilancia interior. Reconocer con sinceridad nuestras caídas y acudir al confesonario es el camino para experimentar la paz profunda que solo Dios concede.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Cuarto Misterio -->
+      <section id="cuarto-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-blue-700 dark:text-blue-400 font-bold">
+            Cuarto Misterio Luminoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: El Deseo de Santidad y la Vida Interior</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Transfiguración de Nuestro Señor en el Monte Tabor
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-blue-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Subió a un monte a orar. Y mientras oraba, la apariencia de su rostro se hizo otra, y su vestidura blanca y resplandeciente. Y he aquí dos varones hablaban con él, los cuales eran Moisés y Elías; que aparecieron en gloria, y hablaban de su salida, que había de cumplir en Jerusalén... Y salió una voz de la nube, que decía: Este es mi Hijo amado; escuchadle.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Lucas 9, 28-31.35 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Ante Pedro, Santiago y Juan, Jesús revela por un instante el resplandor de su divinidad para robustecer su fe de cara a la humillación futura de la Cruz. Moisés (la Ley) y Elías (los Profetas) atestiguan que toda la Revelación converge en Cristo. La gloria del Tabor prepara a los discípulos para comprender que la Cruz no es el final, sino el camino hacia la Resurrección.
+          </p>
+          <p>
+            <strong>Meditación:</strong> En los momentos de oscuridad o sufrimiento, la memoria de la gloria divina nos sostiene. La oración contemplativa en silencio nos permite «subir al monte» para escuchar la voz de Cristo y bajar fortalecidos a cumplir nuestros deberes de estado.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Quinto Misterio -->
+      <section id="quinto-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-blue-700 dark:text-blue-400 font-bold">
+            Quinto Misterio Luminoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Devoción Ardiente a la Sagrada Eucaristía</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Institución de la Sagrada Eucaristía en la Última Cena
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-blue-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Y tomando el pan, dio gracias, y lo partió y les dio, diciendo: Este es mi cuerpo, que por vosotros es dado; haced esto en memoria mía. Asimismo el cáliz, después que hubo cenado, diciendo: Este cáliz es el nuevo testamento en mi sangre, que por vosotros será derramada.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Lucas 22, 19-20 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            En la víspera de su Pasión, Cristo anticipa sacramentalmente el sacrificio del Calvario y se entrega como alimento verdadero de vida eterna. No nos dejó un símbolo vacío ni un simple recuerdo afectivo: se hizo Realmente Presente con su Cuerpo, Sangre, Alma y Divinidad en las especies del pan y del vino consagrados.
+          </p>
+          <p>
+            <strong>Meditación:</strong> La Eucaristía es la «fuente y culmen de toda la vida cristiana» (Lumen Gentium, 11). Asistir a la Santa Misa con reverencia y adorar a Jesús en el Sagrario son los actos de mayor amor y reparación que un alma creyente puede ofrendar a su Redentor.
+          </p>
+          <div class="pt-2">
+            <a href="/milagros-eucaristicos/" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 dark:text-blue-400 hover:underline">
+              <span>Conoce los estudios médicos e histopatológicos de Milagros Eucarísticos documentados</span> &rarr;
+            </a>
+          </div>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Salve Regina de clausura.
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Navegación Entre Misterios -->
+    <section class="p-6 rounded-2xl bg-blue-500/5 dark:bg-blue-400/5 border border-blue-600/20 dark:border-blue-400/20 space-y-4">
+      <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 m-0">
+        Continúa tu Camino de Oración con los Demás Misterios
+      </h3>
+      <p class="text-sm text-stone-600 dark:text-stone-400 m-0">
+        El Santo Rosario recorre toda la vida de Jesucristo. Explora las meditaciones bíblicas de cada jornada litúrgica:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+        <a href="/rosario/misterios-gozosos/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-blue-500 transition-all text-center">
+          <span class="block text-xs font-bold text-amber-600 dark:text-amber-400 uppercase">Lunes y Sábados</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Misterios Gozosos</span>
+        </a>
+        <a href="/rosario/misterios-dolorosos/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-blue-500 transition-all text-center">
+          <span class="block text-xs font-bold text-red-600 dark:text-red-400 uppercase">Martes y Viernes</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Misterios Dolorosos</span>
+        </a>
+        <a href="/rosario/misterios-gloriosos/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-blue-500 transition-all text-center">
+          <span class="block text-xs font-bold text-amber-600 dark:text-amber-400 uppercase">Miércoles y Domingos</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Misterios Gloriosos</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Sección de Preguntas Frecuentes con Componente Reutilizable -->
+    <FaqAccordion
+      title="Preguntas Frecuentes sobre los Misterios Luminosos"
+      subtitle="Dudas doctrinales, históricas y prácticas sobre los misterios de la vida pública de Jesús instituidos por San Juan Pablo II."
+      items={faqItems}
+    />
+
+    <!-- Bloque de Siguiente Paso -->
+    <NextStep
+      variant="jesus"
+      customTitle="Reza el Rosario de Hoy con Nuestro Visor Interactivo"
+      customAction="Sigue tu oración cuenta por cuenta con el visor visual guiado de Razón y Asombro, disponible para teléfonos móviles y computadoras con funcionamiento sin conexión."
+    />
+
+    <!-- Fuentes y Metadatos de Revisión -->
+    <footer class="mt-12 pt-6 border-t border-stone-200 dark:border-slate-800 text-xs text-stone-500 dark:text-stone-400 space-y-2">
+      <p>
+        <strong>Fuentes Principales:</strong> San Juan Pablo II, Carta Apostólica <em>Rosarium Virginis Mariae</em> sobre el Santo Rosario (16 de octubre de 2002); Concilio Vaticano II, Constitución Dogmática <em>Lumen Gentium</em> (n. 11); Sagrada Biblia Vulgata Latina, trad. Félix Torres Amat (Madrid, 1825).
+      </p>
+      <p>
+        <strong>Equipo Editorial:</strong> Razón y Asombro &middot; Revisión Canónica y Bíblica Interna &middot; Última actualización: Noviembre de 2026.
+      </p>
+    </footer>
+
+  </div>
+</BaseLayout>

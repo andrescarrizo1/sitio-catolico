@@ -1,0 +1,353 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import FaqAccordion from '../../components/ui/FaqAccordion.astro';
+import NextStep from '../../components/ui/NextStep.astro';
+import { getGitCommitDate } from '../../utils/getGitDate';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const currentURL = `${siteUrl}/rosario/misterios-gozosos/`;
+
+const alternateLinks = [
+  { hreflang: 'es', href: currentURL },
+  { hreflang: 'x-default', href: currentURL },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": currentURL
+  },
+  "headline": "Misterios Gozosos del Rosario: Meditación y Citas Bíblicas",
+  "description": "Guía bíblica y teológica de los Misterios Gozosos del Santo Rosario (lunes y sábados). Textos evangélicos, frutos espirituales de cada misterio y meditación.",
+  "image": [`${siteUrl}/images/rosario-manos-devocion.jpg`],
+  "url": currentURL,
+  "datePublished": "2026-11-16T00:00:00Z",
+  "dateModified": getGitCommitDate('src/pages/rosario/misterios-gozosos.astro', '2026-11-16T00:00:00Z'),
+  "author": [
+    {
+      "@type": "Organization",
+      "name": "Razón y Asombro",
+      "url": `${siteUrl}/autor/`
+    }
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Razón y Asombro",
+    "url": `${siteUrl}/`,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteUrl}/favicon.svg`
+    }
+  }
+};
+
+const faqItems = [
+  {
+    question: "¿Qué días de la semana se rezan los Misterios Gozosos?",
+    answer: "Conforme a la Carta Apostólica Rosarium Virginis Mariae de San Juan Pablo II (2002), los Misterios Gozosos se rezan ordinariamente los lunes y los sábados. En la tradición devocional, también se rezan los domingos del tiempo litúrgico de Adviento y Navidad hasta la fiesta del Bautismo del Señor."
+  },
+  {
+    question: "¿Qué contemplan los Misterios Gozosos?",
+    answer: "Contemplan el gozo de la Encarnación y los primeros años de la vida oculta de Jesús en el hogar de Nazaret: la Anunciación del Ángel a María, la Visitación a Santa Isabel, el Nacimiento en Belén, la Presentación en el Templo y el Niño Jesús hallado entre los doctores de la Ley."
+  },
+  {
+    question: "¿Cuáles son los frutos espirituales de cada misterio gozoso?",
+    answer: "1) En la Anunciación: la virtud de la humildad y la entrega a la voluntad divina; 2) En la Visitación: la caridad fraterna y el servicio desinteresado; 3) En el Nacimiento: el desprendimiento de los bienes temporales y la pobreza de espíritu; 4) En la Presentación: la pureza de corazón y la obediencia pronta a Dios; 5) En el Niño hallado: la búsqueda constante de Jesús y la piedad filial."
+  },
+  {
+    question: "¿Cómo meditar los Misterios Gozosos para que no sea una repetición mecánica?",
+    answer: "San Juan Pablo II recomendaba anunciar cada misterio con pausa, apoyarse en un icono o imagen sacra, escuchar o leer el versículo bíblico correspondiente, guardar un breve momento de silencio de contemplación interior y pedir expresamente a Dios el fruto espiritual del misterio antes de comenzar las diez Avemarías."
+  }
+];
+---
+
+<BaseLayout
+  title="Misterios Gozosos del Rosario | Razón y Asombro"
+  description="Guía bíblica y teológica de los Misterios Gozosos del Santo Rosario (lunes y sábados). Textos evangélicos, frutos espirituales de cada misterio y meditación."
+  image="/images/rosario-manos-devocion.jpg"
+  alternateLinks={alternateLinks}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Santo Rosario', href: '/rosario/' },
+        { label: 'Misterios Gozosos' }
+      ]}
+    />
+
+    <!-- Header Principal -->
+    <header class="space-y-4 border-b border-stone-200 dark:border-slate-800 pb-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+          Rezo de Lunes y Sábados &middot; Tiempo de Encarnación
+        </span>
+        <span class="text-xs font-mono text-stone-500 dark:text-stone-400">
+          Magisterio: Rosarium Virginis Mariae (n. 20)
+        </span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+        Los Misterios Gozosos del Santo Rosario: Meditación y Guía Bíblica
+      </h1>
+
+      <p class="text-base sm:text-lg text-stone-700 dark:text-stone-300 font-reading leading-relaxed">
+        Los Misterios Gozosos marcan el umbral de la salvación humana. En ellos contemplamos la aurora de la Redención: el Verbo de Dios que asume nuestra carne en el seno purísimo de María, su nacimiento humilde en Belén y los años de silencio laborioso en el hogar de Nazaret.
+      </p>
+
+      <!-- Clasificación Epistémica -->
+      <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 text-xs sm:text-sm text-stone-600 dark:text-stone-400 space-y-1">
+        <p><strong>Certeza Doctrinal:</strong> Los episodios de la infancia de Cristo forman parte del <em>Evangelio canónico según San Lucas</em> y el <em>Evangelio según San Mateo</em>. La Iglesia reconoce en ellos el cumplimiento fiel de las profecías mesiánicas del Antiguo Testamento.</p>
+        <p><strong>Traducción Bíblica:</strong> Pasajes de la <em>Vulgata Latina</em> traducidos por el Ilmo. D. Félix Torres Amat (Madrid, 1825, Dominio Público).</p>
+      </div>
+
+      <!-- Barra de Navegación del Ecosistema de Misterios -->
+      <div class="pt-2 flex flex-wrap gap-2 text-xs">
+        <span class="px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-900 dark:text-amber-200 font-bold border border-amber-500/30">
+          Misterios Gozosos (Lun / Sáb)
+        </span>
+        <a href="/rosario/misterios-luminosos/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Misterios Luminosos (Jue) &rarr;
+        </a>
+        <a href="/rosario/misterios-dolorosos/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Misterios Dolorosos (Mar / Vie) &rarr;
+        </a>
+        <a href="/rosario/misterios-gloriosos/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Misterios Gloriosos (Mié / Dom) &rarr;
+        </a>
+      </div>
+    </header>
+
+    <!-- Navegación Rápida a los 5 Misterios -->
+    <nav aria-label="Índice de Misterios Gozosos" class="p-5 rounded-2xl bg-stone-50 dark:bg-slate-900 border border-stone-200 dark:border-slate-800">
+      <h2 class="font-serif text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-stone-100 mb-3">
+        Los Cinco Misterios Gozosos
+      </h2>
+      <ol class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-amber-800 dark:text-amber-400">
+        <li><a href="#primer-misterio" class="hover:underline">1. La Anunciación del Ángel a la Virgen María</a></li>
+        <li><a href="#segundo-misterio" class="hover:underline">2. La Visitación de María a Santa Isabel</a></li>
+        <li><a href="#tercer-misterio" class="hover:underline">3. El Nacimiento de Jesús en Belén</a></li>
+        <li><a href="#cuarto-misterio" class="hover:underline">4. La Presentación del Niño en el Templo</a></li>
+        <li class="sm:col-span-2"><a href="#quinto-misterio" class="hover:underline">5. El Niño Jesús Perdido y Hallado en el Templo</a></li>
+      </ol>
+    </nav>
+
+    <!-- Desarrollo de los 5 Misterios -->
+    <div class="space-y-12">
+      
+      <!-- Primer Misterio -->
+      <section id="primer-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Primer Misterio Gozoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Humildad y la Obediencia a Dios</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Anunciación del Ángel a María y la Encarnación del Hijo de Dios
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Y entrando el ángel a donde ella estaba, dijo: Dios te salve, llena de gracia, el Señor es contigo; bendita tú entre todas las mujeres... Y dijo el ángel: No temas, María, porque has hallado gracia delante de Dios; concebirás en tu vientre y darás a luz un hijo, y le pondrás por nombre Jesús... Respondió María: He aquí la esclava del Señor; hágase en mí según tu palabra.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Lucas 1, 28.30-31.38 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            En la humilde morada de Nazaret, el Creador aguarda la libre respuesta de una criatura. El <em>fiat</em> de María («hágase») abre las puertas de la historia humana a la entrada del Verbo eterno. San Agustín observa que María concibió a Cristo en su corazón por la fe antes de concebirlo físicamente en su seno virginal.
+          </p>
+          <p>
+            <strong>Meditación:</strong> La verdadera grandeza ante Dios nace de la humildad silenciosa. Ante las incertidumbres o los planes que escapan a nuestro control personal, la Virgen nos enseña a fiarnos de las promesas del Señor y a responder con generosidad absoluta: «Hágase tu voluntad».
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Segundo Misterio -->
+      <section id="segundo-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Segundo Misterio Gozoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Caridad Fraterna y el Amor al Prójimo</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Visitación de la Santísima Virgen a su Prima Santa Isabel
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «En aquellos días, levantándose María, se fue con prisa a la montaña, a una ciudad de Judá; y entró en casa de Zacarías y saludó a Isabel. Y aconteció que cuando oyó Isabel la salutación de María, la criatura saltó en su vientre, e Isabel fue llena del Espíritu Santo, y exclamó a gran voz: Bendita tú entre todas las mujeres, y bendito el fruto de tu vientre.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Lucas 1, 39-42 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Habiendo recibido la revelación de su propia maternidad divina, María no se repliega en sí misma ni reclama atenciones. Parte presurosa por los caminos montañosos de Judea para asistir a su anciana pariente durante tres meses. María es el primer sagrario viviente que lleva a Jesús y derrama el gozo del Espíritu Santo sobre Isabel y Juan el Bautista en el seno materno.
+          </p>
+          <p>
+            <strong>Meditación:</strong> La fe auténtica se traduce en servicio práctico y diligente hacia quienes están solos, enfermos o fatigados. Llevar a Cristo al prójimo es el mayor acto de caridad cristiana que podemos ejercitar cada día.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Tercer Misterio -->
+      <section id="tercer-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Tercer Misterio Gozoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: El Desprendimiento de los Bienes y la Pobreza Evangélica</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          El Nacimiento de Nuestro Señor Jesucristo en el Portal de Belén
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Y dio a luz a su hijo primogénito, y le envolvió en pañales, y le acostó en un pesebre; porque no había lugar para ellos en el mesón... Y el ángel les dijo: No temáis, porque he aquí os doy nuevas de gran gozo, que será para todo el pueblo: que os ha nacido hoy, en la ciudad de David, un Salvador, que es Cristo el Señor.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Lucas 2, 7.10-11 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Rechazado en las posadas del pueblo, el Rey de los siglos nace en la aspereza de una gruta destinada a los animales. Dios no elige la corte imperial de Roma ni los palacios de Jerusalén, sino la pobreza inerme de un pesebre para enseñar que la gloria celestial no se mide con el patrón del poder terrenal ni de la opulencia efímera.
+          </p>
+          <p>
+            <strong>Meditación:</strong> En una época asediada por el consumismo y la vanidad material, el Niño de Belén nos llama al desprendimiento interior. La verdadera riqueza de la vida radica en tener a Dios en el alma y el corazón abierto a las necesidades de los más pequeños.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Cuarto Misterio -->
+      <section id="cuarto-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Cuarto Misterio Gozoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Pureza de Corazón y la Obediencia Pronta</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Presentación del Niño Jesús en el Templo y la Purificación de María
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Cumplidos los días de la purificación de María, según la ley de Moisés, llevaron a Jesús a Jerusalén para presentarle al Señor... Y Simeón les bendijo, y dijo a María su madre: Mira, este niño ha sido puesto para ruina y para resurrección de muchos en Israel; y a tu misma alma una espada la traspasará, para que se descubran los pensamientos de muchos corazones.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Lucas 2, 22.34-35 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Aunque María era purísima e inmune a toda mancha, y Jesús el Autor supremo de la Alianza, la Sagrada Familia se somete con fidelidad ejemplar a las prescripciones de la Ley mosaica. El anciano profeta Simeón reconoce la «Luz para iluminar a las gentes» y anuncia a María el destino redentor del Niño: la Cruz inminente y la espada de dolor que unirá místicamente el corazón de la Madre al sacrificio del Hijo.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Este misterio nos enseña el valor sagrado de la obediencia eclesial y de la consagración total de nuestras vidas a Dios, aceptando con serenidad las pruebas que la fidelidad a la verdad conlleve.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Quinto Misterio -->
+      <section id="quinto-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Quinto Misterio Gozoso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Búsqueda Constante de Dios y la Piedad Filial</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          El Niño Jesús Perdido y Hallado en el Templo Entre los Doctores
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Y aconteció que al cabo de tres días le hallaron en el templo sentado en medio de los doctores, oyéndolos y preguntándoles. Y todos los que le oían estaban asombrados de su sabiduría y de sus respuestas... Y su madre le dijo: Hijo, ¿por qué has hecho esto con nosotros? Mira que tu padre y yo te buscábamos con dolor. Y él les dijo: ¿Por qué me buscabais? ¿No sabíais que en los negocios de mi Padre me conviene estar?»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Lucas 2, 46-49 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            A los doce años, Jesús revela a sus padres terrenos la soberanía absoluta de su vocación divina. Durante tres días amargos de búsqueda, María y José experimentan la angustia desgarradora de su ausencia, prefiguración de los tres días que Jesús reposará en el sepulcro antes de la Resurrección. Finalmente lo encuentran en el Templo, enseñando con divina autoridad.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Si por el pecado o la tibieza espiritual hemos perdido la gracia y la cercanía de Jesús, imitemos a María y José: busquémoslo con lágrimas de contrición y penitencia sincera en su templo, especialmente en el sacramento de la Confesión y ante el Sagrario.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Salve Regina de clausura.
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Navegación Entre Misterios -->
+    <section class="p-6 rounded-2xl bg-amber-500/5 dark:bg-amber-400/5 border border-amber-600/20 dark:border-amber-400/20 space-y-4">
+      <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 m-0">
+        Continúa tu Camino de Oración con los Demás Misterios
+      </h3>
+      <p class="text-sm text-stone-600 dark:text-stone-400 m-0">
+        El Santo Rosario recorre toda la vida de Jesucristo. Explora las meditaciones bíblicas de cada jornada litúrgica:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+        <a href="/rosario/misterios-luminosos/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-amber-500 transition-all text-center">
+          <span class="block text-xs font-bold text-blue-600 dark:text-blue-400 uppercase">Jueves</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Misterios Luminosos</span>
+        </a>
+        <a href="/rosario/misterios-dolorosos/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-amber-500 transition-all text-center">
+          <span class="block text-xs font-bold text-red-600 dark:text-red-400 uppercase">Martes y Viernes</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Misterios Dolorosos</span>
+        </a>
+        <a href="/rosario/misterios-gloriosos/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-amber-500 transition-all text-center">
+          <span class="block text-xs font-bold text-amber-600 dark:text-amber-400 uppercase">Miércoles y Domingos</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Misterios Gloriosos</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Sección de Preguntas Frecuentes con Componente Reutilizable -->
+    <FaqAccordion
+      title="Preguntas Frecuentes sobre los Misterios Gozosos"
+      subtitle="Respuestas doctrinales y prácticas para profundizar en la meditación de la Encarnación y la Infancia de Jesús."
+      items={faqItems}
+    />
+
+    <!-- Bloque de Siguiente Paso -->
+    <NextStep
+      variant="jesus"
+      customTitle="Reza el Rosario con Guía Visual y Cuentas Interactivas"
+      customAction="Abre nuestra aplicación web interactiva para rezar el Rosario cuenta por cuenta en pantalla, con detección del misterio del día y funcionamiento sin conexión."
+    />
+
+    <!-- Fuentes y Metadatos de Revisión -->
+    <footer class="mt-12 pt-6 border-t border-stone-200 dark:border-slate-800 text-xs text-stone-500 dark:text-stone-400 space-y-2">
+      <p>
+        <strong>Fuentes Principales:</strong> San Juan Pablo II, Carta Apostólica <em>Rosarium Virginis Mariae</em> sobre el Santo Rosario (16 de octubre de 2002); Catecismo de la Iglesia Católica (nn. 484-534); Sagrada Biblia Vulgata Latina, trad. Félix Torres Amat (Madrid, 1825).
+      </p>
+      <p>
+        <strong>Equipo Editorial:</strong> Razón y Asombro &middot; Revisión Canónica y Bíblica Interna &middot; Última actualización: Noviembre de 2026.
+      </p>
+    </footer>
+
+  </div>
+</BaseLayout>

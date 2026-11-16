@@ -1,0 +1,353 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import FaqAccordion from '../../components/ui/FaqAccordion.astro';
+import NextStep from '../../components/ui/NextStep.astro';
+import { getGitCommitDate } from '../../utils/getGitDate';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const currentURL = `${siteUrl}/rosario/misterios-gloriosos/`;
+
+const alternateLinks = [
+  { hreflang: 'es', href: currentURL },
+  { hreflang: 'x-default', href: currentURL },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": currentURL
+  },
+  "headline": "Misterios Gloriosos del Rosario: Meditación y Citas Bíblicas",
+  "description": "Guía bíblica y teológica de los Misterios Gloriosos del Santo Rosario (miércoles y domingos). Pasajes de la Escritura, frutos espirituales y meditación.",
+  "image": [`${siteUrl}/images/rosario-manos-devocion.jpg`],
+  "url": currentURL,
+  "datePublished": "2026-11-16T00:00:00Z",
+  "dateModified": getGitCommitDate('src/pages/rosario/misterios-gloriosos.astro', '2026-11-16T00:00:00Z'),
+  "author": [
+    {
+      "@type": "Organization",
+      "name": "Razón y Asombro",
+      "url": `${siteUrl}/autor/`
+    }
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Razón y Asombro",
+    "url": `${siteUrl}/`,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteUrl}/favicon.svg`
+    }
+  }
+};
+
+const faqItems = [
+  {
+    question: "¿Qué días de la semana se rezan los Misterios Gloriosos?",
+    answer: "Según la Carta Apostólica Rosarium Virginis Mariae de San Juan Pablo II (2002), los Misterios Gloriosos se rezan de ordinario los miércoles y los domingos de todo el año. En la piedad tradicional, se rezan con particular solemnidad durante todo el tiempo litúrgico pascual (desde el Domingo de Resurrección hasta Pentecostés)."
+  },
+  {
+    question: "¿Qué contemplan los Misterios Gloriosos?",
+    answer: "Contemplan la victoria consumada de Cristo sobre el pecado y la muerte, y la glorificación que aguarda a los redimidos: la Resurrección del Señor, su Ascensión a la diestra del Padre, el descenso del Espíritu Santo en Pentecostés, la Asunción corporal de María al Cielo y su Coronación como Reina del Universo."
+  },
+  {
+    question: "¿Cuáles son los frutos espirituales propios de los Misterios Gloriosos?",
+    answer: "1) En la Resurrección: la virtud teologal de la fe viva y la certeza de la victoria de Cristo; 2) En la Ascensión: la virtud teologal de la esperanza en la vida eterna; 3) En Pentecostés: el amor ardiente a Dios y el celo apostólico; 4) En la Asunción: la devoción tierna a María y la gracia de una santa muerte; 5) En la Coronación: la confianza inquebrantable en la intercesión de la Virgen y la perseverancia final."
+  },
+  {
+    question: "¿Dónde se fundamentan en la doctrina católica la Asunción y la Coronación de María?",
+    answer: "El dogma de la Asunción fue definido solemnemente por el Papa Pío XII en 1950 (Munificentissimus Deus), basado en la Tradición unánime de los Padres de la Iglesia, la liturgia multisecular y la dignidad de la Madre de Dios inmune a la corrupción sepulcral. La Coronación se fundamenta bíblicamente en Apocalipsis 12, 1 («una mujer vestida de sol, con la luna bajo sus pies y una corona de doce estrellas») y fue explicada magistralmente por Pío XII en la encíclica Ad Caeli Reginam (1954)."
+  }
+];
+---
+
+<BaseLayout
+  title="Misterios Gloriosos del Rosario | Razón y Asombro"
+  description="Guía bíblica y teológica de los Misterios Gloriosos del Santo Rosario (miércoles y domingos). Pasajes de la Escritura, frutos espirituales y meditación."
+  image="/images/rosario-manos-devocion.jpg"
+  alternateLinks={alternateLinks}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Santo Rosario', href: '/rosario/' },
+        { label: 'Misterios Gloriosos' }
+      ]}
+    />
+
+    <!-- Header Principal -->
+    <header class="space-y-4 border-b border-stone-200 dark:border-slate-800 pb-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-800 dark:text-amber-300 border border-amber-500/20">
+          Rezo de Miércoles y Domingos &middot; Triunfo de la Resurrección
+        </span>
+        <span class="text-xs font-mono text-stone-500 dark:text-stone-400">
+          Magisterio: Rosarium Virginis Mariae (n. 23)
+        </span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+        Los Misterios Gloriosos del Santo Rosario: Meditación y Guía Bíblica
+      </h1>
+
+      <p class="text-base sm:text-lg text-stone-700 dark:text-stone-300 font-reading leading-relaxed">
+        Los Misterios Gloriosos elevan la mirada del alma hacia el destino eterno para el que fuimos creados. Tras el dolor del Viernes Santo, contemplamos el triunfo deslumbrante de la Resurrección, el nacimiento de la Iglesia en Pentecostés y la glorificación de la Virgen María como primicia de nuestra propia inmortalidad.
+      </p>
+
+      <!-- Clasificación Epistémica -->
+      <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 text-xs sm:text-sm text-stone-600 dark:text-stone-400 space-y-1">
+        <p><strong>Certeza Doctrinal:</strong> Los misterios de la Resurrección, Ascensión y Pentecostés pertenecen a la <em>Sagrada Escritura canónica</em> (Evangelios y Hechos de los Apóstoles). La Asunción corporal de María constituye un <em>Dogma de fe infalible</em> definido por el Magisterio pontificio solemne (Pío XII, 1950).</p>
+        <p><strong>Traducción Bíblica:</strong> Pasajes de la <em>Vulgata Latina</em> traducidos por el Ilmo. D. Félix Torres Amat (Madrid, 1825, Dominio Público).</p>
+      </div>
+
+      <!-- Barra de Navegación del Ecosistema de Misterios -->
+      <div class="pt-2 flex flex-wrap gap-2 text-xs">
+        <a href="/rosario/misterios-gozosos/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          &larr; Misterios Gozosos (Lun / Sáb)
+        </a>
+        <a href="/rosario/misterios-luminosos/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Misterios Luminosos (Jue) &rarr;
+        </a>
+        <a href="/rosario/misterios-dolorosos/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Misterios Dolorosos (Mar / Vie) &rarr;
+        </a>
+        <span class="px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-900 dark:text-amber-200 font-bold border border-amber-500/30">
+          Misterios Gloriosos (Mié / Dom)
+        </span>
+      </div>
+    </header>
+
+    <!-- Navegación Rápida a los 5 Misterios -->
+    <nav aria-label="Índice de Misterios Gloriosos" class="p-5 rounded-2xl bg-stone-50 dark:bg-slate-900 border border-stone-200 dark:border-slate-800">
+      <h2 class="font-serif text-sm font-bold uppercase tracking-wider text-stone-900 dark:text-stone-100 mb-3">
+        Los Cinco Misterios Gloriosos
+      </h2>
+      <ol class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-amber-800 dark:text-amber-400">
+        <li><a href="#primer-misterio" class="hover:underline">1. La Resurrección de Nuestro Señor Jesucristo</a></li>
+        <li><a href="#segundo-misterio" class="hover:underline">2. La Ascensión de Jesús a los Cielos</a></li>
+        <li><a href="#tercer-misterio" class="hover:underline">3. La Venida del Espíritu Santo en Pentecostés</a></li>
+        <li><a href="#cuarto-misterio" class="hover:underline">4. La Asunción de la Virgen María al Cielo</a></li>
+        <li class="sm:col-span-2"><a href="#quinto-misterio" class="hover:underline">5. La Coronación de María como Reina del Universo</a></li>
+      </ol>
+    </nav>
+
+    <!-- Desarrollo de los 5 Misterios -->
+    <div class="space-y-12">
+      
+      <!-- Primer Misterio -->
+      <section id="primer-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Primer Misterio Glorioso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Virtud Teologal de la Fe Viva</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Gloriosa Resurrección de Nuestro Señor Jesucristo
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «El ángel, hablando a las mujeres, dijo: No temáis vosotras; porque sé que buscáis a Jesús, que fue crucificado. No está aquí; porque ha resucitado, como dijo. Venid y ved el lugar donde estaba puesto el Señor. Y yendo presto, decid a sus discípulos que ha resucitado de entre los muertos.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Mateo 28, 5-7 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Al tercer día, el sepulcro de roca queda vacío. Cristo no vuelve a una vida terrenal pasajera como Lázaro, sino que entra en la dimensión gloriosa y definitiva de la eternidad. La Resurrección es el quicio sobre el que descansa toda la fe cristiana: como escribe San Pablo, <em>«si Cristo no resucitó, vana es nuestra predicación, vana también vuestra fe»</em> (1 Co 15, 14).
+          </p>
+          <p>
+            <strong>Meditación:</strong> La muerte y la tumba no tienen la última palabra en nuestras vidas. En las horas de prueba, enfermedad o aflicción profunda, miremos al Resucitado: el mal y el sufrimiento ya fueron derrotados para siempre en la cruzada del amor divino.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Segundo Misterio -->
+      <section id="segundo-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Segundo Misterio Glorioso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Esperanza Teologal y el Anhelo del Cielo</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Admirable Ascensión de Jesús a los Cielos
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Y diciendo estas cosas, viéndolo ellos, se fue elevando, y una nube le encubrió de sus ojos. Y estando ellos con los ojos clavados en el cielo, mirando cómo se iba, he aquí dos varones con vestiduras blancas se pusieron junto a ellos, los cuales les dijeron: Varones galileos, ¿por qué estáis mirando al cielo? Este mismo Jesús, que ha sido tomado de vosotros al cielo, así vendrá como le habéis visto ir al cielo.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— Hechos de los Apóstoles 1, 9-11 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Cuarenta días después de su Resurrección, Jesús asciende al Cielo ante sus discípulos en el Monte de los Olivos. Al llevar nuestra carne humana glorificada a la diestra de Dios Padre, abre para siempre la puerta del Paraíso a los hombres. No se desentiende de nosotros: permanece como nuestro Sumo Sacerdote y Abogado eterno que intercede sin cesar por sus hermanos.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Nuestra verdadera patria no es este mundo pasajero. Este misterio aviva en el corazón la virtud de la Esperanza: vivir con los pies bien puestos en la tierra y la caridad en el servicio, pero con el alma anclada en el Cielo.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Tercer Misterio -->
+      <section id="tercer-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Tercer Misterio Glorioso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: El Celo Apostólico y los Dones del Espíritu Santo</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Venida del Espíritu Santo en Pentecostés
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Y de repente vino del cielo un estruendo como de viento impetuoso que soplaba, el cual llenó toda la casa donde estaban sentados; y se les aparecieron lenguas repartidas, como de fuego, asentándose sobre cada uno de ellos. Y fueron todos llenos del Espíritu Santo, y comenzaron a hablar en otras lenguas, según el Espíritu Santo les daba que hablasen.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— Hechos de los Apóstoles 2, 2-4 (Torres Amat 1825)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Reunidos en el Cenáculo en torno a María Santísima en oración unánime, los Apóstoles reciben el don del Espíritu Santo prometido por Cristo. Hombres tímidos y temerosos se transforman al instante en heraldos invencibles de la verdad, dispuestos a dar la vida por el Evangelio. Así nace públicamente la Iglesia, pueblo sacerdotal extendido hasta los confines de la tierra.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Sin el Espíritu Santo, la vida cristiana se reduce a un esfuerzo humano estéril. Pidamos con insistencia sus siete dones santos (sabiduría, entendimiento, consejo, fortaleza, ciencia, piedad y santo temor de Dios) para ser testigos valientes en medio del mundo secularizado.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Cuarto Misterio -->
+      <section id="cuarto-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Cuarto Misterio Glorioso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Gracia de una Santa Muerte y Devoción a María</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Asunción de la Santísima Virgen María en Cuerpo y Alma al Cielo
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Definimos ser dogma divinamente revelado que la Inmaculada Madre de Dios, la siempre Virgen María, cumplido el curso de su vida terrena, fue asunta en cuerpo y alma a la gloria celestial.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— S.S. Pío XII, Constitución Apostólica Munificentissimus Deus (1 de noviembre de 1950) &middot; cf. Salmo 44/45, 10</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Aquella que fue preservada de toda mancha de pecado original desde el primer instante de su concepción, no podía quedar sometida a la corrupción de la tumba. Por singular privilegio de su Hijo, la Virgen María fue elevada en cuerpo y alma a las mansiones celestiales. Ella es la primera criatura humana plenamente redimida, icono luminoso del destino que aguarda a los justos en la resurrección final de la carne.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Al contemplar a María asunta, el creyente halla consuelo ante la fragilidad de la carne terrenal. La Madre nos precede y nos espera; vivir consagrados a su Inmaculado Corazón es la mayor garantía para alcanzar la gracia de una muerte santa en amistad con Dios.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Jaculatoria de Fátima.
+        </div>
+      </section>
+
+      <!-- Quinto Misterio -->
+      <section id="quinto-misterio" class="scroll-mt-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-4">
+        <div class="flex items-center justify-between border-b border-stone-100 dark:border-slate-800 pb-3">
+          <span class="text-xs uppercase tracking-widest font-mono text-amber-700 dark:text-amber-400 font-bold">
+            Quinto Misterio Glorioso
+          </span>
+          <span class="text-xs text-stone-500 font-medium">Fruto: La Confianza en su Intercesión y la Perseverancia Final</span>
+        </div>
+        
+        <h2 class="font-serif text-2xl font-bold text-slate-900 dark:text-stone-100">
+          La Coronación de María Santísima como Reina y Señora de Cielos y Tierra
+        </h2>
+
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-amber-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Apareció en el cielo una gran señal: una mujer vestida del sol, con la luna debajo de sus pies, y sobre su cabeza una corona de doce estrellas.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— Apocalipsis 12, 1 (Torres Amat 1825) &middot; S.S. Pío XII, Encíclica Ad Caeli Reginam (1954)</footer>
+        </blockquote>
+
+        <div class="text-sm sm:text-base text-stone-700 dark:text-stone-300 space-y-3 leading-relaxed">
+          <p>
+            Coronada por la Santísima Trinidad como Reina de los Ángeles y de los Hombres, María ejerce una realeza maternal de misericordia e intercesión. No reina imponiendo su poder, sino acogiendo a los peregrinos que gimen en este valle de lágrimas. Como enseña San Bernardo de Claraval, nadie que haya acudido a su amparo implorando su socorro ha sido jamás abandonado.
+          </p>
+          <p>
+            <strong>Meditación:</strong> Concluimos el Santo Rosario contemplando a nuestra Madre en la cumbre de la gloria. Encomendar a ella nuestras horas de combate espiritual y perseverar rezando fielmente cada día la corona del Rosario es el sendero seguro para recibir, junto a ella, la corona incorruptible de la gloria eterna.
+          </p>
+        </div>
+
+        <div class="text-xs text-stone-500 font-mono pt-2 border-t border-stone-100 dark:border-slate-800">
+          Rezo: 1 Padre Nuestro, 10 Avemarías, 1 Gloria al Padre y Salve Regina solemne de clausura.
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Navegación Entre Misterios -->
+    <section class="p-6 rounded-2xl bg-amber-500/5 dark:bg-amber-400/5 border border-amber-600/20 dark:border-amber-400/20 space-y-4">
+      <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 m-0">
+        Continúa tu Camino de Oración con los Demás Misterios
+      </h3>
+      <p class="text-sm text-stone-600 dark:text-stone-400 m-0">
+        El Santo Rosario recorre toda la vida de Jesucristo. Explora las meditaciones bíblicas de cada jornada litúrgica:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+        <a href="/rosario/misterios-gozosos/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-amber-500 transition-all text-center">
+          <span class="block text-xs font-bold text-amber-600 dark:text-amber-400 uppercase">Lunes y Sábados</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Misterios Gozosos</span>
+        </a>
+        <a href="/rosario/misterios-luminosos/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-amber-500 transition-all text-center">
+          <span class="block text-xs font-bold text-blue-600 dark:text-blue-400 uppercase">Jueves</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Misterios Luminosos</span>
+        </a>
+        <a href="/rosario/misterios-dolorosos/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-amber-500 transition-all text-center">
+          <span class="block text-xs font-bold text-red-600 dark:text-red-400 uppercase">Martes y Viernes</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Misterios Dolorosos</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Sección de Preguntas Frecuentes con Componente Reutilizable -->
+    <FaqAccordion
+      title="Preguntas Frecuentes sobre los Misterios Gloriosos"
+      subtitle="Explicaciones teológicas, doctrinales y bíblicas sobre el triunfo pascual de Cristo y la glorificación de la Virgen María."
+      items={faqItems}
+    />
+
+    <!-- Bloque de Siguiente Paso -->
+    <NextStep
+      variant="jesus"
+      customTitle="Reza el Rosario Completo en Pantalla con Visor Interactivo"
+      customAction="Usa nuestra herramienta visual para seguir las cuentas en tiempo real, cambiar el idioma de las oraciones al latín o rezar sin conexión a internet desde tu teléfono móvil."
+    />
+
+    <!-- Fuentes y Metadatos de Revisión -->
+    <footer class="mt-12 pt-6 border-t border-stone-200 dark:border-slate-800 text-xs text-stone-500 dark:text-stone-400 space-y-2">
+      <p>
+        <strong>Fuentes Principales:</strong> San Juan Pablo II, Carta Apostólica <em>Rosarium Virginis Mariae</em> (16 de octubre de 2002); S.S. Pío XII, Constitución Apostólica <em>Munificentissimus Deus</em> (1 de noviembre de 1950); S.S. Pío XII, Carta Encíclica <em>Ad Caeli Reginam</em> (11 de octubre de 1954); Sagrada Biblia Vulgata Latina, trad. Félix Torres Amat (Madrid, 1825).
+      </p>
+      <p>
+        <strong>Equipo Editorial:</strong> Razón y Asombro &middot; Revisión Canónica y Bíblica Interna &middot; Última actualización: Noviembre de 2026.
+      </p>
+    </footer>
+
+  </div>
+</BaseLayout>

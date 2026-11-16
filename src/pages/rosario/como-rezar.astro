@@ -164,6 +164,36 @@ const alternateLinks = [
           <li><strong>Un Gloria al Padre:</strong> <em>«Gloria al Padre, y al Hijo, y al Espíritu Santo...»</em>.</li>
           <li><strong>Jaculatoria de Fátima:</strong> <em>«¡Oh Jesús mío, perdónanos nuestros pecados, líbranos del fuego del infierno, lleva al cielo a todas las almas, especialmente a las más necesitadas de tu divina misericordia!»</em>.</li>
         </ol>
+
+        {/* Asignación de los Misterios según el día */}
+        <div class="mt-4 p-4 rounded-xl bg-amber-500/10 dark:bg-amber-400/5 border border-amber-500/30 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-300">
+              ¿Qué misterio toca rezar hoy?
+            </span>
+            <a href="/rosario/misterios-de-hoy/" class="text-xs font-bold text-amber-700 dark:text-amber-400 hover:underline">
+              Ver misterios de hoy &rarr;
+            </a>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-xs">
+            <a href="/rosario/misterios-gozosos/" class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-amber-500 text-center transition-colors">
+              <span class="block text-[10px] text-stone-500">Lun y Sáb</span>
+              <strong class="text-amber-900 dark:text-amber-200">Gozosos</strong>
+            </a>
+            <a href="/rosario/misterios-dolorosos/" class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-red-500 text-center transition-colors">
+              <span class="block text-[10px] text-stone-500">Mar y Vie</span>
+              <strong class="text-red-900 dark:text-red-200">Dolorosos</strong>
+            </a>
+            <a href="/rosario/misterios-gloriosos/" class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-amber-500 text-center transition-colors">
+              <span class="block text-[10px] text-stone-500">Mié y Dom</span>
+              <strong class="text-amber-900 dark:text-amber-200">Gloriosos</strong>
+            </a>
+            <a href="/rosario/misterios-luminosos/" class="p-2 rounded-lg bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-blue-500 text-center transition-colors">
+              <span class="block text-[10px] text-stone-500">Jueves</span>
+              <strong class="text-blue-900 dark:text-blue-200">Luminosos</strong>
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* 3. Conclusión */}
