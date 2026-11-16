@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import FaqAccordion from '../../components/ui/FaqAccordion.astro';
+import NextStep from '../../components/ui/NextStep.astro';
+import { getGitCommitDate } from '../../utils/getGitDate';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const currentURL = `${siteUrl}/divina-misericordia/hora-de-la-misericordia/`;
+
+const alternateLinks = [
+  { hreflang: 'es', href: currentURL },
+  { hreflang: 'x-default', href: currentURL },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": currentURL
+  },
+  "headline": "La Hora de la Misericordia: El Significado de las 15:00 Horas",
+  "description": "Qué es la Hora de la Misericordia a las tres de la tarde: fundamento bíblico de la muerte de Cristo en la Cruz, promesas del Diario y cómo practicarla hoy.",
+  "image": [`${siteUrl}/images/rosario-manos-devocion.jpg`],
+  "url": currentURL,
+  "datePublished": "2026-11-16T00:00:00Z",
+  "dateModified": getGitCommitDate('src/pages/divina-misericordia/hora-de-la-misericordia.astro', '2026-11-16T00:00:00Z'),
+  "author": [
+    {
+      "@type": "Organization",
+      "name": "Razón y Asombro",
+      "url": `${siteUrl}/autor/`
+    }
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Razón y Asombro",
+    "url": `${siteUrl}/`,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteUrl}/favicon.svg`
+    }
+  }
+};
+
+const faqItems = [
+  {
+    question: "¿Por qué las tres de la tarde es la Hora de la Misericordia?",
+    answer: "Porque según los Evangelios canónicos (San Mateo 27, 45-50 y San Marcos 15, 34-37), fue a la «hora novena» (aproximadamente las 15:00 horas según el cómputo judío) cuando Jesús, tras clamar al Padre, expiró en la Cruz del Calvario, consumando la Redención del género humano y abriendo su Sagrado Corazón para derramar la gracia del perdón."
+  },
+  {
+    question: "¿Cuáles son las condiciones para rezar en la Hora de la Misericordia?",
+    answer: "Según las enseñanzas de Jesús recogidas en el Diario de Santa Faustina (nn. 1320 y 1572), deben cumplirse tres condiciones: 1) Dirigir la oración directamente a Jesús; 2) Hacerlo a las tres en punto de la tarde; y 3) Apelar a los dolores y méritos de su Pasión redentora, especialmente a su desamparo en el momento de la agonía."
+  },
+  {
+    question: "¿Es obligatorio rezar la Coronilla a las tres de la tarde?",
+    answer: "No. Aunque rezar la Coronilla a las 15:00 horas es una excelente costumbre, Jesús no impuso necesariamente una plegaria larga. Explicó a Faustina que, si los deberes cotidianos lo impiden, basta recogerse interiormente durante un breve instante, rezar el Vía Crucis si es posible, visitar el Santísimo Sacramento o pronunciar una jaculatoria de confianza como: «Oh Sangre y Agua que brotaste del Corazón de Jesús como una fuente de misericordia para nosotros, en Ti confío» (Diario, n. 187)."
+  },
+  {
+    question: "¿Qué prometió Jesús para quienes oren en esta hora?",
+    answer: "Jesús confió a Sor Faustina: «En esta hora nada le será negado al alma que lo pida por los méritos de mi Pasión... En esta hora se estableció la gracia para el mundo entero: la misericordia triunfó sobre la justicia» (Diario, nn. 1320 y 1572). La promesa abarca especialmente la conversión de los pecadores y la salvación de los moribundos."
+  }
+];
+---
+
+<BaseLayout
+  title="La Hora de la Misericordia: 15:00 hs | Razón y Asombro"
+  description="Qué es la Hora de la Misericordia a las tres de la tarde: fundamento bíblico de la muerte de Cristo en la Cruz, promesas del Diario y cómo practicarla hoy."
+  image="/images/rosario-manos-devocion.jpg"
+  alternateLinks={alternateLinks}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Inicio', href: '/' },
+        { label: 'Divina Misericordia', href: '/divina-misericordia/' },
+        { label: 'La Hora de la Misericordia' }
+      ]}
+    />
+
+    <!-- Header Principal -->
+    <header class="space-y-4 border-b border-stone-200 dark:border-slate-800 pb-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-500/10 text-red-800 dark:text-red-300 border border-red-500/20">
+          Las 15:00 Horas &middot; La Hora del Calvario
+        </span>
+        <span class="text-xs font-mono text-stone-500 dark:text-stone-400">
+          Diario de Santa Faustina (nn. 1320, 1572)
+        </span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+        La Hora de la Misericordia: El Momento Supremo de la Redención
+      </h1>
+
+      <p class="text-base sm:text-lg text-stone-700 dark:text-stone-300 font-reading leading-relaxed">
+        Cada tarde a las tres, la Iglesia conmemora el acontecimiento más decisivo de la historia humana: el instante exacto en que Jesucristo inclinó la cabeza y entregó su espíritu en la Cruz. Conoce su fundamento bíblico, las promesas reveladas a Santa Faustina y cómo vivir esta hora santa de gracia en medio de las ocupaciones diarias.
+      </p>
+
+      <!-- Barra de Navegación del Cluster -->
+      <div class="pt-2 flex flex-wrap gap-2 text-xs">
+        <a href="/divina-misericordia/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          &larr; Volver al Pilar
+        </a>
+        <span class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-900 dark:text-red-200 font-bold border border-red-500/30">
+          La Hora de las 15:00
+        </span>
+        <a href="/rosario/coronilla-divina-misericordia/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Rezar la Coronilla &rarr;
+        </a>
+        <a href="/divina-misericordia/fiesta-de-la-misericordia/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          La Fiesta e Indulgencias &rarr;
+        </a>
+      </div>
+    </header>
+
+    <!-- Contenido Editorial -->
+    <article class="space-y-10 text-stone-800 dark:text-stone-200 font-reading leading-relaxed">
+
+      <!-- Sección 1: El Fundamento Evangélico -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          1. El Testimonio Bíblico: La Hora Novena
+        </h2>
+        <p>
+          En el cómputo horario judío de los tiempos de Jesús, la jornada diurna se dividía en doce horas a partir de la salida del sol (aproximadamente las 6:00 de la mañana). La «hora novena» correspondía con exactitud a las tres de la tarde.
+        </p>
+        <p>
+          Los Evangelistas registran este instante con reverente solemnidad:
+        </p>
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-red-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Desde la hora sexta hubo tinieblas sobre toda la tierra hasta la hora novena. Y cerca de la hora novena Jesús clamó con grande voz, diciendo: Elí, Elí, ¿lama sabacthani?... Y Jesús, clamando otra vez con grande voz, entregó el espíritu.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— San Mateo 27, 45-46.50 (Vulgata Torres Amat 1825)</footer>
+        </blockquote>
+        <p>
+          En ese momento, el velo del Templo se rasgó de arriba a abajo y el soldado Longinos abrió con su lanza el costado del Señor, de donde brotaron inmediatamente Sangre y Agua (Jn 19, 34). Es la hora cósmica del triunfo del Amor sobre el pecado, la muerte y el infierno.
+        </p>
+      </section>
+
+      <!-- Sección 2: Las Palabras de Jesús a Santa Faustina -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          2. La Revelación en el Diario: Promesas y Deseos de Cristo
+        </h2>
+        <p>
+          En octubre de 1937, en Cracovia, Jesús encomendó expresamente a Sor Faustina la práctica cotidiana de esta conmemoración:
+        </p>
+        <blockquote class="p-5 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-red-600 dark:border-red-500 shadow-xs text-sm sm:text-base italic text-stone-800 dark:text-stone-200 space-y-2">
+          <p>
+            «A las tres de la tarde ruega por mi misericordia, en especial para los pecadores y, aunque sea por un brevísimo momento, sumérgete en mi Pasión, particularmente en mi desamparo en el momento de la agonía. Esta es la hora de la gran misericordia para el mundo entero. Te permitiré penetrar en mi dolor mortal. En esta hora nada le será negado al alma que lo pida por los méritos de mi Pasión.»
+          </p>
+          <footer class="text-xs not-italic font-mono text-stone-500">— Diario de Santa Faustina, n. 1320</footer>
+        </blockquote>
+        <p>
+          Posteriormente, en febrero de 1938, el Salvador reiteró el llamado:
+        </p>
+        <blockquote class="p-5 rounded-xl bg-white dark:bg-slate-900 border-l-4 border-red-600 dark:border-red-500 shadow-xs text-sm sm:text-base italic text-stone-800 dark:text-stone-200 space-y-2">
+          <p>
+            «Hija mía, te recuerdo que cuantas veces oigas el reloj dar las tres de la tarde, te sumerjas toda en mi misericordia, adorándola y glorificándola; suplica su omnipotencia para el mundo entero y, especialmente, para los pobres pecadores, pues en ese momento fue abierta de par en par para cada alma.»
+          </p>
+          <footer class="text-xs not-italic font-mono text-stone-500">— Diario de Santa Faustina, n. 1572</footer>
+        </blockquote>
+      </section>
+
+      <!-- Sección 3: Las Tres Condiciones Teológicas -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          3. Las Tres Condiciones para que la Oración sea Agradable a Dios
+        </h2>
+        <p>
+          Los teólogos de la devoción (en particular el Beato Miguel Sopoćko y el P. Ignacio Różycki, perito teológico del proceso de canonización) precisaron las tres condiciones esenciales señaladas por Cristo en el Diario:
+        </p>
+        <div class="space-y-3">
+          <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800">
+            <h3 class="font-serif text-base font-bold text-slate-900 dark:text-stone-100 m-0">1. Debe dirigirse a Jesús</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 m-0 mt-1">
+              La plegaria debe dirigirse a la Segunda Persona de la Santísima Trinidad, contemplando a Jesucristo en el misterio de su humanidad doliente y redentora.
+            </p>
+          </div>
+          <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800">
+            <h3 class="font-serif text-base font-bold text-slate-900 dark:text-stone-100 m-0">2. Debe realizarse a las tres en punto de la tarde</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 m-0 mt-1">
+              No se trata de una hora abstracta ni meramente simbólica; la devoción está ligada a la conmemoración horaria precisa de las 15:00 del tiempo local del creyente.
+            </p>
+          </div>
+          <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800">
+            <h3 class="font-serif text-base font-bold text-slate-900 dark:text-stone-100 m-0">3. Debe apelar al valor y a los méritos de su dolorosa Pasión</h3>
+            <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400 m-0 mt-1">
+              La petición no se fundamenta en nuestras supuestas virtudes o méritos personales, sino en el precio infinito de las llagas, la Sangre y la soledad de Jesús en la Cruz.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección 4: Guía Práctica para la Vida Diaria -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          4. Cómo Vivir la Hora de las 15:00 en la Vida Cotidiana
+        </h2>
+        <p>
+          Muchas personas trabajan, estudian o se encuentran en el transporte público a las tres de la tarde. Jesús conocía estas limitaciones humanas y propuso alternativas adaptadas a cada estado de vida:
+        </p>
+        <ul class="space-y-2 list-disc pl-5 text-sm sm:text-base">
+          <li><strong>Si puedes acudir al templo:</strong> Haz una breve visita al Santísimo Sacramento para adorar al Señor presente en el Sagrario.</li>
+          <li><strong>Si estás en casa con tiempo:</strong> Reza el Santo Vía Crucis o la Coronilla de la Divina Misericordia con espíritu de reparación.</li>
+          <li><strong>Si estás en el trabajo, oficina o calle:</strong> Basta un instante de recogimiento interior de diez o quince segundos. Detén la mirada, une tu mente al Calvario y pronuncia mentalmente con fe viva:</li>
+        </ul>
+        <blockquote class="p-4 rounded-xl bg-stone-100/60 dark:bg-slate-900/60 border border-stone-200 dark:border-slate-800 text-sm sm:text-base text-stone-800 dark:text-stone-200 font-serif font-bold italic text-center">
+          «Oh Sangre y Agua que brotaste del Corazón de Jesús como una fuente de misericordia para nosotros, en Ti confío.»
+        </blockquote>
+      </section>
+
+    </article>
+
+    <!-- Preguntas Frecuentes Reutilizables -->
+    <FaqAccordion
+      title="Preguntas Frecuentes sobre la Hora de la Misericordia"
+      subtitle="Respuestas con fidelidad al Magisterio y a la edición crítica del Diario de Santa Faustina."
+      items={faqItems}
+    />
+
+    <!-- Siguiente paso pastoral -->
+    <NextStep
+      variant="jesus"
+      customTitle="Aprende a Rezar la Coronilla Completa"
+      customAction="Descubre cómo ofrecer las cinco decenas de la Coronilla utilizando un rosario tradicional, paso a paso y con oraciones en pantalla."
+    />
+
+    <!-- Fuentes y Metadatos de Revisión -->
+    <footer class="mt-12 pt-6 border-t border-stone-200 dark:border-slate-800 text-xs text-stone-500 dark:text-stone-400 space-y-2">
+      <p>
+        <strong>Fuentes Principales:</strong> Santa María Faustina Kowalska, <em>La Divina Misericordia en mi alma: Diario</em> (Edición Crítica, nn. 187, 1320, 1572); Sagrada Biblia Vulgata Latina, trad. Félix Torres Amat (Madrid, 1825); Ignacio Różycki, <em>La Divina Misericordia: Líneas fundamentales de la devoción</em> (Congregación de las Hermanas de Nuestra Señora de la Misericordia, Cracovia).
+      </p>
+      <p>
+        <strong>Equipo Editorial:</strong> Razón y Asombro &middot; Revisión Canónica y Bíblica Interna &middot; Última actualización: Noviembre de 2026.
+      </p>
+    </footer>
+
+  </div>
+</BaseLayout>

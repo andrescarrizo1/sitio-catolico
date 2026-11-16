@@ -1,0 +1,289 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/global/Breadcrumbs.astro';
+import FaqAccordion from '../../components/ui/FaqAccordion.astro';
+import NextStep from '../../components/ui/NextStep.astro';
+import { getGitCommitDate } from '../../utils/getGitDate';
+
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : (import.meta.env.PUBLIC_SITE_URL || 'https://razonyasombro.com');
+const currentURL = `${siteUrl}/divina-misericordia/`;
+
+const alternateLinks = [
+  { hreflang: 'es', href: currentURL },
+  { hreflang: 'x-default', href: currentURL },
+];
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": currentURL
+  },
+  "headline": "La Divina Misericordia: Guía Teológica, Historia y Devoción",
+  "description": "Guía completa sobre la Divina Misericordia revelada a Santa Faustina Kowalska: origen, las 5 formas de devoción, promesas del Diario y magisterio de la Iglesia.",
+  "image": [`${siteUrl}/images/jesus-misericordioso-kazimirowski.jpg`],
+  "url": currentURL,
+  "datePublished": "2026-11-16T00:00:00Z",
+  "dateModified": getGitCommitDate('src/pages/divina-misericordia/index.astro', '2026-11-16T00:00:00Z'),
+  "author": [
+    {
+      "@type": "Organization",
+      "name": "Razón y Asombro",
+      "url": `${siteUrl}/autor/`
+    }
+  ],
+  "publisher": {
+    "@type": "Organization",
+    "name": "Razón y Asombro",
+    "url": `${siteUrl}/`,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${siteUrl}/favicon.svg`
+    }
+  }
+};
+
+const faqItems = [
+  {
+    question: "¿Qué es la devoción a la Divina Misericordia?",
+    answer: "Es un movimiento de renovación espiritual y devocional en la Iglesia Católica basado en el amor misericordioso de Dios manifestado plenamente en Cristo Jesús. Tiene su origen en las revelaciones místicas que recibió Santa Faustina Kowalska en Polonia y Lituania entre 1931 y 1938, aprobadas formalmente por la Santa Sede e instituidas para la Iglesia universal por San Juan Pablo II en el año 2000."
+  },
+  {
+    question: "¿Cuáles son las cinco formas principales de honrar la Divina Misericordia?",
+    answer: "Jesús confió a Santa Faustina cinco prácticas devocionales concretas: 1) La veneración del Cuadro con la inscripción «Jesús, en Ti confío»; 2) La Fiesta de la Divina Misericordia (segundo domingo de Pascua); 3) El rezo de la Coronilla con las cuentas del rosario; 4) La oración de la Hora de la Misericordia a las tres de la tarde; y 5) La propagación del mensaje acompañada de obras de misericordia materiales y espirituales hacia el prójimo."
+  },
+  {
+    question: "¿Qué valor tienen las revelaciones del Diario de Santa Faustina frente al dogma católico?",
+    answer: "La Iglesia enseña claramente (Catecismo, n. 67) que las revelaciones privadas no completan ni mejoran la Revelación definitiva de Cristo, sino que ayudan a vivirla más plenamente en una época determinada. El mensaje de Santa Faustina no es un nuevo dogma, sino un poderoso recordatorio evangélico de la verdad perenne de la Sagrada Escritura: «Dios es amor y misericordia» (1 Juan 4, 8; Efesios 2, 4)."
+  },
+  {
+    question: "¿Qué significan los dos rayos que brotan del Corazón de Jesús?",
+    answer: "Según explicó el propio Jesucristo en el Diario (n. 299), el rayo rojo simboliza la Sangre, que es la vida de las almas recibida en el sacramento de la Sagrada Eucaristía; el rayo pálido simboliza el Agua, que purifica y justifica las almas en el Bautismo y en la Reconciliación sacramental. Ambos brotaron de las entrañas de su misericordia cuando su Corazón agonizante fue traspasado por la lanza en el Calvario."
+  }
+];
+---
+
+<BaseLayout
+  title="La Divina Misericordia | Razón y Asombro"
+  description="Guía completa sobre la Divina Misericordia revelada a Santa Faustina Kowalska: origen, las 5 formas de devoción, promesas del Diario y magisterio de la Iglesia."
+  image="/images/jesus-misericordioso-kazimirowski.jpg"
+  alternateLinks={alternateLinks}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8">
+    <Breadcrumbs
+      crumbs={[
+        { label: 'Inicio', href: '/' },
+        { label: 'Divina Misericordia' }
+      ]}
+    />
+
+    <!-- Header Principal -->
+    <header class="space-y-4 border-b border-stone-200 dark:border-slate-800 pb-8">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-500/10 text-red-800 dark:text-red-300 border border-red-500/20">
+          «Jesús, en Ti confío» &middot; Mensaje para los Tiempos Difíciles
+        </span>
+        <span class="text-xs font-mono text-stone-500 dark:text-stone-400">
+          Magisterio: San Juan Pablo II (Dives in Misericordia)
+        </span>
+      </div>
+
+      <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-950 dark:text-stone-100 leading-[1.2]">
+        La Divina Misericordia: El Corazón del Evangelio
+      </h1>
+
+      <p class="text-base sm:text-lg text-stone-700 dark:text-stone-300 font-reading leading-relaxed">
+        En un siglo marcado por los totalitarismos, la guerra y el desamparo moral del ser humano, Dios confió a una humilde religiosa polaca, Santa Faustina Kowalska, el mensaje central de su Redención: la misericordia divina es el límite supremo que Dios pone a la iniquidad humana. Lejos de ser una devoción sentimental pasajera, la Divina Misericordia es la revelación consumada del Corazón traspasado de Jesucristo en la Cruz.
+      </p>
+
+      <!-- Clasificación Epistémica -->
+      <div class="p-4 rounded-xl bg-stone-100/70 dark:bg-slate-900/70 border border-stone-200 dark:border-slate-800 text-xs sm:text-sm text-stone-600 dark:text-stone-400 space-y-1">
+        <p><strong>Certeza Doctrinal:</strong> La misericordia divina es un atributo esencial de Dios proclamado en la Sagrada Escritura (Salmo 136; Lc 15) y en la encíclica <em>Dives in Misericordia</em> (1980). Las revelaciones particulares de Santa Faustina poseen aprobación eclesiástica universal y fueron consagradas con su canonización en el Jubileo del año 2000.</p>
+        <p><strong>Fuentes Primarias:</strong> <em>Diario: La Divina Misericordia en mi alma</em> (Santa Faustina Kowalska, Edición Crítica Oficial de las Hermanas de Nuestra Señora de la Misericordia).</p>
+      </div>
+
+      <!-- Barra de Navegación del Cluster de la Divina Misericordia -->
+      <div class="pt-2 flex flex-wrap gap-2 text-xs">
+        <span class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-900 dark:text-red-200 font-bold border border-red-500/30">
+          Guía Teológica (Pilar)
+        </span>
+        <a href="/rosario/coronilla-divina-misericordia/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Cómo Rezar la Coronilla &rarr;
+        </a>
+        <a href="/divina-misericordia/hora-de-la-misericordia/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          La Hora de las 15:00 &rarr;
+        </a>
+        <a href="/divina-misericordia/fiesta-de-la-misericordia/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          La Fiesta y las Indulgencias &rarr;
+        </a>
+        <a href="/santos/faustina-kowalska/" class="px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-slate-700 transition-colors">
+          Vida de Santa Faustina &rarr;
+        </a>
+      </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <article class="space-y-12 text-stone-800 dark:text-stone-200 font-reading leading-relaxed">
+
+      <!-- Sección 1: El Contexto y la Misión de Santa Faustina -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          1. Santa Faustina y la Elección de los Sencillos
+        </h2>
+        <p>
+          Sor María Faustina del Santísimo Sacramento (Elena Kowalska, 1905-1938), religiosa de la Congregación de las Hermanas de Nuestra Señora de la Misericordia en Polonia, recibió desde su juventud experiencias místicas extraordinarias. A pesar de contar con escasa instrucción escolar, redactó por obediencia a su director espiritual, el Beato Miguel Sopoćko, un cuaderno de anotaciones íntimas titulado <em>La Divina Misericordia en mi alma</em>, compuesto por más de 1.800 parágrafos numerados.
+        </p>
+        <p>
+          En este testimonio espiritual, Jesús se presenta no como un juez severo e inaccesible, sino como el Redentor que sale en busca del pecador más desesperado:
+        </p>
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-red-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Que no tema acercarse a Mí el alma débil, pecadora; aunque tuviera más pecados que granos de arena hay en la tierra, todo se hundirá en el abismo de mi misericordia.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— Diario de Santa Faustina, n. 1059</footer>
+        </blockquote>
+      </section>
+
+      <!-- Sección 2: La Imagen de Jesús Misericordioso -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          2. La Imagen Sagrada: «Jesús, en Ti confío»
+        </h2>
+        <p>
+          El 22 de febrero de 1931, en el convento de Płock, Faustina vio por primera vez a Cristo resucitado con una túnica blanca, alzando su mano derecha para bendecir y tocando con la izquierda su pecho, del cual salían dos rayos luminosos. El Señor le ordenó:
+        </p>
+        <blockquote class="p-4 rounded-xl bg-stone-50 dark:bg-slate-800/60 border-l-4 border-red-500 text-sm sm:text-base italic text-stone-800 dark:text-stone-200">
+          «Pinta una imagen según el modelo que ves, con la inscripción: Jesús, en Ti confío... Prometo que el alma que venere esta imagen no perecerá. También prometo, ya aquí en la tierra, la victoria sobre los enemigos y, sobre todo, a la hora de la muerte.»
+          <footer class="mt-2 text-xs not-italic font-mono text-stone-500">— Diario de Santa Faustina, nn. 47-48</footer>
+        </blockquote>
+        <p>
+          Los dos rayos son el símbolo supremo de los sacramentos pascuales. El rayo rojo representa la Sangre de Cristo derramada por la remisión de los pecados y entregada como alimento en la Eucaristía; el rayo pálido representa el Agua que brotó del costado herido de Cristo (Jn 19, 34), símbolo del Bautismo purificador y del perdón del sacramento de la Confesión.
+        </p>
+      </section>
+
+      <!-- Sección 3: Las Cinco Formas del Culto a la Misericordia -->
+      <section class="space-y-6">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          3. Las Cinco Formas del Culto a la Divina Misericordia
+        </h2>
+        <p>
+          A través del Diario, Jesucristo no solicitó homenajes exteriores vacíos, sino una respuesta vital estructurada en cinco prácticas concretas de oración y caridad:
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-2">
+            <span class="text-xs uppercase font-mono font-bold text-red-600 dark:text-red-400">1. Veneración de la Imagen</span>
+            <h3 class="font-serif text-lg font-bold text-slate-900 dark:text-stone-100 m-0">El Cuadro de Jesús Misericordioso</h3>
+            <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed m-0">
+              Honrar a Cristo a través de su imagen bendita como vaso sagrado en el que se acude a buscar gracias con la actitud de confianza filial.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-2">
+            <span class="text-xs uppercase font-mono font-bold text-red-600 dark:text-red-400">2. La Fiesta Solemne</span>
+            <h3 class="font-serif text-lg font-bold text-slate-900 dark:text-stone-100 m-0">Segundo Domingo de Pascua</h3>
+            <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed m-0">
+              Celebración litúrgica universal instituida por San Juan Pablo II con la gracia del perdón pleno de culpas y penas mediante la Confesión y Comunión.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-2">
+            <span class="text-xs uppercase font-mono font-bold text-red-600 dark:text-red-400">3. La Coronilla</span>
+            <h3 class="font-serif text-lg font-bold text-slate-900 dark:text-stone-100 m-0">Oración de Intercesión Sacerdotal</h3>
+            <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed m-0">
+              Ofrecimiento del Cuerpo, Sangre, Alma y Divinidad de Cristo sobre las cuentas del rosario común en desagravio y súplica por el mundo entero.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-2">
+            <span class="text-xs uppercase font-mono font-bold text-red-600 dark:text-red-400">4. La Hora de la Misericordia</span>
+            <h3 class="font-serif text-lg font-bold text-slate-900 dark:text-stone-100 m-0">Las Tres de la Tarde (15:00)</h3>
+            <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed m-0">
+              Momento solemne de la Muerte del Salvador en la Cruz. Breve instante de recogimiento para sumergirse en su agonía y desamparo redentor.
+            </p>
+          </div>
+
+          <div class="sm:col-span-2 p-5 rounded-2xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 shadow-xs space-y-2">
+            <span class="text-xs uppercase font-mono font-bold text-red-600 dark:text-red-400">5. Las Obras de Misericordia</span>
+            <h3 class="font-serif text-lg font-bold text-slate-900 dark:text-stone-100 m-0">La Caridad Activa hacia el Prójimo</h3>
+            <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed m-0">
+              Jesús advirtió categóricamente: «Si el alma no practica la misericordia de alguna manera, tampoco la experimentará en el día del juicio» (Diario, n. 1317). La fe viva exige traducirse en obras corporales y espirituales de perdón, consuelo y ayuda material.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección 4: Distinción Teológica y Revelación Privada -->
+      <section class="space-y-4">
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-slate-950 dark:text-stone-100">
+          4. Criterio Doctrinal: Revelación Pública frente a Revelación Privada
+        </h2>
+        <p>
+          Para mantener la pureza de la fe, la Iglesia Católica enseña una distinción fundamental que todo creyente debe comprender:
+        </p>
+        <ul class="space-y-3 list-disc pl-5 text-sm sm:text-base">
+          <li>
+            <strong>La Revelación Pública:</strong> Es la Palabra de Dios contenida en la Sagrada Escritura y en la Sagrada Tradición apostólica, culminada definitivamente en Jesucristo. Está cerrada desde la muerte del último de los apóstoles y es obligatoria para la fe de todo cristiano (Catecismo de la Iglesia Católica, nn. 65-66).
+          </li>
+          <li>
+            <strong>Las Revelaciones Privadas:</strong> Como las visiones y locuciones recibidas por Santa Faustina, Santa Margarita María de Alacoque o los pastorcitos de Fátima. La Iglesia las somete a riguroso examen; si son aprobadas, no imponen nuevas verdades dogmáticas, sino que ofrecen una ayuda pastoral providencial para vivir el Evangelio en un tiempo histórico concreto (Catecismo, n. 67).
+          </li>
+        </ul>
+        <p>
+          Por consiguiente, rezar la Coronilla o venerar el Cuadro no reemplaza jamás la asistencia a la Santa Misa dominical, la confesión frecuente con el sacerdote, ni el mandamiento de amar al prójimo. Al contrario: la auténtica devoción a la Divina Misericordia tiene como fruto llevar al cristiano de regreso al Sagrario y a los sacramentos de la Iglesia.
+        </p>
+      </section>
+
+    </article>
+
+    <!-- Navegación del Ecosistema de la Divina Misericordia -->
+    <section class="p-6 rounded-2xl bg-red-500/5 dark:bg-red-400/5 border border-red-600/20 dark:border-red-400/20 space-y-4">
+      <h3 class="font-serif text-lg font-bold text-slate-950 dark:text-stone-100 m-0">
+        Profundiza en los Contenidos de este Ecosistema
+      </h3>
+      <p class="text-sm text-stone-600 dark:text-stone-400 m-0">
+        Explora las guías dedicadas a la práctica de cada una de las devociones reveladas a Santa Faustina:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+        <a href="/rosario/coronilla-divina-misericordia/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-red-500 transition-all text-center">
+          <span class="block text-xs font-bold text-amber-700 dark:text-amber-400 uppercase">Oración Práctica</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">Cómo Rezar la Coronilla</span>
+        </a>
+        <a href="/divina-misericordia/hora-de-la-misericordia/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-red-500 transition-all text-center">
+          <span class="block text-xs font-bold text-red-600 dark:text-red-400 uppercase">Meditación de las 15:00</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">La Hora de la Misericordia</span>
+        </a>
+        <a href="/divina-misericordia/fiesta-de-la-misericordia/" class="p-4 rounded-xl bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 hover:border-red-500 transition-all text-center">
+          <span class="block text-xs font-bold text-blue-600 dark:text-blue-400 uppercase">2.° Domingo de Pascua</span>
+          <span class="font-serif font-bold text-slate-900 dark:text-stone-100 text-sm">La Fiesta e Indulgencias</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Sección de Preguntas Frecuentes Reutilizable -->
+    <FaqAccordion
+      title="Preguntas Frecuentes sobre la Divina Misericordia"
+      subtitle="Respuestas con fidelidad al Magisterio y a la edición crítica del Diario de Santa Faustina."
+      items={faqItems}
+    />
+
+    <!-- Bloque de Siguiente Paso -->
+    <NextStep
+      variant="jesus"
+      customTitle="Reza Ahora la Coronilla de la Divina Misericordia"
+      customAction="Utiliza nuestro visor interactivo guiado cuenta por cuenta para rezar la Coronilla con oraciones en texto, latín o audio en pantalla."
+    />
+
+    <!-- Fuentes y Metadatos de Revisión -->
+    <footer class="mt-12 pt-6 border-t border-stone-200 dark:border-slate-800 text-xs text-stone-500 dark:text-stone-400 space-y-2">
+      <p>
+        <strong>Fuentes Principales:</strong> Santa María Faustina Kowalska, <em>La Divina Misericordia en mi alma: Diario</em> (Edición Crítica, Congregación de las Hermanas de Nuestra Señora de la Misericordia, Cracovia, 2001); San Juan Pablo II, Carta Encíclica <em>Dives in Misericordia</em> (30 de noviembre de 1980); Catecismo de la Iglesia Católica (nn. 67, 1846-1848).
+      </p>
+      <p>
+        <strong>Equipo Editorial:</strong> Razón y Asombro &middot; Revisión Canónica y Bíblica Interna &middot; Última actualización: Noviembre de 2026.
+      </p>
+    </footer>
+
+  </div>
+</BaseLayout>
