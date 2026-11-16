@@ -127,6 +127,15 @@ const gaId = Astro.props.id || import.meta.env.PUBLIC_GA_MEASUREMENT_ID || 'G-H1
             file_name: href.split('/').pop() || 'document',
             file_extension: 'pdf',
           });
+          return;
+        }
+
+        // Detección de navegación interna dentro del ecosistema de oración y Rosario
+        if (href.startsWith('/rosario/') && href !== window.location.pathname) {
+          window.trackGAEvent('rosary_nav_click', {
+            destination_path: href,
+            source_path: window.location.pathname,
+          });
         }
       });
     });

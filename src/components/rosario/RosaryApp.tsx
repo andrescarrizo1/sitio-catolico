@@ -400,6 +400,9 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
     setStage('intro');
     setCurrentDecade(0);
     setCurrentBead(0);
+    trackPrayerEvent('prayer_type_switch', {
+      prayer_type: type,
+    });
   };
 
   const selectMystery = (key: string) => {
@@ -407,6 +410,10 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
     if (typeof window !== 'undefined') {
       localStorage.setItem('rosary_active_set', key);
     }
+    trackPrayerEvent('rosary_mystery_select', {
+      mystery_key: key,
+      prayer_type: prayerType,
+    });
   };
 
   const startRosary = () => {
@@ -481,6 +488,12 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
           setCurrentDecade(nextDec);
           setCurrentBead(0);
           persistState('decena', nextDec, 0);
+          trackPrayerEvent('rosary_decade_progress', {
+            completed_decade: currentDecade + 1,
+            next_decade: nextDec + 1,
+            mystery_key: activeKey,
+            prayer_type: prayerType,
+          });
         } else {
           setStage('salve');
           setCurrentBead(0);
@@ -541,6 +554,11 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
     setCurrentDecade(decIndex);
     setCurrentBead(0);
     persistState('decena', decIndex, 0);
+    trackPrayerEvent('rosary_decade_jump', {
+      decade_index: decIndex + 1,
+      mystery_key: activeKey,
+      prayer_type: prayerType,
+    });
   };
 
   const resetCounter = (askConfirmation = true) => {
@@ -1251,8 +1269,13 @@ export default function RosaryApp({ initialLang = 'es', initialPrayerType }: Ros
                         } else {
                           next = language === 'es' ? 'la' : (language === 'la' ? 'en' : 'es');
                         }
+                        const prevLang = language;
                         setLanguage(next);
                         localStorage.setItem(initialLang === 'en' ? 'rosary_lang_en' : 'rosary_lang', next);
+                        trackPrayerEvent('rosary_lang_change', {
+                          from_language: prevLang,
+                          to_language: next,
+                        });
                       }}
                       class="px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-slate-800 text-stone-700 dark:text-stone-300 hover:bg-stone-200 font-semibold transition-colors"
                     >
